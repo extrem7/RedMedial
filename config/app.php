@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\RedMedialServiceProvider;
+
 return [
 
     /*
@@ -165,7 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        App\Providers\MetaTagsServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -174,6 +176,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        RedMedialServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
 
     ],
 

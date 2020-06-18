@@ -4,6 +4,12 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\FileViewFinder;
+
+app()->bind('view.finder', function ($app) {
+    $paths = [resource_path('admin/views')];
+    return new FileViewFinder($app['files'], $paths);
+});
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -12,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
     /**
      * This namespace is applied to your controller routes.
      *
@@ -43,9 +49,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $this->mapWebRoutes();
+        $this->mapFrontendRoutes();
 
-        //
+        $this->mapAdminRoutes();
+
     }
 
     /**
@@ -55,11 +62,21 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebRoutes()
+    protected function mapFrontendRoutes()
     {
-        Route::middleware('web')
+        Route::domain(config('redmedial.frontend_domain'))->middleware('web')
             ->namespace($this->namespace)
-            ->group(base_path('routes/web.php'));
+            ->group(base_path('routes/web/frontend.php'));
+    }
+
+    protected function mapAdminRoutes()
+    {
+        Route::domain(config('redmedial.admin_domain'))
+            // Route::prefix('/admin-panel')
+            ->middleware('web')
+            ->namespace($this->namespace . '\Admin')
+            ->as('admin.')
+            ->group(base_path('routes/web/admin.php'));
     }
 
     /**
