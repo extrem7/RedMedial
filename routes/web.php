@@ -1,18 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\FileViewFinder;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::group(['prefix' => 'admin'], function () {
+    app()->bind('view.finder', function ($app) {
+        $paths = [resource_path('admin/views')];
+        return new FileViewFinder($app['files'], $paths);
+    });
 
-Route::get('/', function () {
-    return view('welcome');
+    Route::get('/', 'Admin\Controller@index');
 });
