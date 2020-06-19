@@ -8,10 +8,13 @@ import './bootstrap'
 import './ls'
 
 import route, {Ziggy} from 'ziggy'
+import VueMoment from 'vue-moment'
 
 Vue.use(VueBus)
 
 Vue.use(SvgVue)
+
+Vue.use(VueMoment)
 
 Vue.mixin({
     methods: {

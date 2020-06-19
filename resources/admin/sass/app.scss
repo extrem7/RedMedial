@@ -1,13 +1,9 @@
 @import url("~@fortawesome/fontawesome-free/css/all.css");
-//@import url("~jquery-ui-dist/jquery-ui.min.css");
-//@import url("~jquery-ui-dist/jquery-ui.theme.min.css");
 
 $red: #e30613;
 $black: #0b0a0a;
-//$dark: #343a40;
 $silver: #dfdfdf;
 
-//@import url("~admin-lte/dist/css/adminlte.min.css");
 @import "lte";
 @import "~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css";
 
@@ -45,7 +41,7 @@ body {
     }
 
     .nav-link {
-        &.active {
+        &.active, &:hover {
             svg path {
                 fill: white !important;
             }

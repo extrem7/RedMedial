@@ -3,6 +3,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Article;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\PathGenerator\PathGenerator;
 
@@ -38,6 +39,15 @@ class RedMedialPathGenerator implements PathGenerator
      */
     protected function getBasePath(Media $media): string
     {
-        return 'articles/' . $media->model->id . '/' . $media->getKey();
+        $folder = '';
+        $collection = $media->collection_name;
+
+        switch (get_class($media->model)) {
+            case Article::class:
+                $folder = 'articles';
+                break;
+        }
+
+        return "$folder/" . $media->model->id . "/$collection/" . $media->getKey();
     }
 }

@@ -12,7 +12,7 @@ Route::middleware(Admin::class)->group(function () {
 
     Route::post('logout', 'LoginController@logout')->name('logout');
 
-    Route::resource('/articles', 'ArticleController');
+    Route::resource('/articles', 'ArticleController')->except('show');
     Route::group(['prefix' => '/articles', 'as' => 'articles.'], function () {
         Route::post('sort', 'ArticleController@sort')->name('sort');
     });

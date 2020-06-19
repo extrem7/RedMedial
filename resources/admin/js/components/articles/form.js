@@ -1,10 +1,25 @@
-import Editor from "@/components/includes/Editor"
 import VueUploadComponent from 'vue-upload-component'
 import vSelect from 'vue-select'
+
+import Editor from "@/components/includes/Editor"
+import Invalid from "@/components/includes/Invalid"
 
 export default {
     data() {
         return {
+            title: '',
+            slug: '',
+            body: '',
+            excerpt: '',
+
+            meta_title: '',
+            meta_description: '',
+
+            authors: '',
+            original: '',
+
+            status: null,
+
             files: [],
 
             statuses: this.shared('statuses') || [],
@@ -13,6 +28,12 @@ export default {
             },
             loading: false,
             wasValidated: false,
+
+            formConfig: {
+                header: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
         }
     },
     methods: {
@@ -54,9 +75,10 @@ export default {
         }
     },
     components: {
-        Editor,
-
         VueUploadComponent,
         vSelect,
+
+        Editor,
+        Invalid
     }
 }

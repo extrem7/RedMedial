@@ -5,6 +5,7 @@ export default {
     Alert,
     Invalid,
 
+    ArticlesIndex: () => import('./articles/Index'),
     ArticleCreate: () => import('./articles/Create'),
     ArticleEdit: () => import('./articles/Edit'),
 }

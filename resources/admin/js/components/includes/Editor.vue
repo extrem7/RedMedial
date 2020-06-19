@@ -44,11 +44,11 @@
                     ],
                     skin: "oxide-dark",
                     convert_urls: false,
-                    async images_upload_handler(blobInfo, success, failure) {
+                    images_upload_handler: async (blobInfo, success, failure) => {
                         const formData = new FormData()
                         formData.append('image', blobInfo.blob(), blobInfo.filename())
                         try {
-                            const {data} = await axios.post(route('admin.media.upload'), formData, {
+                            const {data} = await this.axios.post(this.route('admin.media.upload'), formData, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data'
                                 }

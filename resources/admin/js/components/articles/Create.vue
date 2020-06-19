@@ -1,15 +1,15 @@
 <template>
-    <form @submit.prevent="submit" class="card card-primary bg-dark">
+    <form @submit.prevent="submit" class="card card-primary">
         <div class="card-body">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input class="form-control bg-dark mb-2" id="title" placeholder="Title" type="text"
+                <input class="form-control meta_description mb-2" id="title" placeholder="Title" type="text"
                        v-model="title" v-valid="title">
                 <invalid name="title"></invalid>
             </div>
             <div class="form-group">
                 <label for="slug">Slug</label>
-                <input class="form-control bg-dark mb-2" id="slug" placeholder="Slug" type="text"
+                <input class="form-control meta_description mb-2" id="slug" placeholder="Slug" type="text"
                        v-model="slug" v-valid="slug">
                 <invalid name="slug"></invalid>
             </div>
@@ -43,28 +43,29 @@
 
             <h4 class="mt-4">Seo settings</h4>
             <div class="form-group">
-                <label for="seo_title">Title</label>
-                <input class="form-control bg-dark mb-2" id="seo_title" placeholder="Title" type="text"
-                       v-model="seo_title" v-valid="seo_title">
-                <invalid name="seo_title"></invalid>
+                <label for="meta_title">Title</label>
+                <input class="form-control meta_description mb-2" id="meta_title" placeholder="Title" type="text"
+                       v-model="meta_title" v-valid="meta_title">
+                <invalid name="meta_title"></invalid>
             </div>
             <div class="form-group">
-                <label for="seo_description">Description</label>
-                <input class="form-control bg-dark mb-2" id="seo_description" placeholder="Description" type="text"
-                       v-model="seo_description" v-valid="seo_description">
-                <invalid name="seo_description"></invalid>
+                <label for="meta_description">Description</label>
+                <input class="form-control meta_description mb-2" id="meta_description" placeholder="Description"
+                       type="text"
+                       v-model="meta_description" v-valid="meta_description">
+                <invalid name="meta_description"></invalid>
             </div>
 
             <h4 class="mt-4">Additional</h4>
             <div class="form-group">
                 <label for="authors">Authors (coma separated)</label>
-                <input class="form-control bg-dark mb-2" id="authors" placeholder="Authors" type="text"
+                <input class="form-control meta_description mb-2" id="authors" placeholder="Authors" type="text"
                        v-model="authors" v-valid="authors">
                 <invalid name="authors"></invalid>
             </div>
             <div class="form-group">
                 <label for="original">Original(link)</label>
-                <input class="form-control bg-dark mb-2" id="original" placeholder="Original" type="text"
+                <input class="form-control meta_description mb-2" id="original" placeholder="Original" type="text"
                        v-model="original" v-valid="original">
                 <invalid name="original"></invalid>
             </div>
@@ -89,62 +90,50 @@
 <script>
     import form from './form'
     import {errors} from "@/helpers/helpers"
-    import Invalid from "@/components/includes/Invalid"
 
     export default {
-        components: {Invalid},
-        data() {
-            return {
-                title: '',
-                slug: '',
-                body: '',
-                excerpt: '',
-
-                seo_title: '',
-                seo_description: '',
-
-                authors: '',
-                original: '',
-
-                status: null,
-            }
-        },
         methods: {
             async submit() {
+                let form = new FormData()
+
+                if (this.files.length !== 0) {
+                    form.append('image', this.files[0].file)
+                }
+
+                const append = {
+                    title: this.title,
+                    slug: this.slug,
+                    body: this.body,
+                    excerpt: this.excerpt,
+                    meta_title: this.meta_title,
+                    meta_description: this.meta_description,
+                    authors: this.authors,
+                    original: this.original,
+                    status: this.status,
+                }
+                for (let field in append) form.append(field, this[field])
+
+                this.loading = true
+
                 try {
-                    let form = new FormData()
-
-                    if (this.files.length !== 0) {
-                        form.append('image', this.files[0].file)
-                    }
-
-                    const append = {
-                        title: this.title,
-                        body: this.body,
-                        excerpt: this.excerpt,
-                        seo_title: this.seo_title,
-                        seo_description: this.seo_description,
-                        authors: this.authors,
-                        original: this.original,
-                        status: this.status,
-                    }
-                    for (let field in append) form.append(field, this[field])
-
-                    this.loading = true
-
-                    const {status, data} = await this.axios.post(this.route('admin.articles.store'), form, {
-                        header: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
+                    const {status, data} = await this.send(form)
                     if (status === 201) window.location = this.route('admin.articles.edit', data.id)
 
+                } catch (e) {
+                    console.log(e)
+                }
+
+                this.loading = false
+            },
+            async send(form) {
+                try {
+                    const {status, data} = await this.axios.post(this.route('admin.articles.store'), form, this.formConfig)
+                    return {status, data}
                 } catch ({response}) {
                     this.wasValidated = true
                     this.errors = errors(response)
                 }
-                this.loading = false
-            },
+            }
         },
         created() {
             this.status = this.statuses[0].value

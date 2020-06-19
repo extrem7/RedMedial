@@ -9,7 +9,7 @@ class CreateArticlesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * php artisan migrate:refresh --path=/database/migrations/2020_06_19_124820_create_articles_table.php
      * @return void
      */
     public function up()
@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
 
             $table->string('slug')->unique();
             $table->string('title');
-            $table->string('excerpt')->nullable();
+            $table->string('excerpt', 510)->nullable();
             $table->text('body');
 
             $table->string('authors')->nullable();
@@ -31,8 +31,6 @@ class CreateArticlesTable extends Migration
             $table->string('meta_description')->nullable();
 
             $table->enum('status', $statuses)->default(Article::DRAFT);
-
-            $table->unsignedBigInteger('order_column');
 
             $table->timestamps();
         });

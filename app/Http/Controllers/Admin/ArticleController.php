@@ -4,17 +4,29 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\ArticleRequest;
 use App\Models\Article;
+use App\Services\ArticlesService;
 
 class ArticleController extends Controller
 {
+    protected ArticlesService $articleService;
 
-    protected $model = Article::class;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->articleService = app(ArticlesService::class);
+    }
 
     public function index()
     {
         $this->meta->prependTitle('Blog');
 
-        $articles = Article::ordered()->get();
+        $articles = Article::select(['id', 'title', 'created_at', 'updated_at'])
+            ->orderByDesc('id')
+            ->paginate(1);
+
+        if (request()->expectsJson()) {
+            return $articles;
+        }
 
         return view('articles.index', compact('articles'));
     }
@@ -23,11 +35,7 @@ class ArticleController extends Controller
     {
         $this->meta->prependTitle('Create a new article');
 
-        $statuses = collect(Article::$statuses)->map(fn($val, $key) => ['value' => $key, 'label' => $val])->values();
-
-        share([
-            'statuses' => $statuses
-        ]);
+        $this->articleService->shareForCRUD();
 
         return view('articles.create');
     }
@@ -36,9 +44,9 @@ class ArticleController extends Controller
     {
         $article = new Article($request->input());
 
-        if ($request->hasFile('image')) {
-            $article->uploadImage($request->file('image'));
-        }
+        if ($slug = $request->get('slug')) $article->setSlug($slug);
+
+        if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
 
         $article->save();
 
@@ -53,25 +61,32 @@ class ArticleController extends Controller
         $this->meta->prependTitle('Edit an article');
 
         $article->append('image');
+
+        $this->articleService->shareForCRUD();
+
         share(compact('article'));
+
         return view('articles.edit');
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
         $article->fill($request->input());
+
+        if ($slug = $request->get('slug'))
+            if ($article->slug !== $slug)
+                $article->setSlug($slug);
+
+        if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
+
         $article->save();
 
-        if ($request->hasFile('image')) {
-            $article->uploadImage($request->file('image'));
-        }
-
-        return response()->json(['status' => 'Article has been updated'], 204);
+        return response()->json(['status' => 'Article has been updated'], 200);
     }
 
     public function destroy(Article $article)
     {
         $article->delete();
-        return response()->json(['status' => 'Article has been deleted'], 204);
+        return response()->json(['status' => 'Article has been deleted'], 200);
     }
 }

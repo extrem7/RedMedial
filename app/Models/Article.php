@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 
-class Article extends Model implements HasMedia, Sortable
+class Article extends Model implements HasMedia
 {
     use HasMediaTrait;
     use Sluggable;
-    use SortableTrait;
 
     public const DRAFT = 'DRAFT';
     public const PUBLISHED = 'PUBLISHED';
@@ -25,14 +23,14 @@ class Article extends Model implements HasMedia, Sortable
         self::PUBLISHED => 'Published'
     ];
 
-    protected $fillable = ['title', 'excerpt', 'body', 'order_column'];
-
-    protected $with = ['imageMedia'];
+    protected $fillable = [
+        'title', 'excerpt', 'body', 'authors', 'original', 'meta_title', 'meta_description', 'status', 'order_column'
+    ];
 
     public function imageMedia()
     {
         return $this->morphOne(Media::class, 'model')
-            ->where('collection_name', '=', 'image');
+            ->where('collection_name', 'image');
     }
 
     public function registerMediaCollections()
@@ -45,9 +43,14 @@ class Article extends Model implements HasMedia, Sortable
     {
         return [
             'slug' => [
-                'source' => $this->slug ? 'slug' : 'title'
+                'source' => 'title'
             ]
         ];
+    }
+
+    public function setSlug(string $slug)
+    {
+        $this->slug = SlugService::createSlug(self::class, 'slug', $slug);
     }
 
     public function uploadImage(UploadedFile $image = null)
