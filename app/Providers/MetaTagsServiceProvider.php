@@ -25,9 +25,9 @@ class MetaTagsServiceProvider extends ServiceProvider
 
             // It just an imagination, you can automatically
             // add favicon if it exists
-            // if (file_exists(public_path('favicon.ico'))) {
-            //    $meta->setFavicon('/favicon.ico');
-            // }
+            //if (file_exists(public_path('favicon.png'))) {
+
+            //}
 
             // This method gets default values from config and creates tags, includes default packages, e.t.c
             // If you don't want to use default values just remove it.

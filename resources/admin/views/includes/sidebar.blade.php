@@ -43,9 +43,23 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link {{ Nav::isResource('markers') }}">
-                    <i class="nav-icon fa fa-map-marked-alt"></i>
-                    <p>Мапа мийок</p>
+                <a href="{{route('admin.articles.index')}}" class="nav-link {{ Nav::isResource('articles') }}">
+                    <i class="nav-icon fa fa-newspaper"></i>
+                    <p>Blog</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('admin.users.index')}}" class="nav-link {{ Nav::isResource('users') }}">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>Users</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{route('telescope')}}" class="nav-link" target=_blank>
+                    <i class="nav-icon fa">
+                        <svg-vue icon="telescope"></svg-vue>
+                    </i>
+                    <p>Telescope</p>
                 </a>
             </li>
         </ul>

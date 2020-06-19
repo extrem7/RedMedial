@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
             if ($exception instanceof ModelNotFoundException || $exception->getStatusCode() == 404) {
                 if (Auth::check()) {
                     $domain = Str::of($request->getHost());
-                    if (/*Auth::getUser()->is_admin && todo*/ $domain->contains('admin')) {
+                    if (Auth::getUser()->hasRole('admin') && $domain->contains('admin')) {
                         $controller = new Controller();
                         $controller->meta->prependTitle('404');
                         return response()->view('errors.404', [], 404);

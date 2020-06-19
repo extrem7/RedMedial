@@ -18,12 +18,10 @@ class DebugBarMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!config('scalom.debugbar')) {
-            Debugbar::disable();
-        } else {
-            if (!Auth::check()) {
-                Debugbar::disable();
-            }
+        Debugbar::disable();
+
+        if (config('redmedial.debugbar') && Auth::check() && Auth::getUser()->hasRole('admin')) {
+            Debugbar::enable();
         }
         return $next($request);
     }

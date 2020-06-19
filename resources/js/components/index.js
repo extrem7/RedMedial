@@ -1,5 +1,5 @@
-import Alert from "../../admin/js/components/includes/Alert"
+import Alert from "./includes/Alert"
 
 export default {
-    Alert
+    Alert,
 }
