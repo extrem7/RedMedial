@@ -1,11 +1,13 @@
 <template>
     <b-alert
+        class="position-fixed m-0 rounded-0 text-center"
         :class="`fixed-${position}`"
         :variant="variant"
-        class="position-fixed m-0 rounded-0 text-center"
         dismissible
+        fade
         style="z-index: 2000;"
-        v-model="showAlert">{{text}}
+        v-model="showAlert">
+        {{text}}
     </b-alert>
 </template>
 
@@ -24,7 +26,7 @@
             }
         },
         created() {
-            this.$bus.on('alert', ({variant = 'success', text, position = 'top', delay = 8}) => {
+            this.$bus.on('alert', ({variant = 'success', text, position = 'top', delay = 5}) => {
                 clearTimeout(this.timeout)
 
                 this.variant = variant

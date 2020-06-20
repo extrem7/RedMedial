@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="d-flex justify-content-lg-between">
             <div class="form-group">
-                <a :href="route('admin.articles.create')" class="btn btn-outline-success">Create</a>
+                <a :href="route('admin.users.create')" class="btn btn-outline-success">Create</a>
             </div>
             <form @submit.prevent="search" class="form-group w-25 d-flex">
                 <input class="form-control" placeholder="Search" type="search" v-model="searchQuery">
@@ -32,13 +32,10 @@
                 <template v-slot:cell(created_at)="data">
                     {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
                 </template>
-                <template v-slot:cell(updated_at)="data">
-                    {{ data.item.updated_at | moment("DD.MM.YYYY HH:mm") }}
-                </template>
 
                 <template v-slot:cell(actions)="data">
                     <div class="d-flex">
-                        <a :href="route('admin.articles.edit',data.item.id)" class="btn btn-outline-primary">
+                        <a :href="route('admin.users.edit',data.item.id)" class="btn btn-outline-primary">
                             Edit
                         </a>
                         <button @click="destroy(data.item.id)" class="btn btn-outline-danger ml-2">
@@ -54,9 +51,9 @@
         </b-overlay>
 
         <b-pagination
-            v-if="total"
             :per-page="perPage"
             :total-rows="total"
+            v-if="total"
             v-model="currentPage">
         </b-pagination>
     </div>
@@ -72,19 +69,18 @@
                 currentPage: 1,
 
                 sortBy: 'id',
-                sortDesc: true,
+                sortDesc: false,
 
                 total: null,
 
                 isBusy: false,
-                articles: this.shared('articles') || [],
 
                 fields: [
                     {key: 'id', sortable: true},
-                    {key: 'title', sortable: true},
-                    {key: 'status', sortable: true},
-                    {key: 'created_at', sortable: true},
-                    {key: 'updated_at', sortable: true},
+                    {key: 'email', sortable: true},
+                    {key: 'name', sortable: true},
+                    {key: 'role'},
+                    {key: 'created_at', label: 'Registered at', thClass: 'date-column', sortable: true},
                     {key: 'actions', label: '', thClass: 'actions-column'}
                 ],
             }
@@ -93,7 +89,7 @@
             async items(ctx) {
                 this.isBusy = true
                 try {
-                    const {data} = await this.axios.get(this.route('admin.articles.index'), {
+                    const {data} = await this.axios.get(this.route('admin.users.index'), {
                         params: {
                             searchQuery: this.searchQuery,
                             page: ctx.currentPage,
@@ -113,7 +109,8 @@
                 }
             },
             async destroy(id) {
-                const {status, data} = await this.axios.delete(this.route('admin.articles.destroy', id))
+                if (!confirm('Are you sure?')) return
+                const {status, data} = await this.axios.delete(this.route('admin.users.destroy', id))
                 if (status === 200) {
                     this.$bus.emit('alert', {text: data.status})
                     this.$refs.table.refresh()

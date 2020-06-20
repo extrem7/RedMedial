@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\IndexRequest;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Services\UsersService;
 use Hash;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -17,19 +19,31 @@ class UserController extends Controller
         parent::__construct();
 
         $this->userService = app(UsersService::class);
-
-        /*  share([
-              'resource' => 'types',
-          ]); */
     }
 
-    public function index()
+    public function index(IndexRequest $request)
     {
         $this->meta->prependTitle('Users');
 
-        $users = User::paginate(10);
+        if (request()->expectsJson()) {
+            $users = User::query()->select(['id', 'email', 'name', 'created_at'])
+                ->when($request->get('searchQuery'), function (Builder $articles) use ($request) {
+                    $searchQuery = $request->get('searchQuery');
+                    $articles->where('email', 'LIKE', "%$searchQuery%")
+                        ->orWhere('name', 'LIKE', "%$searchQuery%");
+                })
+                ->orderBy($request->get('sortBy'), $request->get('sortDesc') ? 'desc' : 'asc')
+                ->paginate(10);
 
-        return view('users.index', compact('users'));
+            $users->getCollection()->transform(function ($user) {
+                $user['role'] = ucfirst($user->roles->implode('name', ' '));
+                return $user;
+            });
+
+            return $users;
+        }
+
+        return view('users.index');
     }
 
     public function search(Request $request)
@@ -104,6 +118,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->back()->with('status', "User `$user->name has been` deleted");
+        return response()->json(['status' => 'User has been deleted']);
     }
 }

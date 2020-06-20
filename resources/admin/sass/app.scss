@@ -1,14 +1,8 @@
-@import url("~@fortawesome/fontawesome-free/css/all.css");
-
-$red: #e30613;
-$black: #0b0a0a;
-$silver: #dfdfdf;
-
+@import "variables";
 @import "lte";
-@import "~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css";
-
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
 @import '~vue-select/dist/vue-select.css';
-
+@import url("~@fortawesome/fontawesome-free/css/all.css");
 @import "theme";
 
 body {
@@ -86,4 +80,18 @@ body {
     max-width: 100%;
     object-fit: contain;
     margin: 25px auto 0;
+}
+
+.table {
+    th:first-child {
+        width: 50px;
+    }
+
+    .date-column {
+        width: 150px;
+    }
+
+    .actions-column {
+        width: 133px;
+    }
 }

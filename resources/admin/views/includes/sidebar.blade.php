@@ -24,23 +24,11 @@
                     <p>Settings</p>
                 </a>
             </li>
-            <li class="nav-item has-treeview {{ Nav::urlDoesContain('order','menu-open') }}">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-warehouse"></i>
-                    <p>
-                        Бланк замовлення
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
+            <li class="nav-item">
+                <a href="{{route('admin.pages.index')}}" class="nav-link {{ Nav::isResource('pages') }}">
+                    <i class="nav-icon fa fa-file-signature"></i>
+                    <p>Pages</p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href=""
-                           class="nav-link {{ Nav::isResource('categories') }}">
-                            <i class="nav-icon fas fa-tags"></i>
-                            <p>Категорії</p>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
                 <a href="{{route('admin.articles.index')}}" class="nav-link {{ Nav::isResource('articles') }}">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\ArticleRequest;
+use App\Http\Requests\Admin\IndexRequest;
 use App\Models\Article;
 use App\Services\ArticlesService;
+use Illuminate\Database\Eloquent\Builder;
 
 class ArticleController extends Controller
 {
@@ -16,19 +18,29 @@ class ArticleController extends Controller
         $this->articleService = app(ArticlesService::class);
     }
 
-    public function index()
+    public function index(IndexRequest $request)
     {
         $this->meta->prependTitle('Blog');
 
-        $articles = Article::select(['id', 'title', 'created_at', 'updated_at'])
-            ->orderByDesc('id')
-            ->paginate(1);
-
         if (request()->expectsJson()) {
+
+            $articles = Article::query()->select(['id', 'title', 'status', 'created_at', 'updated_at'])
+                ->when($request->get('searchQuery'), function (Builder $articles) use ($request) {
+                    $searchQuery = $request->get('searchQuery');
+                    $articles->where('title', 'LIKE', "%$searchQuery%");
+                })
+                ->orderBy($request->get('sortBy'), $request->get('sortDesc') ? 'desc' : 'asc')
+                ->paginate(10);
+
+            $articles->getCollection()->transform(function ($article) {
+                $article['status'] = Article::$statuses[$article['status']];
+                return $article;
+            });
+
             return $articles;
         }
 
-        return view('articles.index', compact('articles'));
+        return view('articles.index');
     }
 
     public function create()
@@ -81,12 +93,12 @@ class ArticleController extends Controller
 
         $article->save();
 
-        return response()->json(['status' => 'Article has been updated'], 200);
+        return response()->json(['status' => 'Article has been updated']);
     }
 
     public function destroy(Article $article)
     {
         $article->delete();
-        return response()->json(['status' => 'Article has been deleted'], 200);
+        return response()->json(['status' => 'Article has been deleted']);
     }
 }

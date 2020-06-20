@@ -18,6 +18,4 @@ const app = new Vue({
     }
 })
 
-window.app = app
-
 store.app = app

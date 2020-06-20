@@ -21,3 +21,6 @@
 @import 'lte/pages';
 @import '~admin-lte/build/scss/parts/plugins';
 //@import '~admin-lte/build/scss/parts/miscellaneous';
+
+//custom plugins imports
+@import "~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.css";
