@@ -9,7 +9,7 @@ class PageController extends Controller
 {
     public function index()
     {
-        $this->meta->prependTitle('Pages');
+        $this->seo()->setTitle('Pages');
 
         $pages = Page::all(['id', 'title', 'slug', 'created_at', 'updated_at']);
 
@@ -20,7 +20,7 @@ class PageController extends Controller
 
     public function create()
     {
-        $this->meta->prependTitle('Create a new page');
+        $this->seo()->setTitle('Create a new page');
 
         return view('pages.create');
     }
@@ -38,7 +38,7 @@ class PageController extends Controller
 
     public function edit(Page $page)
     {
-        $this->meta->prependTitle('Edit a page');
+        $this->seo()->setTitle('Edit a page');
 
         share(compact('page'));
 

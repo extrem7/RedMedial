@@ -14,13 +14,12 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->articleService = app(ArticlesService::class);
     }
 
     public function index(IndexRequest $request)
     {
-        $this->meta->prependTitle('Blog');
+        $this->seo()->setTitle('Blog');
 
         if (request()->expectsJson()) {
 
@@ -45,7 +44,7 @@ class ArticleController extends Controller
 
     public function create()
     {
-        $this->meta->prependTitle('Create a new article');
+        $this->seo()->setTitle('Create a new article');
 
         $this->articleService->shareForCRUD();
 
@@ -70,9 +69,9 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        $this->meta->prependTitle('Edit an article');
+        $this->seo()->setTitle('Edit an article');
 
-        $article->append('image');
+        $article->oldImage = $article->getImage();
 
         $this->articleService->shareForCRUD();
 
@@ -92,8 +91,9 @@ class ArticleController extends Controller
         if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
 
         $article->save();
+        $article->load('imageMedia');
 
-        return response()->json(['status' => 'Article has been updated']);
+        return response()->json(['status' => 'Article has been updated', 'image' => $article->getImage()]);
     }
 
     public function destroy(Article $article)

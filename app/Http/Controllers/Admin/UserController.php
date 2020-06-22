@@ -16,14 +16,12 @@ class UserController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->userService = app(UsersService::class);
     }
 
     public function index(IndexRequest $request)
     {
-        $this->meta->prependTitle('Users');
+        $this->seo()->setTitle('Users');
 
         if (request()->expectsJson()) {
             $users = User::query()->select(['id', 'email', 'name', 'created_at'])
@@ -54,7 +52,7 @@ class UserController extends Controller
 
         $query = $request->get('query');
 
-        $this->meta->prependTitle("Search for user: `$query`");
+        $this->seo()->setTitle("Search for user: `$query`");
 
         $users = User::where('name', 'LIKE', "%$query%")
             ->orWhere('email', 'LIKE', "%$query%");
@@ -66,11 +64,11 @@ class UserController extends Controller
 
     public function create()
     {
-        $this->meta->prependTitle('Create a new user');
+        $this->seo()->setTitle('Create a new user');
 
-        $roles = $this->userService->getRoles();
+        $this->userService->shareForCRUD();
 
-        return view('users.create', compact('roles'));
+        return view('users.create');
     }
 
     public function store(UserRequest $request)
@@ -80,22 +78,27 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
 
         $user = new User($data);
+
         $user->assignRole($data['role']);
+        if ($request->hasFile('avatar'))
+            $user->uploadAvatar($request->file('avatar'));
 
         $user->save();
 
-        return redirect()
-            ->route('admin.users.index')
-            ->with('status', "User `$user->name` has been added");
+        return response()->json(['status' => 'User has been created', 'id' => $user->id], 201);
     }
 
     public function edit(User $user)
     {
-        $this->meta->prependTitle('Edit a user');
+        $this->seo()->setTitle('Edit a user');
 
-        $roles = $this->userService->getRoles();
+        $this->userService->shareForCRUD();
 
-        return view('users.edit', compact('user', 'roles'));
+        $user->oldAvatar = $user->getAvatar();
+        $user->role = $user->roles()->first()->id;
+        share(compact('user'));
+
+        return view('users.edit');
     }
 
     public function update(UserRequest $request, User $user)
@@ -110,9 +113,12 @@ class UserController extends Controller
 
         $user->fill($data);
         $user->syncRoles($data['role']);
+        if ($request->hasFile('avatar'))
+            $user->uploadAvatar($request->file('avatar'));
         $user->save();
+        $user->load('avatarMedia');
 
-        return back()->with('status', "User `$user->name` has been edited");
+        return response()->json(['status' => 'User has been updated', 'avatar' => $user->getAvatar()]);
     }
 
     public function destroy(User $user)

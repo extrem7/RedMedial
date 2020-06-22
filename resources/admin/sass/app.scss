@@ -2,6 +2,7 @@
 @import "lte";
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 @import '~vue-select/dist/vue-select.css';
+@import '~cropperjs/dist/cropper.css';
 @import url("~@fortawesome/fontawesome-free/css/all.css");
 @import "theme";
 
@@ -25,19 +26,31 @@ body {
     }
 }
 
-.sidebar {
-    .avatar {
-        width: 34px;
-        height: 34px;
-        object-fit: cover;
-        border-radius: 50%;
-        transition: transform 1s ease-in-out;
+.main-sidebar {
+    .brand-link {
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+
+        img {
+            max-width: 160px;
+        }
     }
 
-    .nav-link {
-        &.active, &:hover {
-            svg path {
-                fill: white !important;
+    .sidebar {
+        .avatar {
+            width: 34px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 1s ease-in-out;
+        }
+
+        .nav-link {
+            &.active, &:hover {
+                svg path {
+                    fill: white !important;
+                }
             }
         }
     }

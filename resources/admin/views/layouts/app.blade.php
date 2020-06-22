@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    @meta_tags
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {!! SEO::generate() !!}
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
@@ -10,6 +14,10 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
+    <link rel="stylesheet" href="{{asset_admin('css/pace.css')}}">
+    <script src="{{asset_admin('js/pace.js')}}"></script>
+
+    <link rel="stylesheet" href="{{mix('admin/css/app.css')}}">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     @stack('styles')
 </head>
@@ -20,7 +28,8 @@
 </div>
 @shared
 @routes('admin')
-@meta_tags('footer')
+<script src="{{mix('admin/js/main.js')}}"></script>
+<script src="{{mix('admin/js/app.js')}}"></script>
 @stack('scripts')
 </body>
 </html>

@@ -1,28 +1,20 @@
-import VueUploadComponent from 'vue-upload-component'
 import vSelect from 'vue-select'
 
 import Editor from "@/components/includes/Editor"
+import RedCropper from "@/components/includes/RedCropper"
 import Invalid from "@/components/includes/Invalid"
 
 export default {
     data() {
         return {
-            title: '',
-            slug: '',
-            body: '',
-            excerpt: '',
-
-            meta_title: '',
-            meta_description: '',
-
-            authors: '',
-            original: '',
-
-            status: null,
+            email: '',
+            name: '',
+            password: '',
+            role: null,
 
             files: [],
 
-            statuses: this.shared('statuses') || [],
+            roles: [...this.shared('roles')] || [],
             errors: {
                 image: null
             },
@@ -33,33 +25,6 @@ export default {
                 header: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }
-        }
-    },
-    methods: {
-        inputFile: function (newFile, oldFile) {
-            if (newFile && oldFile && !newFile.active && oldFile.active) {
-                // Get response data
-                console.log('response', newFile.response)
-                if (newFile.xhr) {
-                    //  Get the response status code
-                    console.log('status', newFile.xhr.status)
-                }
-            }
-        },
-        inputFilter: function (newFile, oldFile, prevent) {
-            if (newFile && !oldFile) {
-                // Filter non-image file
-                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-                    return prevent()
-                }
-            }
-
-            // Create a blob field
-            newFile.blob = ''
-            let URL = window.URL || window.webkitURL
-            if (URL && URL.createObjectURL) {
-                newFile.blob = URL.createObjectURL(newFile.file)
             }
         }
     },
@@ -75,10 +40,10 @@ export default {
         }
     },
     components: {
-        VueUploadComponent,
         vSelect,
 
         Editor,
+        RedCropper,
         Invalid
     }
 }

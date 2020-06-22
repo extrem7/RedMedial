@@ -24,18 +24,7 @@
                 <invalid name="excerpt"></invalid>
             </div>
 
-            <div class="d-flex mt-4">
-                <vue-upload-component
-                    @input-file="inputFile"
-                    @input-filter="inputFilter"
-                    ref="upload"
-                    v-model="files">
-                    <button class="btn btn-primary">Choose image</button>
-                </vue-upload-component>
-                <button @click.prevent="files=[]" class="btn btn-danger ml-2" v-if="files.length">Cancel</button>
-            </div>
-            <img :src="files.length?files[0].blob:oldImage" class="image-preview">
-            <invalid name="image"></invalid>
+            <red-cropper :old="oldImage" ref="cropper" validate="image"></red-cropper>
 
             <h4 class="mt-4">Seo settings</h4>
             <div class="form-group">
@@ -111,9 +100,8 @@
                 }
                 for (let field in append) form.append(field, append[field])
 
-                if (this.files.length !== 0) {
-                    form.append('image', this.files[0].file)
-                }
+                const image = await this.$refs.cropper.getBlob()
+                if (image) form.append('image', image, image.name)
 
                 this.loading = true
 
@@ -121,10 +109,9 @@
                     const {status, data} = await this.send(form)
                     this.errors = {}
                     if (status === 200) {
-                        if (this.files.length) {
-                            this.oldImage = this.files[0].blob
-                            this.files = []
-                        }
+                        this.$refs.cropper.resetImage()
+                        this.oldImage = data.image
+
                         this.$bus.emit('alert', {text: data.status})
 
                         this.wasValidated = false
@@ -158,14 +145,13 @@
                 'meta_description',
                 'authors',
                 'original',
-                'status'
+                'status',
+                'oldImage'
             ]
             props.forEach(prop => {
                 if (prop in article && article[prop] !== null)
                     this[prop] = article[prop]
             })
-
-            this.oldImage = article.image
         },
         mixins: [form]
     }

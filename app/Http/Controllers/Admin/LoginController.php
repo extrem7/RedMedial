@@ -13,15 +13,13 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('guest')->except('logout');
         $this->redirectTo = route('admin.dashboard');
     }
 
     public function showLoginForm()
     {
-        $this->meta->prependTitle('Login');
+        $this->seo()->setTitle('Login');
 
         return view('auth.login');
     }

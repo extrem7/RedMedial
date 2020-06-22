@@ -6,7 +6,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $this->meta->prependTitle('Dashboard');
+        $this->seo()->setTitle('Dashboard');
 
         return view('dashboard');
     }

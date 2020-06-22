@@ -2,13 +2,13 @@
 
 namespace App\Exceptions;
 
-use App\Http\Controllers\Admin\Controller;
 use Auth;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use SEO;
 use Str;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -63,8 +63,7 @@ class Handler extends ExceptionHandler
                 if (Auth::check()) {
                     $domain = Str::of($request->getHost());
                     if (Auth::getUser()->hasRole('admin') && $domain->contains('admin')) {
-                        $controller = new Controller();
-                        $controller->meta->prependTitle('404');
+                        SEO::setTitle('404');
                         return response()->view('errors.404', [], 404);
                     }
                 }

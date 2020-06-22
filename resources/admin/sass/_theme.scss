@@ -6,12 +6,8 @@
     color: white !important;
 }
 
-.navbar-dark, .main-footer {
-    border-color: #212529;
-}
-
-.main-footer {
-    background-color: #212529;
+.navbar-dark {
+    border-color: #4f5962;
 }
 
 .nav-tabs.bg-dark {
@@ -41,15 +37,15 @@
             &::placeholder {
                 color: #939ba2;
                 opacity: 1;
-
-                .vs__dropdown-menu {
-                    background-color: $dark;
-
-                    li {
-                        color: white;
-                    }
-                }
             }
+        }
+    }
+
+    .vs__dropdown-menu {
+        background-color: $dark;
+
+        li {
+            color: white;
         }
     }
 }

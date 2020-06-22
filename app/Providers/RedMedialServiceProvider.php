@@ -4,10 +4,10 @@ namespace App\Providers;
 
 use Auth;
 use Blade;
-use Butschster\Head\Facades\Meta;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Route2Class;
+use SEOMeta;
 use Str;
 
 class RedMedialServiceProvider extends ServiceProvider
@@ -57,10 +57,9 @@ class RedMedialServiceProvider extends ServiceProvider
         });
         View::composer(['layouts.base'], function ($view) {
             Route2Class::addClass('sidebar-mini');
-            $title = ((array)Meta::getTitle())[chr(0) . '*' . chr(0) . 'prepend'];
-            if (!empty($title)) {
-                $pageTitle = $title[0];
-                $view->with('pageTitle', $pageTitle);
+            $title = str_replace(SEOMeta::getTitleSeparator() . SEOMeta::getDefaultTitle(), '', SEOMeta::getTitle());
+            if ($title) {
+                $view->with('pageTitle', $title);
             }
         });
         View::composer('includes.sidebar', function ($view) {

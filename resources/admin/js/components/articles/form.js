@@ -1,7 +1,7 @@
-import VueUploadComponent from 'vue-upload-component'
 import vSelect from 'vue-select'
 
 import Editor from "@/components/includes/Editor"
+import RedCropper from "@/components/includes/RedCropper"
 import Invalid from "@/components/includes/Invalid"
 
 export default {
@@ -36,33 +36,6 @@ export default {
             }
         }
     },
-    methods: {
-        inputFile: function (newFile, oldFile) {
-            if (newFile && oldFile && !newFile.active && oldFile.active) {
-                // Get response data
-                console.log('response', newFile.response)
-                if (newFile.xhr) {
-                    //  Get the response status code
-                    console.log('status', newFile.xhr.status)
-                }
-            }
-        },
-        inputFilter: function (newFile, oldFile, prevent) {
-            if (newFile && !oldFile) {
-                // Filter non-image file
-                if (!/\.(jpeg|jpe|jpg|gif|png|webp)$/i.test(newFile.name)) {
-                    return prevent()
-                }
-            }
-
-            // Create a blob field
-            newFile.blob = ''
-            let URL = window.URL || window.webkitURL
-            if (URL && URL.createObjectURL) {
-                newFile.blob = URL.createObjectURL(newFile.file)
-            }
-        }
-    },
     directives: {
         valid(el, {expression}, {context}) {
             if (expression in context.errors) {
@@ -75,10 +48,10 @@ export default {
         }
     },
     components: {
-        VueUploadComponent,
         vSelect,
 
         Editor,
+        RedCropper,
         Invalid
     }
 }

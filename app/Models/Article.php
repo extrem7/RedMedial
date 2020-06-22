@@ -55,6 +55,7 @@ class Article extends Model implements HasMedia
 
     public function uploadImage(UploadedFile $image = null)
     {
+        if ($this->imageMedia) $this->deleteMedia($this->imageMedia);
         $this->addMedia($image)->toMediaCollection('image');
     }
 

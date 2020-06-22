@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 use App\Models\Article;
+use App\Models\User;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\PathGenerator\PathGenerator;
 
@@ -44,7 +45,10 @@ class RedMedialPathGenerator implements PathGenerator
 
         switch (get_class($media->model)) {
             case Article::class:
-                $folder = 'articles';
+                return "articles/" . $media->model->id . "/$collection/";
+                break;
+            case User::class:
+                return "users/" . $media->model->id . "/$collection/";
                 break;
         }
 

@@ -24,22 +24,7 @@
                 <invalid name="excerpt"></invalid>
             </div>
 
-            <div class="d-flex mt-4">
-                <vue-upload-component
-                    @input-file="inputFile"
-                    @input-filter="inputFilter"
-                    post-action="/post.method"
-                    put-action="/put.method"
-                    ref="upload"
-                    v-model="files">
-                    <button class="btn btn-primary">Choose image</button>
-                </vue-upload-component>
-                <button @click.prevent="files=[]" class="btn btn-danger ml-2" v-if="files.length">
-                    Remove image
-                </button>
-            </div>
-            <img :src="files[0].blob" class="image-preview" v-if="files.length">
-            <invalid name="image"></invalid>
+            <red-cropper ref="cropper" validate="image"></red-cropper>
 
             <h4 class="mt-4">Seo settings</h4>
             <div class="form-group">
@@ -96,9 +81,8 @@
             async submit() {
                 let form = new FormData()
 
-                if (this.files.length !== 0) {
-                    form.append('image', this.files[0].file)
-                }
+                const image = await this.$refs.cropper.getBlob()
+                if (image) form.append('image', image, image.name)
 
                 const append = {
                     title: this.title,

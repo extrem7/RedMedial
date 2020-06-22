@@ -10,7 +10,6 @@ class AppSettingController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
-        $this->meta->prependTitle('Settings');
+        $this->seo()->setTitle('Settings');
     }
 }
