@@ -8,6 +8,6 @@ class DashboardController extends Controller
     {
         $this->seo()->setTitle('Dashboard');
 
-        return view('dashboard');
+        return view('admin.dashboard');
     }
 }

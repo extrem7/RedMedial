@@ -74,11 +74,3 @@
         }
     }
 </script>
-
-<style>
-    .tox-notifications-container {
-        opacity: 0;
-        z-index: -1;
-        visibility: hidden;
-    }
-</style>

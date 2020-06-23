@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
-    Route::get('/', function () {
-    })->name('home');
+Route::namespace('Frontend')->as('frontend.')->group(function () {
+    Route::get('/', 'PageController@home')->name('home');
+    Route::prefix('/blog')->as('articles.')->group(function () {
+        Route::get('/', 'ArticleController@index')->name('index');
+        Route::get('/{article:slug}', 'ArticleController@show')->name('show');
+    });
 });

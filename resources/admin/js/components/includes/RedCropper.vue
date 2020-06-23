@@ -68,22 +68,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    .redmedial-cropper {
-        input[type="file"] {
-            display: none;
-        }
-
-        img:not([src]) {
-            display: none;
-        }
-
-        .old-image {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            max-height: 500px;
-        }
-    }
-</style>

@@ -65,16 +65,20 @@
 <script>
     export default {
         data() {
+            const initial = this.shared('articles')
             return {
+                initial: initial.data,
+                initialized: false,
+
                 searchQuery: '',
 
-                perPage: null,
+                perPage: initial.per_page,
                 currentPage: 1,
 
                 sortBy: 'id',
                 sortDesc: true,
 
-                total: null,
+                total: initial.total,
 
                 isBusy: false,
                 articles: this.shared('articles') || [],
@@ -91,6 +95,11 @@
         },
         methods: {
             async items(ctx) {
+                if (!this.initialized) {
+                    this.initialized = true
+                    console.log('init', this.initial)
+                    return this.initial
+                }
                 this.isBusy = true
                 try {
                     const {data} = await this.axios.get(this.route('admin.articles.index'), {

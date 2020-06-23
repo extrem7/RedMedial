@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ class Article extends Model implements HasMedia
 {
     use HasMediaTrait;
     use Sluggable;
+    use SearchTrait;
 
     public const DRAFT = 'DRAFT';
     public const PUBLISHED = 'PUBLISHED';
@@ -27,16 +29,31 @@ class Article extends Model implements HasMedia
         'title', 'excerpt', 'body', 'authors', 'original', 'meta_title', 'meta_description', 'status', 'order_column'
     ];
 
+    protected $search = [
+        'title', 'excerpt'
+    ];
+
     public function imageMedia()
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'image');
     }
 
+    public function scopePublished($query)
+    {
+        return $query->whereStatus(self::PUBLISHED);
+    }
+
     public function registerMediaCollections()
     {
         $this->addMediaCollection('image')
-            ->singleFile();
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('thumb')
+                    ->crop('crop-center', 150, 150)
+                    ->sharpen(0)
+                    ->nonQueued();
+            });
     }
 
     public function sluggable()
@@ -73,8 +90,18 @@ class Article extends Model implements HasMedia
         return $this->getImage();
     }
 
+    public function getThumbAttribute()
+    {
+        return $this->getImage('thumb');
+    }
+
     public function getLinkAttribute()
     {
-        return route('articles.show', $this->slug ?? $this->id);
+        return route('frontend.articles.show', $this->slug ?? $this->id);
+    }
+
+    public function getDateAttribute()
+    {
+        return $this->created_at->format('d M, Y');
     }
 }

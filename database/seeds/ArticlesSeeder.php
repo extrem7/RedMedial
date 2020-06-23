@@ -14,7 +14,7 @@ class ArticlesSeeder extends Seeder
     public function run()
     {
         factory(Article::class, (int)env('ARTICLES_SEEDER_COUNT', 100))->create()->each(function (Article $article) {
-            $article->addMediaFromUrl('https://picsum.photos/750/370')->toMediaCollection('image');
+            $article->addMediaFromUrl('https://picsum.photos/650/556')->toMediaCollection('image');
         });
     }
 }

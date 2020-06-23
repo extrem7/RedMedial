@@ -19,9 +19,11 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Article::class, function (Faker $faker) {
     return [
-        'title' => $faker->unique()->sentence,
+        'title' => $faker->unique()->sentence(12),
         'excerpt' => $faker->text(140),
         'body' => $faker->realText(1000),
-        'status' => collect(Article::$statuses)->values()->random()
+        'authors' => $faker->word,
+        'original' => $faker->url,
+        'status' => collect(Article::$statuses)->values()->random(),
     ];
 });

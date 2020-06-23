@@ -23,25 +23,25 @@ class UserController extends Controller
     {
         $this->seo()->setTitle('Users');
 
+        $users = User::query()->select(['id', 'email', 'name', 'created_at'])
+            ->when($request->get('searchQuery'), fn($q) => $q->search($request->get('searchQuery')))
+            ->when($request->has('sortBy'), function (Builder $users) use ($request) {
+                $users->orderBy($request->get('sortBy'), $request->get('sortDesc') ? 'desc' : 'asc');
+            })
+            ->with('roles')
+            ->paginate(10);
+
+        $users->getCollection()->transform(function ($user) {
+            $user['role'] = ucfirst($user->roles->implode('name', ' '));
+            return $user;
+        });
         if (request()->expectsJson()) {
-            $users = User::query()->select(['id', 'email', 'name', 'created_at'])
-                ->when($request->get('searchQuery'), function (Builder $articles) use ($request) {
-                    $searchQuery = $request->get('searchQuery');
-                    $articles->where('email', 'LIKE', "%$searchQuery%")
-                        ->orWhere('name', 'LIKE', "%$searchQuery%");
-                })
-                ->orderBy($request->get('sortBy'), $request->get('sortDesc') ? 'desc' : 'asc')
-                ->paginate(10);
-
-            $users->getCollection()->transform(function ($user) {
-                $user['role'] = ucfirst($user->roles->implode('name', ' '));
-                return $user;
-            });
-
             return $users;
+        } else {
+            share(compact('users'));
         }
 
-        return view('users.index');
+        return view('admin.users.index');
     }
 
     public function search(Request $request)
@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $users = $users->paginate(10);
 
-        return view('users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()
@@ -68,7 +68,7 @@ class UserController extends Controller
 
         $this->userService->shareForCRUD();
 
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     public function store(UserRequest $request)
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->role = $user->roles()->first()->id;
         share(compact('user'));
 
-        return view('users.edit');
+        return view('admin.users.edit');
     }
 
     public function update(UserRequest $request, User $user)

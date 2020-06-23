@@ -58,12 +58,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+
         if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
             if ($exception instanceof ModelNotFoundException || $exception->getStatusCode() == 404) {
+                SEO::setTitle('404');
                 if (Auth::check()) {
                     $domain = Str::of($request->getHost());
                     if (Auth::getUser()->hasRole('admin') && $domain->contains('admin')) {
-                        SEO::setTitle('404');
                         return response()->view('errors.404', [], 404);
                     }
                 }

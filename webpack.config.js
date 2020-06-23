@@ -1,7 +1,8 @@
+/* webpack config for better ide support */
+
 const path = require('path')
 
 module.exports = {
-    output: {chunkFilename: 'admin/js/chunks/[name].js?id=[chunkhash]'},
     resolve: {
         alias: {
             ziggy: path.resolve('vendor/tightenco/ziggy/dist/js/route.js'),

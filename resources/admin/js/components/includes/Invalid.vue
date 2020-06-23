@@ -34,11 +34,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .invalid-feedback {
-        display: block !important;
-        font-weight: bold;
-        font-size: 100%;
-    }
-</style>

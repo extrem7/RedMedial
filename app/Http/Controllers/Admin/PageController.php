@@ -15,14 +15,14 @@ class PageController extends Controller
 
         share(compact('pages'));
 
-        return view('pages.index');
+        return view('admin.pages.index');
     }
 
     public function create()
     {
         $this->seo()->setTitle('Create a new page');
 
-        return view('pages.create');
+        return view('admin.pages.create');
     }
 
     public function store(PageRequest $request)
@@ -42,7 +42,7 @@ class PageController extends Controller
 
         share(compact('page'));
 
-        return view('pages.edit');
+        return view('admin.pages.edit');
     }
 
     public function update(PageRequest $request, Page $page)

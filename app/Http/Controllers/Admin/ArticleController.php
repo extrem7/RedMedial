@@ -6,7 +6,6 @@ use App\Http\Requests\Admin\ArticleRequest;
 use App\Http\Requests\Admin\IndexRequest;
 use App\Models\Article;
 use App\Services\ArticlesService;
-use Illuminate\Database\Eloquent\Builder;
 
 class ArticleController extends Controller
 {
@@ -21,25 +20,24 @@ class ArticleController extends Controller
     {
         $this->seo()->setTitle('Blog');
 
+        $sort = $request->get('sortDesc') ?? true;
+
+        $articles = Article::query()->select(['id', 'title', 'status', 'created_at', 'updated_at'])
+            ->when($request->get('searchQuery'), fn($q) => $q->search($request->get('searchQuery')))
+            ->orderBy($request->get('sortBy') ?? 'id', $sort ? 'desc' : 'asc')
+            ->paginate(10);
+
+        $articles->getCollection()->transform(function ($article) {
+            $article['status'] = Article::$statuses[$article['status']];
+            return $article;
+        });
         if (request()->expectsJson()) {
-
-            $articles = Article::query()->select(['id', 'title', 'status', 'created_at', 'updated_at'])
-                ->when($request->get('searchQuery'), function (Builder $articles) use ($request) {
-                    $searchQuery = $request->get('searchQuery');
-                    $articles->where('title', 'LIKE', "%$searchQuery%");
-                })
-                ->orderBy($request->get('sortBy'), $request->get('sortDesc') ? 'desc' : 'asc')
-                ->paginate(10);
-
-            $articles->getCollection()->transform(function ($article) {
-                $article['status'] = Article::$statuses[$article['status']];
-                return $article;
-            });
-
             return $articles;
+        } else {
+            share(compact('articles'));
         }
 
-        return view('articles.index');
+        return view('admin.articles.index');
     }
 
     public function create()
@@ -48,7 +46,7 @@ class ArticleController extends Controller
 
         $this->articleService->shareForCRUD();
 
-        return view('articles.create');
+        return view('admin.articles.create');
     }
 
     public function store(ArticleRequest $request)
@@ -77,7 +75,7 @@ class ArticleController extends Controller
 
         share(compact('article'));
 
-        return view('articles.edit');
+        return view('admin.articles.edit');
     }
 
     public function update(ArticleRequest $request, Article $article)

@@ -4,12 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Illuminate\View\FileViewFinder;
-
-app()->bind('view.finder', function ($app) {
-    $paths = [resource_path('admin/views')];
-    return new FileViewFinder($app['files'], $paths);
-});
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -35,8 +29,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 

@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         $this->seo()->setTitle('Login');
 
-        return view('auth.login');
+        return view('admin.auth.login');
     }
 
     public function logout(Request $request)

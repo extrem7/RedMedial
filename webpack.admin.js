@@ -4,10 +4,14 @@ const config = require('./webpack.config')
 require('laravel-mix-svg-vue')
 require('laravel-mix-merge-manifest')
 
-mix.webpackConfig(config)
+mix.webpackConfig({
+    output: {chunkFilename: 'admin/js/chunks/[name].js?id=[chunkhash]'},
+    ...config
+})
+
 mix.options({processCssUrls: false})
 
-mix.sass('resources/admin/sass/app.scss', 'public/admin/css').version().sourceMaps()
+mix.sass('resources/admin/scss/app.scss', 'public/admin/css').version().sourceMaps()
 
 mix.js('resources/admin/js/app.js', 'public/admin/js').svgVue({svgPath: 'resources/admin/svg'}).version().sourceMaps()
 

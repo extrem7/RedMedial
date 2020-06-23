@@ -43,15 +43,15 @@ class RedMedialPathGenerator implements PathGenerator
         $folder = '';
         $collection = $media->collection_name;
 
-        switch (get_class($media->model)) {
+        switch ($media->model_type) {
             case Article::class:
-                return "articles/" . $media->model->id . "/$collection/";
+                return "articles/" . $media->model_id . "/$collection/";
                 break;
             case User::class:
-                return "users/" . $media->model->id . "/$collection/";
+                return "users/" . $media->model_id . "/$collection/";
                 break;
         }
 
-        return "$folder/" . $media->model->id . "/$collection/" . $media->getKey();
+        return "$folder/" . $media->model_id . "/$collection/" . $media->getKey();
     }
 }

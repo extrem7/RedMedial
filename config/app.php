@@ -1,7 +1,5 @@
 <?php
 
-use App\Providers\RedMedialServiceProvider;
-
 return [
 
     /*
@@ -176,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        RedMedialServiceProvider::class,
+        App\Providers\RedMedialServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
 
     ],

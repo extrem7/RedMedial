@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
+use App\Services\ArticlesService;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Auth;
 use Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Route2Class;
-use SEOMeta;
 use Str;
 
 class RedMedialServiceProvider extends ServiceProvider
@@ -31,6 +32,7 @@ class RedMedialServiceProvider extends ServiceProvider
     {
         $this->sharedData();
 
+        $this->adminViewComposer();
         $this->viewComposer();
 
         $this->schema();
@@ -38,7 +40,7 @@ class RedMedialServiceProvider extends ServiceProvider
         $this->directives();
     }
 
-    private function sharedData()
+    protected function sharedData()
     {
         share([
             'app' => [
@@ -48,26 +50,34 @@ class RedMedialServiceProvider extends ServiceProvider
         ]);
     }
 
-    private function viewComposer()
+    protected function adminViewComposer()
     {
-        View::composer(['layouts.app'], function ($view) {
-            $bodyClass = Route2Class::generateClassString();
-            $bodyClass = (string)Str::of($bodyClass)->replace('login', 'login-page');
-            $view->with('bodyClass', $bodyClass);
-        });
-        View::composer(['layouts.base'], function ($view) {
+        View::composer(['admin.layouts.base'], function ($view) {
             Route2Class::addClass('sidebar-mini');
             $title = str_replace(SEOMeta::getTitleSeparator() . SEOMeta::getDefaultTitle(), '', SEOMeta::getTitle());
             if ($title) {
                 $view->with('pageTitle', $title);
             }
         });
-        View::composer('includes.sidebar', function ($view) {
+        View::composer('admin.includes.sidebar', function ($view) {
             $view->with('name', ucfirst(Auth::user()->name));
         });
     }
 
-    private function schema()
+    protected function viewComposer()
+    {
+        View::composer(['frontend.layouts.master', 'admin.layouts.app'], function ($view) {
+            $bodyClass = Route2Class::generateClassString();
+            $bodyClass = (string)Str::of($bodyClass)->replace('login', 'login-page');
+            $view->with('bodyClass', $bodyClass);
+        });
+        View::composer('frontend.errors.404', function ($view) {
+            $articlesService = app(ArticlesService::class);
+            $view->with('articles', $articlesService->get404());
+        });
+    }
+
+    protected function schema()
     {
         /* View::composer('layouts.app', function ($view) {
              $schema = collect();
@@ -82,7 +92,7 @@ class RedMedialServiceProvider extends ServiceProvider
          }); */
     }
 
-    private function directives()
+    protected function directives()
     {
         Blade::directive('schema', function () {
             return '<?php $schema->each(fn($item)=>print($item)); ?>';

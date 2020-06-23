@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\SearchTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -13,6 +14,7 @@ class User extends Authenticatable implements HasMedia
 {
     use HasRoles;
     use HasMediaTrait;
+    use SearchTrait;
 
     protected $fillable = [
         'name', 'email', 'password',
@@ -20,6 +22,10 @@ class User extends Authenticatable implements HasMedia
 
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $search = [
+        'email', 'name'
     ];
 
     public function avatarMedia()
@@ -51,13 +57,13 @@ class User extends Authenticatable implements HasMedia
         if ($this->avatarMedia !== null) {
             return $this->avatarMedia->getUrl($size);
         } else {
-            return asset('img/no-avatar.png');
+            return asset_admin('img/no-avatar.png');
         }
     }
 
     public function getAvatarAttribute()
     {
-        return $this->getAvatar('icon');
+        return $this->getAvatar();
     }
 
     public function getIsSuperAdminAttribute(): bool
