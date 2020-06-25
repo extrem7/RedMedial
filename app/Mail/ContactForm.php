@@ -24,7 +24,8 @@ class ContactForm extends Mailable implements ShouldQueue
             ->salutation(null);
         foreach ($data as $field => $text) {
             $field = ucfirst($field);
-            $this->message->line("$field : $text");
+            if ($text)
+                $this->message->line("$field : $text");
         }
     }
 

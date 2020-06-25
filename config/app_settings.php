@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Middleware\Admin;
+use Modules\Admin\Http\Controllers\AppSettingController;
+use Modules\Admin\Http\Middleware\Admin;
 
 return [
     'sections' => [
@@ -40,7 +41,7 @@ return [
     'url' => '/settings',
     'middleware' => [Admin::class],
 
-    'setting_page_view' => 'admin.settings',
+    'setting_page_view' => 'admin::settings',
     'flash_partial' => 'app_settings::_flash',
 
     'section_class' => 'card mb-3',
@@ -59,7 +60,7 @@ return [
 
     'remove_abandoned_settings' => false,
 
-    'controller' => '\App\Http\Controllers\Admin\AppSettingController',
+    'controller' => AppSettingController::class,
 
     'setting_group' => 'default'
 ];

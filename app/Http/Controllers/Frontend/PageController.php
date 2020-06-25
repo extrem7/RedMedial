@@ -60,7 +60,7 @@ class PageController extends Controller
 
     public function contactForm(Request $request)
     {
-        $this->validate($request, [
+        $data = $this->validate($request, [
             'name' => ['nullable', 'string'],
             'email' => ['required', 'email'],
             'phone' => ['nullable', 'string'],
@@ -68,7 +68,7 @@ class PageController extends Controller
             'message' => ['nullable', 'string'],
         ]);
 
-        Mail::to(setting('emails_for_messages'))->send(new ContactForm($request->input()));
+        Mail::to(get_admins_mails())->send(new ContactForm($data));
 
         return response()->json(['status' => 'Your message has been sent']);
     }

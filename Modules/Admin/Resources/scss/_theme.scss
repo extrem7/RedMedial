@@ -1,0 +1,92 @@
+body {
+    background: #2c3034;
+}
+
+.content-wrapper {
+    background: transparent;
+
+    h1 {
+        color: white !important;
+    }
+}
+
+.navbar-dark {
+    border-color: #4f5962;
+}
+
+.nav-tabs.bg-dark {
+    border-bottom-color: #495057;
+
+    .active {
+        background-color: #495057;
+    }
+}
+
+.error-content {
+    color: white;
+}
+
+.card, .form-control, .login-card-body {
+    background-color: $dark !important;
+    color: white !important;
+}
+
+.v-select.form-control {
+    padding: 0;
+
+    .vs__dropdown-toggle {
+        .vs__selected, input {
+            color: white;
+
+            &::placeholder {
+                color: #939ba2;
+                opacity: 1;
+            }
+        }
+    }
+
+    .vs__dropdown-menu {
+        background-color: $dark;
+
+        li {
+            color: white;
+        }
+    }
+}
+
+.pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .page-link {
+        border: 0;
+        color: white !important;
+        margin: 0 5px;
+
+        &:hover {
+            background-color: $red;
+            color: #fff;
+        }
+    }
+
+    .page-item {
+        &.active {
+            .page-link {
+                background-color: $red;
+                color: #fff;
+            }
+        }
+
+        &.disabled {
+            .page-link {
+                background-color: #333333;
+                border-color: #333333;
+
+            }
+        }
+    }
+}
+
+.page-link {
+    background-color: #151515;
+}

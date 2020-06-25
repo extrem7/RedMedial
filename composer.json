@@ -23,6 +23,7 @@
         "laravel/telescope": "^3.5",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
+        "nwidart/laravel-modules": "^7.1",
         "qcod/laravel-app-settings": "^1.2",
         "spatie/eloquent-sortable": "^3.7",
         "spatie/laravel-medialibrary": "^7.0.0",
@@ -57,7 +58,8 @@
             "app/Helpers/functions.php"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Modules\\": "Modules/"
         },
         "classmap": [
             "database/seeds",

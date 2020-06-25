@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\ArticleCollection;
 use App\Models\Article;
+use Illuminate\Support\Collection;
 
 class ArticlesService
 {
@@ -45,7 +46,7 @@ class ArticlesService
         return new ArticleCollection($articles);
     }
 
-    public function get404(): ArticleCollection
+    public function get404(): Collection
     {
         $articles = Article::published()
             ->select(['id', 'slug', 'title', 'created_at'])
@@ -54,7 +55,7 @@ class ArticlesService
             ->limit(8)
             ->get();
 
-        return new ArticleCollection($articles);
+        return $articles;
     }
 
     public function shareForCRUD(): void

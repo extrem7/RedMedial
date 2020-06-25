@@ -1,0 +1,13 @@
+{
+    "name": "Admin",
+    "alias": "admin",
+    "description": "Admin panel of Red Medial",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Admin\\Providers\\AdminServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

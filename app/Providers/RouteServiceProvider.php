@@ -42,9 +42,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapFrontendRoutes();
-
-        $this->mapAdminRoutes();
-
     }
 
     /**
@@ -59,16 +56,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::domain(config('redmedial.frontend_domain'))->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web/frontend.php'));
-    }
-
-    protected function mapAdminRoutes()
-    {
-        Route::domain(config('redmedial.admin_domain'))
-            // Route::prefix('/admin-panel')
-            ->middleware('web')
-            ->namespace($this->namespace . '\Admin')
-            ->as('admin.')
-            ->group(base_path('routes/web/admin.php'));
     }
 
     /**

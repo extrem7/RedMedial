@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use App\Services\ArticlesService;
 use App\Services\SocialService;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Auth;
 use Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -33,7 +31,6 @@ class RedMedialServiceProvider extends ServiceProvider
     {
         $this->sharedData();
 
-        $this->adminViewComposer();
         $this->viewComposer();
 
         $this->schema();
@@ -43,33 +40,22 @@ class RedMedialServiceProvider extends ServiceProvider
 
     protected function sharedData()
     {
-        share([
-            'app' => [
-                'name' => config('app.name'),
-                'env' => config('app.env'),
-            ],
-            'mobileApp' => config('redmedial.mobile-app'),
-            'social' => $this->getSocial()
-        ]);
-    }
-
-    protected function adminViewComposer()
-    {
-        View::composer(['admin.layouts.base'], function ($view) {
-            Route2Class::addClass('sidebar-mini');
-            $title = str_replace(SEOMeta::getTitleSeparator() . SEOMeta::getDefaultTitle(), '', SEOMeta::getTitle());
-            if ($title) {
-                $view->with('pageTitle', $title);
-            }
-        });
-        View::composer('admin.includes.sidebar', function ($view) {
-            $view->with('name', ucfirst(Auth::user()->name));
+        View::composer(['frontend.layouts.master', 'admin::layouts.master'], function () {
+            share([
+                'app' => [
+                    'name' => config('app.name'),
+                    'env' => config('app.env'),
+                ],
+                'csrf' => csrf_token(),
+                'mobileApp' => config('redmedial.mobile-app'),
+                'social' => $this->getSocial()
+            ]);
         });
     }
 
     protected function viewComposer()
     {
-        View::composer(['frontend.layouts.master', 'admin.layouts.app'], function ($view) {
+        View::composer(['frontend.layouts.master', 'admin::layouts.master'], function ($view) {
             $bodyClass = Route2Class::generateClassString();
             $bodyClass = (string)Str::of($bodyClass)->replace('login', 'login-page');
             $view->with('bodyClass', $bodyClass);

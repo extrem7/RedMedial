@@ -33,6 +33,11 @@ if (!function_exists('valid_class')) {
     }
 }
 
+function get_admins_mails(): array
+{
+    return explode(',', setting('emails_for_messages'));
+}
+
 function checked($name, $default = false)
 {
     return old($name, $default) ? 'checked' : '';
