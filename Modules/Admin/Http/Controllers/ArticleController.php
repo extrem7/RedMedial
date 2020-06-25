@@ -47,14 +47,12 @@ class ArticleController extends Controller
 
         $this->articleService->shareForCRUD();
 
-        return view('admin::articles.create');
+        return view('admin::articles.form');
     }
 
     public function store(ArticleRequest $request)
     {
-        $article = new Article($request->input());
-
-        if ($slug = $request->get('slug')) $article->setSlug($slug);
+        $article = new Article($request->validated());
 
         if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
 
@@ -76,16 +74,12 @@ class ArticleController extends Controller
 
         share(compact('article'));
 
-        return view('admin::articles.edit');
+        return view('admin::articles.form');
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
-        $article->fill($request->input());
-
-        if ($slug = $request->get('slug'))
-            if ($article->slug !== $slug)
-                $article->setSlug($slug);
+        $article->fill($request->validated());
 
         if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
 

@@ -68,7 +68,7 @@ class UserController extends Controller
 
         $this->userService->shareForCRUD();
 
-        return view('admin::users.create');
+        return view('admin::users.form');
     }
 
     public function store(UserRequest $request)
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->role = $user->roles()->first()->id;
         share(compact('user'));
 
-        return view('admin::users.edit');
+        return view('admin::users.form');
     }
 
     public function update(UserRequest $request, User $user)

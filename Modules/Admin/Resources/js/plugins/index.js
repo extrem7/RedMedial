@@ -8,12 +8,15 @@ import VueBus from 'vue-bus'
 import SvgVue from 'svg-vue'
 import VueMoment from 'vue-moment'
 import VueCookies from 'vue-cookies'
+import VueSuperMethod from 'vue-super-call'
 import route, {Ziggy} from 'ziggy'
 
 Vue.use(VueBus)
 Vue.use(SvgVue)
 Vue.use(VueMoment)
 Vue.use(VueCookies)
+
+Vue.prototype.$super = VueSuperMethod
 
 Vue.mixin({
     methods: {

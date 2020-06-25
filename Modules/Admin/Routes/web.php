@@ -10,7 +10,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware(Admin::class)->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::post('logout', 'LoginController@logout')->name('logout');
+    Route::prefix('/rss')->namespace('Rss')->as('rss.')->group(function () {
+        Route::resource('/countries', 'CountryController', ['names' => 'countries'])->except(['show']);
+    });
 
     Route::resource('/pages', 'PageController', ['names' => 'pages'])->except(['show']);
 
@@ -20,4 +22,6 @@ Route::middleware(Admin::class)->group(function () {
     Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
         Route::get('/search', 'UserController@search')->name('search');
     });
+
+    Route::post('logout', 'LoginController@logout')->name('logout');
 });

@@ -8,14 +8,14 @@ export default {
     MenuToggle,
 
     PagesIndex: () => import('./pages/Index'),
-    PageCreate: () => import('./pages/Create'),
-    PageEdit: () => import('./pages/Edit'),
+    PageForm: () => import('./pages/Form'),
 
     ArticlesIndex: () => import('./articles/Index'),
-    ArticleCreate: () => import('./articles/Create'),
-    ArticleEdit: () => import('./articles/Edit'),
+    ArticleForm: () => import('./articles/Form'),
 
     UsersIndex: () => import('./users/Index'),
-    UserCreate: () => import('./users/Create'),
-    UserEdit: () => import('./users/Edit'),
+    UserForm: () => import('./users/Form'),
+
+    RssCountriesIndex: () => import('./rss/countries/Index'),
+    RssCountryForm: () => import('./rss/countries/Form'),
 }

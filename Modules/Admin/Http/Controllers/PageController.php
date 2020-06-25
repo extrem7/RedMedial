@@ -27,7 +27,7 @@ class PageController extends Controller
     {
         $this->seo()->setTitle('Create a new page');
 
-        return view('admin::pages.create');
+        return view('admin::pages.form');
     }
 
     public function store(PageRequest $request)
@@ -47,7 +47,7 @@ class PageController extends Controller
 
         share(compact('page'));
 
-        return view('admin::pages.edit');
+        return view('admin::pages.form');
     }
 
     public function update(PageRequest $request, Page $page)

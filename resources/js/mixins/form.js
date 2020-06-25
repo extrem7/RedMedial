@@ -38,7 +38,11 @@ export default {
                 el.classList.add('is-invalid')
             } else {
                 el.classList.remove('is-invalid')
-                if (context.wasValidated) el.classList.add('is-valid')
+                if (context.wasValidated) {
+                    el.classList.add('is-valid')
+                } else if (el.classList.contains('is-valid')) {
+                    el.classList.remove('is-valid')
+                }
             }
         }
     },

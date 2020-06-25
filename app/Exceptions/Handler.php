@@ -75,7 +75,7 @@ class Handler extends ExceptionHandler
         if ($request->ajax()) {
             if ($exception instanceof ValidationException)
                 return response()->json([
-                    'message' => 'Помилково заповнені поля',
+                    'message' => 'You have validation errors',
                     'errors' => $exception->validator->getMessageBag()
                 ], 422);
         }

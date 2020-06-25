@@ -1,13 +1,8 @@
 <template>
     <div class="col-12">
         <div class="d-flex justify-content-lg-between">
-            <div class="form-group">
-                <a :href="route('admin.users.create')" class="btn btn-outline-success">Create</a>
-            </div>
-            <form @submit.prevent="search" class="form-group w-25 d-flex">
-                <input class="form-control" placeholder="Search" type="search" v-model="searchQuery">
-                <button class="btn btn-outline-primary ml-1">Search</button>
-            </form>
+            <create-btn></create-btn>
+            <search @search="search" v-model="searchQuery"></search>
         </div>
 
         <b-overlay :opacity="0.5" :show="isBusy" variant="dark">
@@ -34,19 +29,13 @@
                 </template>
 
                 <template v-slot:cell(actions)="data">
-                    <div class="d-flex">
-                        <a :href="route('admin.users.edit',data.item.id)" class="btn btn-outline-primary">
-                            Edit
-                        </a>
-                        <button @click="destroy(data.item.id)" class="btn btn-outline-danger ml-2">
-                            Delete
-                        </button>
-                    </div>
+                    <actions-buttons :id="data.item.id" :resource="resource"
+                                     @delete="destroy(data.item.id)"></actions-buttons>
                 </template>
             </b-table>
 
             <div class="d-flex justify-content-center" v-if="!total && searchQuery.length">
-                <b-alert class="w-25 text-center" show variant="warning">No articles found</b-alert>
+                <b-alert class="w-25 text-center" show variant="warning">No users found</b-alert>
             </div>
         </b-overlay>
 
@@ -60,25 +49,13 @@
 </template>
 
 <script>
+    import {datatable} from '@/mixins/index-table'
+
     export default {
         data() {
-            const initial = this.shared('users')
             return {
-                initial: initial.data,
-                initialized: false,
-
-                searchQuery: '',
-
-                perPage: initial.per_page,
-                currentPage: 1,
-
-                sortBy: 'id',
-                sortDesc: false,
-
-                total: initial.total,
-
-                isBusy: false,
-
+                initialData: this.shared('users'),
+                resource: 'users',
                 fields: [
                     {key: 'id', sortable: true},
                     {key: 'email', sortable: true},
@@ -89,51 +66,6 @@
                 ],
             }
         },
-        methods: {
-            async items(ctx) {
-                if (!this.initialized) {
-                    this.initialized = true
-                    return this.initial
-                }
-                this.isBusy = true
-                try {
-                    const {data} = await this.axios.get(this.route('admin.users.index'), {
-                        params: {
-                            searchQuery: this.searchQuery,
-                            page: ctx.currentPage,
-                            sortBy: ctx.sortBy,
-                            sortDesc: +ctx.sortDesc
-                        },
-                    })
-                    this.isBusy = false
-
-                    this.perPage = data.per_page
-                    this.total = data.total
-
-                    return data.data
-                } catch (error) {
-                    this.isBusy = false
-                    return []
-                }
-            },
-            async destroy(id) {
-                if (!confirm('Are you sure?')) return
-                const {status, data} = await this.axios.delete(this.route('admin.users.destroy', id))
-                if (status === 200) {
-                    this.$bus.emit('alert', {text: data.status})
-                    this.$refs.table.refresh()
-                }
-            },
-            search() {
-                this.$refs.table.refresh()
-            },
-            resetPage() {
-                this.currentPage = 1
-            }
-        },
-        watch: {
-            sortBy: 'resetPage',
-            sortDesc: 'resetPage',
-        }
+        mixins: [datatable]
     }
 </script>

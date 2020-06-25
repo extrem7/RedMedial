@@ -33,6 +33,16 @@ class Article extends Model implements HasMedia
         'title', 'excerpt'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+        static::saving(function (self $article) {
+            if (!$article->excerpt) {
+                $article->excerpt = mb_substr($article->body, 0, 510);
+            }
+        });
+    }
+
     public function imageMedia()
     {
         return $this->morphOne(Media::class, 'model')
@@ -60,7 +70,7 @@ class Article extends Model implements HasMedia
     {
         return [
             'slug' => [
-                'source' => 'title'
+                'source' => !empty($this->slug) ? 'slug' : 'title'
             ]
         ];
     }

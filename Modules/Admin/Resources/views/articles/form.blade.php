@@ -3,8 +3,8 @@
 @section('content')
     <section class="content">
         <div class="row align-items-center flex-column">
-            <div class="col-md-4">
-                <user-create></user-create>
+            <div class="col-md-8">
+                <article-form></article-form>
             </div>
         </div>
     </section>

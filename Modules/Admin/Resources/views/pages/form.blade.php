@@ -4,7 +4,7 @@
     <section class="content">
         <div class="row align-items-center flex-column">
             <div class="col-md-8">
-                <page-edit></page-edit>
+                <page-form></page-form>
             </div>
         </div>
     </section>
