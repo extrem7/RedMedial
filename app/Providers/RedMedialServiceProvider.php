@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\ArticlesService;
+use App\Services\SocialService;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Auth;
 use Blade;
@@ -47,6 +48,8 @@ class RedMedialServiceProvider extends ServiceProvider
                 'name' => config('app.name'),
                 'env' => config('app.env'),
             ],
+            'mobileApp' => config('redmedial.mobile-app'),
+            'social' => $this->getSocial()
         ]);
     }
 
@@ -97,5 +100,19 @@ class RedMedialServiceProvider extends ServiceProvider
         Blade::directive('schema', function () {
             return '<?php $schema->each(fn($item)=>print($item)); ?>';
         });
+    }
+
+    protected function getSocial()
+    {
+        $social = config('redmedial.social');
+
+        $socialService = new SocialService();
+        $counters = $socialService->get();
+
+        foreach ($social as $type => $item) {
+            if (isset($counters[$type]))
+                $social[$type]['count'] = $counters[$type];
+        }
+        return $social;
     }
 }

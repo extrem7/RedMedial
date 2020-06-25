@@ -24,11 +24,15 @@
 </template>
 
 <script>
+    import {BCollapse, VBToggle} from 'bootstrap-vue'
+
     export default {
         props: ['rss', 'i'],
+        directives: {
+            'b-toggle': VBToggle
+        },
+        components: {
+            BCollapse,
+        }
     }
 </script>
-
-<style>
-
-</style>

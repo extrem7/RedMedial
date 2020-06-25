@@ -29,6 +29,9 @@
                 ref="table"
                 sort-icon-left
                 v-show="total">
+                <template v-slot:cell(title)="data">
+                    <a :href="data.item.link" target="_blank">{{data.item.title}}</a>
+                </template>
                 <template v-slot:cell(created_at)="data">
                     {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
                 </template>

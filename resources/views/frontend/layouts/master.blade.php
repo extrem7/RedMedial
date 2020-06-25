@@ -27,6 +27,7 @@
     <alert-notification></alert-notification>
 </div>
 @shared
+@routes('frontend')
 @stack('scripts')
 <script src="{{mix('dist/js/app.js')}}"></script>
 </body>

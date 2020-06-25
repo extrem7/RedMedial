@@ -12,6 +12,9 @@
             dark
             hover
             ref="table">
+            <template v-slot:cell(slug)="data">
+                <a :href="data.item.link" target="_blank">{{data.item.slug}}</a>
+            </template>
             <template v-slot:cell(created_at)="data">
                 {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
             </template>

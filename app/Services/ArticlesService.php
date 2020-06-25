@@ -7,7 +7,7 @@ use App\Models\Article;
 
 class ArticlesService
 {
-    public function getIndex()
+    public function getIndex(): ArticleCollection
     {
         $articles = Article::published()
             ->select(['id', 'slug', 'title', 'excerpt', 'created_at'])
@@ -18,7 +18,22 @@ class ArticlesService
         return new ArticleCollection($articles);
     }
 
-    public function getSidebar()
+    public function getHome(): array
+    {
+        $articles = Article::published()
+            ->select(['id', 'slug', 'title', 'excerpt', 'created_at'])
+            ->orderByDesc('id')
+            ->with('imageMedia')
+            ->limit(3)
+            ->get();
+
+        return [
+            'main' => $articles[0],
+            'column' => $articles->slice(1)
+        ];
+    }
+
+    public function getSidebar(): ArticleCollection
     {
         $articles = Article::published()
             ->select(['id', 'slug', 'title', 'created_at'])
@@ -30,7 +45,7 @@ class ArticlesService
         return new ArticleCollection($articles);
     }
 
-    public function get404()
+    public function get404(): ArticleCollection
     {
         $articles = Article::published()
             ->select(['id', 'slug', 'title', 'created_at'])
@@ -42,7 +57,7 @@ class ArticlesService
         return new ArticleCollection($articles);
     }
 
-    public function shareForCRUD()
+    public function shareForCRUD(): void
     {
         $statuses = collect(Article::$statuses)->map(fn($val, $key) => ['value' => $key, 'label' => $val])->values();
 

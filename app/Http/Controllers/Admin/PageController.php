@@ -13,6 +13,11 @@ class PageController extends Controller
 
         $pages = Page::all(['id', 'title', 'slug', 'created_at', 'updated_at']);
 
+        $pages->transform(function ($page) {
+            $page['link'] = route('frontend.pages.show', $page->slug);
+            return $page;
+        });
+
         share(compact('pages'));
 
         return view('admin.pages.index');

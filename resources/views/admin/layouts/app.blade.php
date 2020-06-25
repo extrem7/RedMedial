@@ -18,7 +18,6 @@
     <script src="{{asset_admin('js/pace.js')}}"></script>
 
     <link rel="stylesheet" href="{{mix('admin/css/app.css')}}">
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     @stack('styles')
 </head>
 <body class="hold-transition {{ $bodyClass }}">

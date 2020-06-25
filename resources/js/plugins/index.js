@@ -4,17 +4,20 @@ import './axios'
 
 import VueBus from 'vue-bus'
 import SvgVue from 'svg-vue'
-import './bootstrap'
+//import './bootstrap'
 import './ls'
 
 import route, {Ziggy} from 'ziggy'
 import VueMoment from "vue-moment"
+import VueLazyload from 'vue-lazyload'
 
 Vue.use(VueBus)
 
 Vue.use(SvgVue)
 
 Vue.use(VueMoment)
+
+Vue.use(VueLazyload)
 
 Vue.mixin({
     methods: {

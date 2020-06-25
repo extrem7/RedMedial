@@ -7,69 +7,31 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3></h3>
+                            <h3>{{$articles}}</h3>
 
-                            <p>Одиниць товару</p>
+                            <p>Blog articles</p>
                         </div>
                         <div class="icon">
-                            <i class="fa fa-shower"></i>
+                            <i class="fa fa-newspaper"></i>
                         </div>
-                        <a href="" class="small-box-footer">Дивитися <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3></h3>
-
-                            <p>Точок на карті</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-map-marked-alt"></i>
-                        </div>
-                        <a href="" class="small-box-footer">Дивитися <i
-                                class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.articles.index')}}" class="small-box-footer">See
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3></h3>
+                            <h3>{{$users}}</h3>
 
-                            <p>Членів команди</p>
+                            <p>Registered users</p>
                         </div>
                         <div class="icon">
-                            <i class="ion ion-person-add"></i>
+                            <i class="fa fa-user"></i>
                         </div>
-                        <a href="" class="small-box-footer">Дивитися <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3></h3>
-
-                            <p>Партнерів</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-handshake"></i>
-                        </div>
-                        <a href="" class="small-box-footer">Дивитися <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-secondary">
-                        <div class="inner">
-                            <h3></h3>
-
-                            <p>Замовлень</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-comment-dollar"></i>
-                        </div>
+                        <a href="{{route('admin.users.index')}}" class="small-box-footer">See
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import {BAlert} from 'bootstrap-vue'
 
     export default {
         data() {
@@ -27,8 +28,8 @@
         },
         created() {
             this.$bus.on('alert', ({variant = 'success', text, position = 'top', delay = 5}) => {
+                console.log(text)
                 clearTimeout(this.timeout)
-
                 this.variant = variant
                 this.text = text
                 this.position = position
@@ -38,6 +39,9 @@
                     this.showAlert = false
                 }, delay * 1000)
             })
+        },
+        components: {
+            BAlert
         }
     }
 </script>

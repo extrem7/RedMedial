@@ -8,34 +8,9 @@
             </ul>
         </div>
         <div class="header-middle container">
-            <a class="logo" href=""><img alt="" src="/dist/img/logo.svg"></a>
+            <a class="logo" href="/"><img alt="logo" src="/dist/img/logo.svg"></a>
             <div>
-                <b-dropdown class="language" id="dropdown-1" right variant="outline">
-                    <template v-slot:button-content>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Spanish</span>
-                    </template>
-                    <b-dropdown-item>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Arabic</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Arabic</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Arabic</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Arabic</span>
-                    </b-dropdown-item>
-                    <b-dropdown-item>
-                        <img alt="ar" src="https://redmedial.com/wp-content/plugins/gtranslate/flags/24/ar.png">
-                        <span>Arabic</span>
-                    </b-dropdown-item>
-                </b-dropdown>
+                <language-switcher></language-switcher>
             </div>
             <div :class="{'open-search' : openSearch}" class="search-box">
                 <form action="" class="search-box-form">
@@ -56,14 +31,14 @@
         <div :class="{'open-menu' : openMenu}" class="header-bottom menu-container">
             <div class="container d-flex align-items-center justify-content-between">
                 <ul class="menu overflow-horizontal">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">About us</a></li>
-                    <li><a href="">Contact</a></li>
-                    <li><a href="">Links</a></li>
-                    <li><a href="">Search</a></li>
-                    <li><a href="">All Rss</a></li>
-                    <li><a href="">All Youtube</a></li>
-                    <li><a href="">Covid-19 </a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/quienes-somos">Quiénes Somos</a></li>
+                    <li><a href="/contacto">Contacto</a></li>
+                    <li><a href="/red-de-medios">Enlaces</a></li>
+                    <li><a :href="route('frontend.search')">Search</a></li>
+                    <li><a href="/all-rss">All Rss</a></li>
+                    <li><a href="/all-youtube">All Youtube</a></li>
+                    <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>
                 </ul>
                 <div class="media-block">
                     <a href="" target="_blank">
@@ -102,5 +77,8 @@
             window.addEventListener("resize", this.isScrollHeader, false);
             window.addEventListener("scroll", this.isScrollHeader, false);
         },
+        components: {
+            LanguageSwitcher: () => import('~/components/includes/LanguageSwitcher')
+        }
     }
 </script>

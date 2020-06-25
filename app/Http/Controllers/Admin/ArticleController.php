@@ -22,13 +22,14 @@ class ArticleController extends Controller
 
         $sort = $request->get('sortDesc') ?? true;
 
-        $articles = Article::query()->select(['id', 'title', 'status', 'created_at', 'updated_at'])
+        $articles = Article::query()->select(['id', 'slug', 'title', 'status', 'created_at', 'updated_at'])
             ->when($request->get('searchQuery'), fn($q) => $q->search($request->get('searchQuery')))
             ->orderBy($request->get('sortBy') ?? 'id', $sort ? 'desc' : 'asc')
             ->paginate(10);
 
         $articles->getCollection()->transform(function ($article) {
             $article['status'] = Article::$statuses[$article['status']];
+            $article['link'] = route('frontend.articles.show', $article->slug);
             return $article;
         });
         if (request()->expectsJson()) {

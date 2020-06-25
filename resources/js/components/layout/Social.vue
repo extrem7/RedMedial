@@ -1,34 +1,34 @@
 <template>
     <div class="subscribe-block">
         <div class="title">Suscríbete a nuestros canales para mantenerte informado.</div>
-        <a class="subscribe-item facebook" href="">
+        <a :href="facebook.link" class="subscribe-item facebook">
             <div class="subscribe-info">
                 <img alt="facebook" src="/dist/img/icons/facebook.svg">
-                <span>4,216,999</span>
+                <span>{{facebook.count}}</span>
                 <span>Fans</span>
             </div>
             <div class="text-uppercase subscribe-action">Me gusta</div>
         </a>
-        <a class="subscribe-item instagram" href="">
+        <a :href="instagram.link" class="subscribe-item instagram">
             <div class="subscribe-info">
                 <img alt="instagram" src="/dist/img/icons/instagram.svg">
-                <span>4,216,999</span>
+                <span>{{instagram.count}}</span>
                 <span>Seguidores</span>
             </div>
             <div class="text-uppercase subscribe-action">Seguir</div>
         </a>
-        <a class="subscribe-item twitter" href="">
+        <a :href="twitter.link" class="subscribe-item twitter">
             <div class="subscribe-info">
                 <img alt="twitter" src="/dist/img/icons/twitter.svg">
-                <span>4,216,999</span>
+                <span>{{twitter.count}}</span>
                 <span>Seguidores</span>
             </div>
             <div class="text-uppercase subscribe-action">Seguir</div>
         </a>
-        <a class="subscribe-item youtube" href="">
+        <a :href="youtube.link" class="subscribe-item youtube">
             <div class="subscribe-info">
-                <img alt="twitter" src="/dist/img/icons/play.svg">
-                <span>4,216,999</span>
+                <img alt="youtube" src="/dist/img/icons/play.svg">
+                <span>{{youtube.count}}</span>
                 <span>Suscriptores</span>
             </div>
             <div class="text-uppercase subscribe-action">Suscribirte</div>
@@ -37,5 +37,11 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        data() {
+            return {
+                ...this.shared('social')
+            }
+        }
+    }
 </script>

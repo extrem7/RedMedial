@@ -24,16 +24,14 @@ return [
         ],
         'email' => [
             'title' => 'Email Settings',
-            'descriptions' => 'How app email will be sent.',
             'icon' => 'fa fa-envelope',
 
             'inputs' => [
                 [
-                    'name' => 'from_email',
-                    'type' => 'email',
-                    'label' => 'From Email',
-                    'placeholder' => 'Application from email',
-                    'rules' => 'required|email',
+                    'name' => 'emails_for_messages',
+                    'type' => 'text',
+                    'label' => 'Emails to receive messages',
+                    'rules' => ['required', 'string'],
                 ]
             ]
         ]
@@ -42,7 +40,7 @@ return [
     'url' => '/settings',
     'middleware' => [Admin::class],
 
-    'setting_page_view' => 'settings',
+    'setting_page_view' => 'admin.settings',
     'flash_partial' => 'app_settings::_flash',
 
     'section_class' => 'card mb-3',
