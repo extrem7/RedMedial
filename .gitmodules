@@ -1,4 +1,4 @@
 [submodule "resources/frontend"]
 	path = resources/frontend
 	url = https://gitlab.com/alex.roox5/redmedial-l.git
-    ignore = all
+    ignore = dirty
