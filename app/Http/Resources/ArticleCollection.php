@@ -2,21 +2,27 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ArticleCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return array
      */
     public function toArray($request)
     {
-        return [
+
+        $array = [
             'data' => $this->collection,
-            'lastPage' => $this->lastPage()
         ];
+        if ($this->resource instanceof LengthAwarePaginator) {
+            $array['lastPage'] = $this->resource->lastPage();
+        }
+        return $array;
     }
 }
