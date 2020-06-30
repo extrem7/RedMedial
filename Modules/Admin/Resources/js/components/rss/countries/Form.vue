@@ -29,7 +29,7 @@
                 <invalid name="meta_description"></invalid>
             </div>
         </div>
-        <card-footer></card-footer>
+        <card-footer resource="rss.countries"></card-footer>
     </form>
 </template>
 
