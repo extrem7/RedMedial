@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Cache;
+use Exception;
 use GuzzleHttp\Client;
 
 class SocialService
@@ -39,12 +40,12 @@ class SocialService
 
     public function instagram(): string
     {
-        $followers = 0;
+        $followers = 429272;
         $result = $this->client->request('GET', 'https://www.instagram.com/' . config('redmedial.social.instagram.id') . '/?__a=1');
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json->graphql->user->edge_followed_by->count);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         return $followers;
     }
@@ -56,7 +57,7 @@ class SocialService
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json[0]->followers_count);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         return $followers;
     }
@@ -68,7 +69,7 @@ class SocialService
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json->items[0]->statistics->subscriberCount);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
         return $followers;
     }
