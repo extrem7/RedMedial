@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'view' => 'breadcrumbs::bootstrap4',
+    'view' => 'frontend.includes.breadcrumbs',
 
     /*
     |--------------------------------------------------------------------------
