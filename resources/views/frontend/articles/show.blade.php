@@ -14,7 +14,7 @@
                             <img src="{{$article->image}}" class="img-fluid" alt="alt">
                         </div>
                         <div class="main-article-card">
-                            <div class="title title-cyan">{{$article->title}}</div>
+                            <div class="title title-cyan line-cap">{{$article->title}}</div>
                             <div class="d-flex justify-content-between mt-4">
                                 <div class="article-date">{{$article->date}}</div>
                             </div>
