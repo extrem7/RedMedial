@@ -8,7 +8,7 @@
             <div class="col-xl-9 col-lg-8">
                 <div class="title title-cyan page-title mb-3">{{$page->title}}</div>
                 <div class="semi-bold">{!!$page->body!!}</div>
-                <div class="box mt-0 mt-md-4">
+                <div class="box box-form mt-0 mt-md-4">
                     <div class="page-title title title-cyan">Contact us</div>
                     <div class="mt-3">Toma contacto haciendo uso del formulario.</div>
                     <form-red-de-medios></form-red-de-medios>

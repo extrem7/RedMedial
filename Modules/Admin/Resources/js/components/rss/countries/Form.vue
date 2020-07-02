@@ -67,7 +67,13 @@
                         }
                     } else {
                         const {status, data} = await this.send(this.route('admin.rss.countries.store'), form)
-                        if (status === 201) window.location = this.route('admin.rss.countries.edit', data.id)
+
+                        if (status === 201) {
+                            this.$bus.emit('alert', {text: data.status})
+                            setTimeout(() => {
+                                window.location = this.route('admin.rss.countries.edit', data.id)
+                            }, 2500)
+                        }
                     }
                 } catch (e) {
                     console.log(e)

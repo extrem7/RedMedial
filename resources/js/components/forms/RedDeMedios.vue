@@ -1,22 +1,23 @@
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" class="form-feedback">
         <div class="form-group">
-            <input class="form-control" id="name" type="text" v-model="form.name" v-valid.name>
+            <input class="form-control" id="name" placeholder=" " type="text" v-model="form.name" v-valid.name>
             <label class="label" for="name">name</label>
             <invalid name="name"></invalid>
         </div>
         <div class="form-group">
-            <input class="form-control" id="email" required type="email" v-model="form.email" v-valid.email>
+            <input class="form-control" id="email" placeholder=" " required type="email" v-model="form.email"
+                   v-valid.email>
             <label class="label" for="email">Email</label>
             <invalid name="email"></invalid>
         </div>
         <div class="form-group">
-            <input class="form-control" id="phone" type="text" v-model="form.phone" v-valid.phone>
+            <input class="form-control" id="phone" placeholder=" " type="text" v-model="form.phone" v-valid.phone>
             <label class="label" for="phone">Phone</label>
             <invalid name="phone"></invalid>
         </div>
         <div class="form-group">
-            <input class="form-control" id="link" type="text" v-model="form.link" v-valid.link>
+            <input class="form-control" id="link" placeholder=" " type="text" v-model="form.link" v-valid.link>
             <label class="label" for="link">Link</label>
             <invalid name="link"></invalid>
         </div>

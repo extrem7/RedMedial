@@ -8,7 +8,7 @@
     <main class="container">
         <div class="row">
             <div class="col-xl-9 col-lg-8">
-                <div class="box">
+                <div class="box box-form">
                     <div class="page-title title title-cyan">{{$page->title}}</div>
                     <div class="mt-3">{!!$page->body!!}</div>
                     <form-contacto></form-contacto>

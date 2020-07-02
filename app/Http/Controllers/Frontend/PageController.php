@@ -7,7 +7,6 @@ use App\Models\Page;
 use App\Services\ArticlesService;
 use Illuminate\Http\Request;
 use Mail;
-use Route2Class;
 
 class PageController extends Controller
 {
@@ -40,21 +39,17 @@ class PageController extends Controller
             $this->seo()->setDescription($description);
         }
 
-        $bodyClass = '';
         $view = 'default';
 
         if ($page->id === 2 || $page->slug === 'quienes-somos') {
-            $bodyClass = 'about';
             $view = 'quienes-somos';
         } elseif ($page->id === 3 || $page->slug === 'contacto') {
-            $bodyClass = 'contact';
             $view = 'contacto';
         } elseif ($page->id === 4 || $page->slug === 'red-de-medios') {
-            $bodyClass = 'media-network';
             $view = 'red-de-medios';
         }
 
-        Route2Class::addClass("page-template-$bodyClass");
+       // Route2Class::addClass("page-template-$bodyClass");
         return view("frontend.pages.$view", compact('page'));
     }
 

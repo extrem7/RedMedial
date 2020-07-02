@@ -13,7 +13,7 @@
                         <div class="main-article-banner">
                             <img src="{{asset('dist/img/quienes-somos.png')}}" class="img-fluid" alt="{{$page->title}}">
                         </div>
-                        <div class="main-article-card">
+                        <div class="main-article-card height-mod-2">
                             <div class="title title-cyan">{{$page->title}}</div>
                             <div class="d-flex justify-content-center article-description">
                                 {{$page->meta_description}}
