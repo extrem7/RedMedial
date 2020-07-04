@@ -31,7 +31,7 @@
                     <active-switcher :channel-id="data.item.id" :value="data.item.is_active"></active-switcher>
                 </template>
                 <template v-slot:cell(last_run)="data">
-                    {{ data.item.last_run}}
+                    {{ data.item.last_run | moment("DD.MM.YYYY HH:mm")}}
                 </template>
                 <template v-slot:cell(country)="data">
                     {{ data.item.country? data.item.country.name:null }}
@@ -71,9 +71,15 @@
                 fields: [
                     {key: 'id', sortable: true},
                     {key: 'name', sortable: true},
-                    {key: 'is_active', tdClass: 'p-0 vertical-align-center', sortable: true},
-                    {key: 'last_run'},
+                    {
+                        key: 'is_active',
+                        thClass: 'd-flex justify-content-center',
+                        tdClass: 'p-0 vertical-align-center',
+                        sortable: true
+                    },
+                    {key: 'last_run', thClass: 'date-column'},
                     {key: 'country', sortable: true},
+                    {key: 'posts_count', label: 'Posts', sortable: true},
                     {key: 'created_at', thClass: 'date-column', sortable: true},
                     {key: 'actions', label: '', thClass: 'actions-column'}
                 ],

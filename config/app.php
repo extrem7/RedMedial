@@ -235,6 +235,8 @@ return [
         'JsonLd' => Artesaos\SEOTools\Facades\JsonLd::class,
         'JsonLdMulti' => Artesaos\SEOTools\Facades\JsonLdMulti::class,
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+
+        'Feeds' => willvincent\Feeds\Facades\FeedsFacade::class,
     ],
 
 ];

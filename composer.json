@@ -31,7 +31,9 @@
         "spatie/laravel-sitemap": "^5.6",
         "spatie/schema-org": "^2.13",
         "tightenco/ziggy": "^0.9.3",
-        "zschuessler/laravel-route-to-class": "^2.9"
+        "willvincent/feeds": "^2.1",
+        "zschuessler/laravel-route-to-class": "^2.9",
+        "ext-dom": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

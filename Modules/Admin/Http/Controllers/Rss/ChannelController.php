@@ -27,7 +27,8 @@ class ChannelController extends Controller
         $channels = Channel::query()->select(['id', 'country_id', 'name', 'is_active', 'last_run', 'created_at'])
             ->when($request->get('searchQuery'), fn($q) => $q->search($request->get('searchQuery')))
             ->orderBy($request->get('sortBy') ?? 'id', $sort ? 'desc' : 'asc')
-            ->with(['country'])
+            ->with('country')
+            ->withCount('posts')
             ->paginate(10);
 
         if (request()->expectsJson()) {

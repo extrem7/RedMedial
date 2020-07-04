@@ -82,6 +82,11 @@ class Channel extends Model implements HasMedia
         return $this->belongsTo(Country::class);
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class)->orderByDesc('id');
+    }
+
     public function logoMedia()
     {
         return $this->morphOne(Media::class, 'model')

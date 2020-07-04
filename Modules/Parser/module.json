@@ -1,0 +1,13 @@
+{
+    "name": "Parser",
+    "alias": "parser",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Parser\\Providers\\ParserServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

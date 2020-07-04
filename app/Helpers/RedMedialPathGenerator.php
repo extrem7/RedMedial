@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 use App\Models\Article;
+use App\Models\Rss\Post;
 use App\Models\User;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\PathGenerator\PathGenerator;
@@ -44,6 +45,9 @@ class RedMedialPathGenerator implements PathGenerator
         $collection = $media->collection_name;
 
         switch ($media->model_type) {
+            case Post::class:
+                return "rss_posts/" . $media->model_id . "/$collection/";
+                break;
             case Article::class:
                 return "articles/" . $media->model_id . "/$collection/";
                 break;
