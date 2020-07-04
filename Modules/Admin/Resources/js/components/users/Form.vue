@@ -35,8 +35,6 @@
 </template>
 
 <script>
-    import vSelect from 'vue-select'
-    import RedCropper from "../includes/forms/RedCropper"
     import form from '@/mixins/form'
 
     export default {
@@ -94,9 +92,5 @@
                 this.form.role = this.roles[0].value
         },
         mixins: [form],
-        components: {
-            vSelect,
-            RedCropper,
-        }
     }
 </script>

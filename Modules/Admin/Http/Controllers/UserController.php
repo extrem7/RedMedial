@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Services\UsersService;
 use Hash;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Modules\Admin\Http\Requests\IndexRequest;
 use Modules\Admin\Http\Requests\UserRequest;
 
@@ -42,24 +41,6 @@ class UserController extends Controller
         }
 
         return view('admin::users.index');
-    }
-
-    public function search(Request $request)
-    {
-        $this->validate($request, [
-            'query' => ['required', 'string']
-        ]);
-
-        $query = $request->get('query');
-
-        $this->seo()->setTitle("Search for user: `$query`");
-
-        $users = User::where('name', 'LIKE', "%$query%")
-            ->orWhere('email', 'LIKE', "%$query%");
-
-        $users = $users->paginate(10);
-
-        return view('admin::users.index', compact('users'));
     }
 
     public function create()

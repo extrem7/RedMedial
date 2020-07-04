@@ -18,4 +18,7 @@ export default {
 
     RssCountriesIndex: () => import('./rss/countries/Index'),
     RssCountryForm: () => import('./rss/countries/Form'),
+
+    RssChannelsIndex: () => import('./rss/channels/Index'),
+    RssChannelForm: () => import('./rss/channels/Form'),
 }

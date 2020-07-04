@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
                 if (Auth::check()) {
                     $domain = Str::of($request->getHost());
                     if (Auth::getUser()->hasRole('admin') && $domain->contains('admin')) {
-                        return response()->view('errors.404', [], 404);
+                        return response()->view('admin::errors.404', [], 404);
                     }
                 }
                 return response()->view('frontend.errors.404', [], 404);

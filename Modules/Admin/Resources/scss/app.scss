@@ -3,6 +3,7 @@
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 @import '~vue-select/dist/vue-select.css';
 @import '~cropperjs/dist/cropper.css';
+@import "~vue-rocker-switch/dist/vue-rocker-switch.css";
 @import '~@fortawesome/fontawesome-free/css/all.css';
 @import "theme";
 
@@ -30,7 +31,7 @@ body {
     min-height: 100vh;
 
     .content-wrapper {
-       // min-height: calc(100vh - 57px);
+        // min-height: calc(100vh - 57px);
     }
 
     .main-sidebar {
@@ -161,6 +162,11 @@ body {
         max-width: 100%;
         max-height: 500px;
     }
+}
+
+.rocker {
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 /*

@@ -9,9 +9,7 @@
 
 <script>
     export default {
-        props: {
-            resource: String
-        },
+        inject: ['resource'],
         data() {
             return {
                 isEdit: this.$parent.isEdit,

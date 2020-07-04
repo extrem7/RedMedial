@@ -32,6 +32,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
+                        <a href="{{route('admin.rss.channels.index')}}"
+                           class="nav-link {{ Nav::isResource('channels') }}">
+                            <i class="nav-icon fas fa-sitemap"></i>
+                            <p>Channels</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{route('admin.rss.countries.index')}}"
                            class="nav-link {{ Nav::isResource('countries') }}">
                             <i class="nav-icon fa fa-globe"></i>

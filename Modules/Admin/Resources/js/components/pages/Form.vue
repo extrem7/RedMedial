@@ -76,6 +76,11 @@
         created() {
             this.setupEdit('page')
         },
+        provide() {
+            return {
+                resource: 'pages',
+            }
+        },
         mixins: [form]
     }
 </script>

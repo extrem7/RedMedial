@@ -13,8 +13,9 @@
     export default {
         props: {
             id: Number,
-            resource: String
-        }
+            // resource: String
+        },
+        inject: ['resource']
     }
 </script>
 

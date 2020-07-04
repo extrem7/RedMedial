@@ -48,6 +48,11 @@
                 ],
             }
         },
+        provide() {
+            return {
+                resource: this.resource,
+            }
+        },
         mixins: [index, destroy]
     }
 </script>

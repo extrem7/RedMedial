@@ -2,6 +2,9 @@ import Editor from "@/components/includes/forms/Editor"
 import Invalid from "@/components/includes/forms/Invalid"
 import CardFooter from "@/components/includes/forms/CardFooter"
 
+import vSelect from 'vue-select'
+import RedCropper from "@/components/includes/forms/RedCropper"
+
 import {errors} from "@/helpers/helpers"
 
 export default {
@@ -22,8 +25,8 @@ export default {
         }
     },
     methods: {
-        setupEdit(name) {
-            const model = this.shared(name)
+        setupEdit(name, updated = null) {
+            const model = updated || this.shared(name)
             if (model) {
                 this.isEdit = true
                 this.id = model.id
@@ -67,6 +70,9 @@ export default {
     components: {
         Editor,
         Invalid,
-        CardFooter
+        CardFooter,
+
+        vSelect,
+        RedCropper,
     }
 }

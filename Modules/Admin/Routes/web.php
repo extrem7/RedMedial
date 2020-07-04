@@ -11,6 +11,9 @@ Route::middleware(Admin::class)->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     Route::prefix('/rss')->namespace('Rss')->as('rss.')->group(function () {
+        Route::resource('/channels', 'ChannelController', ['names' => 'channels'])->except(['show']);
+        Route::post('/channels/{channel}/toggle-active', 'ChannelController@toggleActive')->name('channels.toggle-active');
+
         Route::resource('/countries', 'CountryController', ['names' => 'countries'])->except(['show']);
     });
 

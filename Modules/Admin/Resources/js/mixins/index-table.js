@@ -8,6 +8,11 @@ export const index = {
             isBusy: false,
         }
     },
+    provide() {
+        return {
+            resource: this.resource,
+        }
+    },
     components: {
         CreateBtn,
         ActionsButtons
