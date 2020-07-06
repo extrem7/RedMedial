@@ -35,6 +35,7 @@
 
 namespace Modules\Parser\Services\FullText\Readability;
 
+use DOMDocument;
 use DOMElement;
 
 class JSLikeHTMLElement extends DOMElement

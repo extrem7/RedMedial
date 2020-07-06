@@ -22,9 +22,9 @@ class ChannelController extends Controller
     {
         $this->seo()->setTitle('Channels');
 
-        $sort = $request->get('sortDesc') ?? true;
+        $sort = $request->get('sortDesc') ?? false;
 
-        $channels = Channel::query()->select(['id', 'country_id', 'name', 'is_active', 'last_run', 'created_at'])
+        $channels = Channel::query()->select(['id', 'country_id', 'slug', 'name', 'is_active', 'last_run', 'created_at'])
             ->when($request->get('searchQuery'), fn($q) => $q->search($request->get('searchQuery')))
             ->orderBy($request->get('sortBy') ?? 'id', $sort ? 'desc' : 'asc')
             ->with('country')

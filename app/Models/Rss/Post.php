@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Post extends Model implements HasMedia
 {
     use HasMediaTrait;
     use Sluggable;
     use SearchTrait;
+    use HasEagerLimit;
 
     const UPDATED_AT = null;
     protected $table = 'rss_posts';
@@ -37,7 +39,7 @@ class Post extends Model implements HasMedia
         if ($this->imageMedia !== null) {
             return $this->imageMedia->getUrl($size);
         } else {
-            return asset('img/post-img.svg');
+            return asset('/dist/img/no-image.jpg');
         }
     }
 
@@ -73,6 +75,11 @@ class Post extends Model implements HasMedia
         return $this->hasOneThrough(Country::class, Channel::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'rss_category_post');
+    }
+
     public function imageMedia()
     {
         return $this->morphOne(Media::class, 'model')
@@ -90,10 +97,10 @@ class Post extends Model implements HasMedia
         return $this->getImage('thumb');
     }
 
-    /* public function getLinkAttribute()
-     {
-         return route('frontend.articles.show', $this->slug ?? $this->id);
-     } */
+    public function getLinkAttribute()
+    {
+        return route('frontend.rss.posts.show', $this->slug);
+    }
 
     public function getDateAttribute()
     {

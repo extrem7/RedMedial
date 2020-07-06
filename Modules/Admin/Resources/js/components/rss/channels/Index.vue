@@ -24,24 +24,24 @@
                 ref="table"
                 sort-icon-left
                 v-show="total">
-                <template v-slot:cell(name)="data">
-                    <a href="" target="_blank">{{data.item.name}}</a>
+                <template v-slot:cell(name)="{item}">
+                    <a :href="route('frontend.rss.channels.show',{channel:item.slug})" target="_blank">{{item.name}}</a>
                 </template>
                 <template v-slot:cell(is_active)="data">
                     <active-switcher :channel-id="data.item.id" :value="data.item.is_active"></active-switcher>
                 </template>
                 <template v-slot:cell(last_run)="data">
-                    {{ data.item.last_run | moment("DD.MM.YYYY HH:mm")}}
+                    {{ data.item.last_run | moment("DD.MM.YYYY HH:mm:ss")}}
                 </template>
-                <template v-slot:cell(country)="data">
-                    {{ data.item.country? data.item.country.name:null }}
+                <template v-slot:cell(country)="{item}">
+                    <a :href="route('admin.rss.countries.edit',item.country.id)" target="_blank" v-if="item.country">{{item.country.name}}</a>
                 </template>
                 <template v-slot:cell(created_at)="data">
                     {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
                 </template>
 
                 <template v-slot:cell(actions)="data">
-                    <actions-buttons :id="data.item.id" @delete="destroy(data.item.id)"></actions-buttons>
+                    <actions-buttons :id="data.item.id" @delete="destroy(data.item.id,true)"></actions-buttons>
                 </template>
             </b-table>
 

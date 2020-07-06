@@ -44,7 +44,7 @@ class ParserService
 
                 $this->info("Start working on channel #$channel->id $channel->name");
                 /* @var $feed SimplePie */
-                $feed = Feeds::make($channel->feed);
+                $feed = Feeds::make($channel->feed, null, true);
                 if ($feed->error() === null) {
                     $this->info('Feed has been fetched');
 
@@ -54,7 +54,7 @@ class ParserService
 
                     $count = 0;
 
-                    DB::transaction(function () use ($items, $channel, $count) {
+                    DB::transaction(function () use ($items, $channel, &$count) {
                         foreach ($items as $item)
                             if ($post = $this->createItem($item, $channel)) {
                                 $count++;
@@ -78,7 +78,7 @@ class ParserService
     /* @return Channel[] */
     protected function getChannels(): iterable
     {
-        return Channel::active()->get(['id', 'name', 'feed'])->all();
+        return Channel::active()->orderBy('last_run')->get(['id', 'name', 'feed'])->all();
     }
 
     protected function createItem(SimplePie_Item $item, Channel $channel): ?Post
@@ -95,7 +95,7 @@ class ParserService
         $post = new Post([
             'channel_id' => $channel->id,
             'title' => $item->get_title(),
-            'excerpt' => $item->get_description(),
+            'excerpt' => mb_substr($item->get_description(), 0, 510),
             'body' => $content ?? $item->get_content(),
             'link' => $item->get_link(),
             'created_at' => $date

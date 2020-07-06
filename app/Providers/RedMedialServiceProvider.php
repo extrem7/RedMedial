@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Rss\Country;
 use App\Services\ArticlesService;
 use App\Services\SocialService;
 use Blade;
@@ -51,6 +52,11 @@ class RedMedialServiceProvider extends ServiceProvider
                 'social' => $this->getSocial()
             ]);
         });
+        View::composer('frontend.layouts.master', function () {
+            share([
+                'countries' => $this->getCountries()
+            ]);
+        });
     }
 
     protected function viewComposer()
@@ -63,6 +69,10 @@ class RedMedialServiceProvider extends ServiceProvider
         View::composer('frontend.errors.404', function ($view) {
             $articlesService = app(ArticlesService::class);
             $view->with('articles', $articlesService->get404());
+        });
+        View::composer('frontend.includes.archive-sidebar', function ($view) {
+            $articlesService = app(ArticlesService::class);
+            $view->with('articlesInSidebar', $articlesService->getSidebar());
         });
     }
 
@@ -86,6 +96,11 @@ class RedMedialServiceProvider extends ServiceProvider
         Blade::directive('schema', function () {
             return '<?php $schema->each(fn($item)=>print($item)); ?>';
         });
+    }
+
+    protected function getCountries()
+    {
+        return Country::pluck('name', 'slug');
     }
 
     protected function getSocial()

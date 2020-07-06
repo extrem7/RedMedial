@@ -10,12 +10,14 @@ use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Channel extends Model implements HasMedia
 {
     use HasMediaTrait;
     use Sluggable;
     use SearchTrait;
+    use HasEagerLimit;
 
     public const IDLE = 'IDLE';
     public const WORKING = 'WORKING';
@@ -49,7 +51,7 @@ class Channel extends Model implements HasMedia
         if ($this->logoMedia !== null) {
             return $this->logoMedia->getUrl($size);
         } else {
-            return asset('img/post-img.svg');
+            return asset('dist/img/no-image.jpg');
         }
     }
 

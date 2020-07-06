@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4.4",
+        "ext-dom": "*",
         "ext-json": "*",
         "artesaos/seotools": "^0.18.0",
         "butschster/meta-tags": "^1.4",
@@ -30,10 +31,10 @@
         "spatie/laravel-permission": "^3.13",
         "spatie/laravel-sitemap": "^5.6",
         "spatie/schema-org": "^2.13",
+        "staudenmeir/eloquent-eager-limit": "^1.5",
         "tightenco/ziggy": "^0.9.3",
         "willvincent/feeds": "^2.1",
-        "zschuessler/laravel-route-to-class": "^2.9",
-        "ext-dom": "*"
+        "zschuessler/laravel-route-to-class": "^2.9"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

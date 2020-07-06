@@ -73,7 +73,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('telescope')}}" class="nav-link" target=_blank>
+                <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"
+                   target=_blank>
                     <i class="nav-icon fa">
                         <svg-vue icon="telescope"></svg-vue>
                     </i>

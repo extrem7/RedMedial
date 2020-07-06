@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ce64042f77bf0ab3f8bb406e6d014db",
+    "content-hash": "055215d1cee378674d1de740867cee1c",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -4104,6 +4104,47 @@
                 "temporary-directory"
             ],
             "time": "2020-06-08T08:58:45+00:00"
+        },
+        {
+            "name": "staudenmeir/eloquent-eager-limit",
+            "version": "v1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/eloquent-eager-limit.git",
+                "reference": "aa4a27103cd550d5dfb88e259cb1777c28253c65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-eager-limit/zipball/aa4a27103cd550d5dfb88e259cb1777c28253c65",
+                "reference": "aa4a27103cd550d5dfb88e259cb1777c28253c65",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "laravel/homestead": "^10.0",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Staudenmeir\\EloquentEagerLimit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Laravel Eloquent eager loading with limit",
+            "time": "2020-01-31T12:23:44+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -9828,6 +9869,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.4.4",
+        "ext-dom": "*",
         "ext-json": "*"
     },
     "platform-dev": [],

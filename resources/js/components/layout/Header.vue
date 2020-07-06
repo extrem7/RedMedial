@@ -2,8 +2,8 @@
     <header :class="{'sticky-header' : isScroll}" class="header">
         <div class="header-top after-fade">
             <ul class="full-width-menu overflow-horizontal">
-                <li class="menu-item" v-for="n in 40">
-                    <a href="https://redmedial.com/venezuela/">Venezuela</a>
+                <li class="menu-item" v-for="(name,slug) in countries">
+                    <a :href="route('frontend.rss.countries.show',slug)">{{name}}</a>
                 </li>
             </ul>
         </div>
@@ -63,6 +63,7 @@
     export default {
         data() {
             return {
+                countries: {...this.shared('countries')},
                 openSearch: false,
                 openMenu: false,
                 isScroll: false,

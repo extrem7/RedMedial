@@ -26,6 +26,11 @@ class Country extends Model
     }
 
     // RELATIONS
+    public function channels()
+    {
+        return $this->hasMany(Channel::class);
+    }
+
     public function posts()
     {
         return $this->belongsToMany(Post::class, 'rss_category_post')->distinct();

@@ -72,7 +72,7 @@ class Article extends Model implements HasMedia
         if ($this->imageMedia !== null) {
             return $this->imageMedia->getUrl($size);
         } else {
-            return asset('img/post-img.svg');
+            return asset('dist/img/no-image.jpg');
         }
     }
 

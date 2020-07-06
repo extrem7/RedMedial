@@ -19,9 +19,7 @@ class ArticleController extends Controller
             share(compact('articles'));
         }
 
-        $articlesInSidebar = $articlesService->getSidebar();
-
-        return view('frontend.articles.index', compact('articlesInSidebar'));
+        return view('frontend.articles.index');
     }
 
     public function show(Article $article)

@@ -17,11 +17,13 @@ export default {
     RedFooter,
 
     Social,
-    RssItem: () => import('./layout/RssItem'),
+    RssItem: () => import('./rss/channels/Channel'),
     YoutubePlayer,
 
     ArticlesList: () => import('./articles/List'),
     ArticleItem: Article,//temp
+
+    RssList: () => import('./rss/channels/List'),
 
     FormContacto: () => import('./forms/Contacto'),
     FormRedDeMedios: () => import('./forms/RedDeMedios')

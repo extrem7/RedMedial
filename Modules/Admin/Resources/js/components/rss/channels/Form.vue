@@ -80,7 +80,8 @@
                     meta_description: '',
                 },
                 countries: [...this.shared('countries')],
-                oldLogo: null
+                oldLogo: null,
+                resource: 'rss.channels'
             }
         },
         methods: {

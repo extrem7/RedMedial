@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Frontend;
 use App\Mail\ContactForm;
 use App\Models\Page;
 use App\Services\ArticlesService;
+use App\Services\RssService;
 use Illuminate\Http\Request;
 use Mail;
 
 class PageController extends Controller
 {
-    public function home(ArticlesService $articlesService)
+    public function home(ArticlesService $articlesService, RssService $rssService)
     {
         $page = Page::find(1);
 
@@ -21,8 +22,13 @@ class PageController extends Controller
         }
 
         $articles = $articlesService->getHome();
+        $covid = $articlesService->getCovid();
 
-        return view('frontend.pages.home.page', compact('articles'));
+        $channels = $rssService->getLocalChannels();
+
+        share(compact('channels'));
+
+        return view('frontend.pages.home.page', compact('articles', 'covid'));
     }
 
     public function search()
@@ -49,7 +55,7 @@ class PageController extends Controller
             $view = 'red-de-medios';
         }
 
-       // Route2Class::addClass("page-template-$bodyClass");
+        // Route2Class::addClass("page-template-$bodyClass");
         return view("frontend.pages.$view", compact('page'));
     }
 

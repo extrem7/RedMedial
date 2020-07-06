@@ -28,5 +28,7 @@ return [
             'id' => 'ciudadanotv',
             'link' => 'https://www.youtube.com/channel/UCJrlV1drEWg2OEZFLUcFbTQ'
         ]
-    ]
+    ],
+
+    'covid_category' => 2
 ];
