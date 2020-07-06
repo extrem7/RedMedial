@@ -33,6 +33,7 @@ class Article extends Model implements HasMedia
         'title', 'excerpt'
     ];
 
+    // FUNCTIONS
     public static function boot()
     {
         parent::boot();
@@ -41,17 +42,6 @@ class Article extends Model implements HasMedia
                 $article->excerpt = mb_substr($article->body, 0, 510);
             }
         });
-    }
-
-    public function imageMedia()
-    {
-        return $this->morphOne(Media::class, 'model')
-            ->where('collection_name', 'image');
-    }
-
-    public function scopePublished($query)
-    {
-        return $query->whereStatus(self::PUBLISHED);
     }
 
     public function registerMediaCollections()
@@ -64,15 +54,6 @@ class Article extends Model implements HasMedia
                     ->sharpen(0)
                     ->nonQueued();
             });
-    }
-
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => !empty($this->slug) ? 'slug' : 'title'
-            ]
-        ];
     }
 
     public function setSlug(string $slug)
@@ -95,6 +76,29 @@ class Article extends Model implements HasMedia
         }
     }
 
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => !empty($this->slug) ? 'slug' : 'title'
+            ]
+        ];
+    }
+
+    // RELATIONS
+    public function imageMedia()
+    {
+        return $this->morphOne(Media::class, 'model')
+            ->where('collection_name', 'image');
+    }
+
+    // SCOPES
+    public function scopePublished($query)
+    {
+        return $query->whereStatus(self::PUBLISHED);
+    }
+
+    // ACCESSORS
     public function getImageAttribute()
     {
         return $this->getImage();

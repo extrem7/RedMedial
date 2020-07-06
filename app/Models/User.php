@@ -28,12 +28,7 @@ class User extends Authenticatable implements HasMedia
         'email', 'name'
     ];
 
-    public function avatarMedia()
-    {
-        return $this->morphOne(Media::class, 'model')
-            ->where('collection_name', 'avatar');
-    }
-
+    // FUNCTIONS
     public function registerMediaCollections()
     {
         $this->addMediaCollection('avatar')->singleFile();
@@ -61,6 +56,14 @@ class User extends Authenticatable implements HasMedia
         }
     }
 
+    // RELATIONS
+    public function avatarMedia()
+    {
+        return $this->morphOne(Media::class, 'model')
+            ->where('collection_name', 'avatar');
+    }
+
+    // ACCESSORS
     public function getAvatarAttribute()
     {
         return $this->getAvatar();

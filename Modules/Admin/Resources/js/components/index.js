@@ -16,9 +16,12 @@ export default {
     UsersIndex: () => import('./users/Index'),
     UserForm: () => import('./users/Form'),
 
+    RssChannelsIndex: () => import('./rss/channels/Index'),
+    RssChannelForm: () => import('./rss/channels/Form'),
+
     RssCountriesIndex: () => import('./rss/countries/Index'),
     RssCountryForm: () => import('./rss/countries/Form'),
 
-    RssChannelsIndex: () => import('./rss/channels/Index'),
-    RssChannelForm: () => import('./rss/channels/Form'),
+    RssCategoriesIndex: () => import('./rss/categories/Index'),
+    RssCategoryForm: () => import('./rss/categories/Form'),
 }

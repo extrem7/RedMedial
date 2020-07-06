@@ -5,14 +5,18 @@ namespace App\Models\Rss;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class Category extends Model
 {
     use Sluggable;
 
-    protected $table = 'rss_countries';
+    protected $table = 'rss_categories';
 
     protected $fillable = [
-        'slug', 'name', 'meta_title', 'meta_description'
+        'slug', 'name', 'keywords', 'meta_title', 'meta_description'
+    ];
+
+    protected $casts = [
+        'keywords' => 'array'
     ];
 
     // FUNCTIONS

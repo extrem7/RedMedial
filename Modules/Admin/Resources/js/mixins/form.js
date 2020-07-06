@@ -52,6 +52,11 @@ export default {
             }
         }
     },
+    provide() {
+        return {
+            resource: this.resource,
+        }
+    },
     directives: {
         valid(el, {modifiers}, {context}) {
             if (Object.keys(modifiers)[0] in context.errors) {

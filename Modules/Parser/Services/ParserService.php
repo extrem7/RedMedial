@@ -1,8 +1,8 @@
 <?php
 
-
 namespace Modules\Parser\Services;
 
+use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
 use Carbon\Carbon;
@@ -11,6 +11,7 @@ use Exception;
 use Feeds;
 use Http;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Log;
 use Modules\Parser\Services\FullText\ContentExtractor\ContentExtractor;
 use SimplePie;
@@ -21,9 +22,12 @@ class ParserService
 {
     protected Command $command;
 
+    protected Collection $categories;
+
     public function __construct(Command $command)
     {
         $this->command = $command;
+        $this->categories = Category::all('id', 'keywords');
     }
 
     public function start(): void
@@ -52,9 +56,10 @@ class ParserService
 
                     DB::transaction(function () use ($items, $channel, $count) {
                         foreach ($items as $item)
-                            if ($itemRss = $this->createItem($item, $channel)) {
+                            if ($post = $this->createItem($item, $channel)) {
                                 $count++;
-                                $this->attachImage($item, $itemRss);
+                                $this->attachImage($item, $post);
+                                $this->attachToCategories($item, $post);
                             }
                     });
 
@@ -86,7 +91,6 @@ class ParserService
                 . $e->getFile() . ' line: ' . $e->getLine() . "\n"
                 . $e->getMessage());
         }
-
 
         $post = new Post([
             'channel_id' => $channel->id,
@@ -127,7 +131,7 @@ class ParserService
     {
         $startTime = $channel->posts()->latest()->first()->created_at ?? null;
 
-        $items = array_reverse($feed->get_items(0, 10));
+        $items = array_reverse($feed->get_items(0, config('parser.posts_limit')));
 
         return array_filter($items, function ($item) use ($startTime) {
             $date = Carbon::create($item->get_date());
@@ -184,14 +188,43 @@ class ParserService
         return $html;
     }
 
-    protected function info(string $message): void
+    protected function attachToCategories(SimplePie_Item $item, Post $post)
     {
+        $fields = [$post->title, $post->excerpt, $post->body];
+
+        $itemCategories = $item->get_categories();
+        if (!empty($itemCategories)) {
+            foreach ($itemCategories as $itemCategory) $fields[] = $itemCategory->get_label();
+        }
+
+        $categoryBreak = false;
+        foreach ($this->categories as $category) {
+            foreach ($category->keywords as $keyword) {
+                if ($categoryBreak) {
+                    $categoryBreak = false;
+                    break;
+                }
+                foreach ($fields as $field) {
+                    if (mb_stripos($field, $keyword) !== false) {
+                        $category->posts()->attach($post->id);
+                        $categoryBreak = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    protected function info($message): void
+    {
+        if (is_array($message)) $message = print_r($message, true);
         $this->command->info($message);
         Log::channel('rss')->info($message);
     }
 
     protected function error(string $message): void
     {
+        if (is_array($message)) $message = print_r($message, true);
         $this->command->error($message);
         Log::channel('rss')->error($message);
     }

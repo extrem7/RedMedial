@@ -7,7 +7,7 @@ use Modules\Parser\Services\ParserService;
 
 class StartParsing extends Command
 {
-    protected $signature = 'parsing:start';
+    protected $signature = 'parser:start';
 
     public function handle()
     {

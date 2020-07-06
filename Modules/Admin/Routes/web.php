@@ -15,6 +15,7 @@ Route::middleware(Admin::class)->group(function () {
         Route::post('/channels/{channel}/toggle-active', 'ChannelController@toggleActive')->name('channels.toggle-active');
 
         Route::resource('/countries', 'CountryController', ['names' => 'countries'])->except(['show']);
+        Route::resource('/categories', 'CategoryController', ['names' => 'categories'])->except(['show']);
     });
 
     Route::resource('/pages', 'PageController', ['names' => 'pages'])->except(['show']);

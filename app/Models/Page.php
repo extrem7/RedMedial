@@ -13,6 +13,7 @@ class Page extends Model
         'slug', 'title', 'body', 'meta_title', 'meta_description'
     ];
 
+    // FUNCTIONS
     public function sluggable()
     {
         return [

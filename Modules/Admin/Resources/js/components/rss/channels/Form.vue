@@ -128,11 +128,6 @@
             this.setupEdit('channel')
             this.oldLogo = this.shared('channel').logo
         },
-        provide() {
-            return {
-                resource: 'rss.channels',
-            }
-        },
         mixins: [form]
     }
 </script>

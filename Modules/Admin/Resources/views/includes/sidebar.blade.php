@@ -45,6 +45,13 @@
                             <p>Countries</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.rss.categories.index')}}"
+                           class="nav-link {{ Nav::isResource('categories') }}">
+                            <i class="nav-icon fa fa-tag"></i>
+                            <p>Categories</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item">
