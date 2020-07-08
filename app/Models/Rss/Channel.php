@@ -30,7 +30,9 @@ class Channel extends Model implements HasMedia
     protected $table = 'rss_channels';
 
     protected $fillable = [
-        'country_id', 'slug', 'name', 'feed', 'link', 'description', 'meta_title', 'meta_description'
+        'country_id', 'slug', 'name', 'feed', 'link', 'description',
+        'use_fulltext', 'use_og', 'is_active', 'status',
+        'meta_title', 'meta_description'
     ];
 
     protected $dates = ['created_at', 'updated_at', 'last_run'];

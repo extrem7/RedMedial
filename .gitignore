@@ -12,6 +12,7 @@ public/vendor
 /public/sitemap.xml
 
 /resources/frontend
+/resources/old
 
 /storage/*.key
 /storage/medialibrary/

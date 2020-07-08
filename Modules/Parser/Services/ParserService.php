@@ -24,6 +24,10 @@ class ParserService
 
     protected Collection $categories;
 
+    protected ?string $html;
+
+    private bool $run = true;
+
     public function __construct(Command $command)
     {
         $this->command = $command;
@@ -32,7 +36,7 @@ class ParserService
 
     public function start(): void
     {
-        while (true) {
+        while ($this->run) {
             $channels = $this->getChannels();
             if (empty($channels)) {
                 $this->error('No active channels');
@@ -43,24 +47,26 @@ class ParserService
                 $timeStart = microtime(true);
 
                 $this->info("Start working on channel #$channel->id $channel->slug");
+                $channel->update(['status' => Channel::WORKING]);
                 /* @var $feed SimplePie */
                 $feed = Feeds::make($channel->feed, null, true);
                 if ($feed->error() === null) {
                     $this->info('Feed has been fetched');
-
-                    $this->updateLastRun($channel);
 
                     $items = $this->filterNewItems($feed, $channel);
 
                     $count = 0;
 
                     DB::transaction(function () use ($items, $channel, &$count) {
-                        foreach ($items as $item)
+                        foreach ($items as $item) {
+                            $this->html = null;
+
                             if ($post = $this->createItem($item, $channel)) {
                                 $count++;
-                                $this->attachImage($item, $post);
+                                $this->attachImage($item, $post, $channel->use_og);
                                 $this->attachToCategories($item, $post);
                             }
+                        }
                     });
 
                     $this->info("Created $count items");
@@ -71,32 +77,46 @@ class ParserService
                 $timeEnd = microtime(true);
                 $executionTime = round($timeEnd - $timeStart, 1);
                 $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
+                $channel->update(['status' => Channel::IDLE]);
+                $this->updateLastRun($channel);
             }
         }
+    }
+
+    public function stop()
+    {
+        $this->run = false;
     }
 
     /* @return Channel[] */
     protected function getChannels(): iterable
     {
-        return Channel::active()->orderBy('last_run')->get(['id', 'name', 'feed'])->all();
+        return Channel::active()->orderBy('last_run')->get(['id', 'name', 'feed', 'use_fulltext', 'use_og'])->all();
     }
 
     protected function createItem(SimplePie_Item $item, Channel $channel): ?Post
     {
+        $content = $item->get_content();
         $date = Carbon::create($item->get_date());
-        try {
-            $content = $this->parseFullContent($item);
-        } catch (Exception $e) {
-            $this->error("Error while parsing full content in file :\n"
-                . $e->getFile() . ' line: ' . $e->getLine() . "\n"
-                . $e->getMessage());
+
+        if ($channel->use_og | $channel->use_fulltext) {
+            $this->html = Http::get($item->get_link());
+            if ($channel->use_fulltext) {
+                try {
+                    $content = $this->parseFullContent($item);
+                } catch (Exception $e) {
+                    $this->error("Error while parsing full content in file :\n"
+                        . $e->getFile() . ' line: ' . $e->getLine() . "\n"
+                        . $e->getMessage());
+                }
+            }
         }
 
         $post = new Post([
             'channel_id' => $channel->id,
             'title' => $item->get_title(),
             'excerpt' => mb_substr($item->get_description(), 0, 510),
-            'body' => $content ?? $item->get_content(),
+            'body' => $content,
             'link' => $item->get_link(),
             'created_at' => $date
         ]);
@@ -113,11 +133,17 @@ class ParserService
         return null;
     }
 
-    protected function attachImage(SimplePie_Item $item, Post $itemRss): void
+    protected function attachImage(SimplePie_Item $item, Post $itemRss, bool $useOG = false): void
     {
         $enclosure = $item->get_enclosure();
+        $url = null;
+
         if (Str::contains($enclosure->get_type(), 'image')) {
             $url = $enclosure->get_link();
+        } else if ($useOG) {
+            $url = $this->parseOGTagsForImage();
+        }
+        if ($url !== null) {
             try {
                 $itemRss->uploadImage($url);
             } catch (Exception $e) {
@@ -145,14 +171,38 @@ class ParserService
         $channel->save();
     }
 
+    protected function parseOGTagsForImage(): ?string
+    {
+        $pattern = '
+  ~<\s*meta\s
+
+  # using lookahead to capture type to $1
+    (?=[^>]*?
+    \b(?:name|property|http-equiv)\s*=\s*
+    (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
+    ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
+  )
+
+  # capture content to $2
+  [^>]*?\bcontent\s*=\s*
+    (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
+    ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
+  [^>]*>
+
+  ~ix';
+
+        if (preg_match_all($pattern, $this->html, $out)) {
+            $tags = array_combine($out[1], $out[2]);
+            return $tags['og:image'] ?? null;
+        }
+    }
+
     protected function parseFullContent(SimplePie_Item $item)
     {
         $extractor = new ContentExtractor(
             module_path('parser', '/Services/FullText/ContentExtractor/config/standart')
         );
-
-        $html = Http::get($item->get_link());
-
+        $html = $this->html;
         $extract_result = $extractor->process($html, $item->get_link());
         $readability = $extractor->readability;
         $content_block = ($extract_result) ? $extractor->getContent() : null;

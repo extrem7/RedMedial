@@ -44,6 +44,17 @@
 
             <red-cropper :old="oldLogo" ref="cropper" validate="logo"></red-cropper>
 
+            <h4 class="mt-4">Parsing settings</h4>
+            <b-form-checkbox :unchecked-value="0" :value="1" size="lg" switch v-model="form.use_fulltext">
+                Use fulltext
+            </b-form-checkbox>
+            <b-form-checkbox :unchecked-value="0" :value="1" size="lg" switch v-model="form.use_og">
+                Use OG tags for thumb(if feed hasn't it)
+            </b-form-checkbox>
+            <b-form-checkbox :unchecked-value="0" :value="1" size="lg" switch v-model="form.is_active">
+                Is active
+            </b-form-checkbox>
+
             <h4 class="mt-4">Seo settings</h4>
             <div class="form-group">
                 <label for="meta_title">Title</label>
@@ -76,6 +87,9 @@
                     feed: '',
                     link: '',
                     description: '',
+                    use_fulltext: 0,
+                    use_og: 0,
+                    is_active: 0,
                     meta_title: '',
                     meta_description: '',
                 },
@@ -91,7 +105,7 @@
                 if (this.isEdit) form.append('_method', 'PATCH')
 
                 for (let field in this.form)
-                    if (this.form[field])
+                    if (this.form[field] !== null)
                         form.append(field, this.form[field])
 
                 const logo = await this.$refs.cropper.getBlob()

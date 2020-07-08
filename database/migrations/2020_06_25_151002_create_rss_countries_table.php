@@ -18,7 +18,7 @@ class CreateRssCountriesTable extends Migration
 
             $table->string('slug')->unique();
             $table->string('name');
-            $table->string('code', 2);
+            $table->string('code', 2)->nullable();
 
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();

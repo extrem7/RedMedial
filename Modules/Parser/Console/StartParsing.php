@@ -9,12 +9,19 @@ class StartParsing extends Command
 {
     protected $signature = 'parser:start';
 
+    protected ParserService $service;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->service = new ParserService($this);
+    }
+
     public function handle()
     {
         $this->info('Parsing started');
 
-        $service = new ParserService($this);
-        $service->start();
+        $this->service->start();
 
         $this->info('Parsing done');
     }

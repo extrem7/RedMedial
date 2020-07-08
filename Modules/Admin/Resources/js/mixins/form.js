@@ -31,7 +31,7 @@ export default {
                 this.isEdit = true
                 this.id = model.id
                 for (let field in this.form) {
-                    if (model[field]) this.form[field] = model[field]
+                    if (model[field] !== undefined && model[field] !== null) this.form[field] = model[field]
                 }
                 return model
             }

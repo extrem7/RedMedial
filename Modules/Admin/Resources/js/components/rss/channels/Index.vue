@@ -33,6 +33,12 @@
                 <template v-slot:cell(last_run)="data">
                     {{ data.item.last_run | moment("DD.MM.YYYY HH:mm:ss")}}
                 </template>
+                <template v-slot:cell(status)="{item}">
+                    <div class="d-flex justify-content-center">
+                        <b-spinner v-if="item.status==='WORKING'" variant="info"></b-spinner>
+                        <svg-vue icon="snooze" style="width:30px;fill:white;" v-else></svg-vue>
+                    </div>
+                </template>
                 <template v-slot:cell(country)="{item}">
                     <a :href="route('admin.rss.countries.edit',item.country.id)" target="_blank" v-if="item.country">{{item.country.name}}</a>
                 </template>
@@ -78,6 +84,7 @@
                         sortable: true
                     },
                     {key: 'last_run', thClass: 'date-column'},
+                    {key: 'status', tdClass: 'p-0 vertical-align-center'},
                     {key: 'country', sortable: true},
                     {key: 'posts_count', label: 'Posts', sortable: true},
                     {key: 'created_at', thClass: 'date-column', sortable: true},
