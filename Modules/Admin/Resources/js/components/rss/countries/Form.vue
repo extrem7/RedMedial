@@ -13,6 +13,15 @@
                        v-model="form.slug" v-valid.slug>
                 <invalid name="slug"></invalid>
             </div>
+            <div class="form-group">
+                <label for="code">ISO code (visit <a
+                    href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes"
+                    target="_blank">Wiki</a>)</label>
+                <input :value="form.code" @input="form.code = $event.target.value.toUpperCase()" class="form-control"
+                       id="code"
+                       placeholder="Code" type="text" v-valid.slug>
+                <invalid name="code"></invalid>
+            </div>
 
             <h4 class="mt-4">Seo settings</h4>
             <div class="form-group">
@@ -42,9 +51,11 @@
                 form: {
                     name: '',
                     slug: '',
+                    code: '',
                     meta_title: '',
                     meta_description: '',
-                }
+                },
+                resource: 'rss.countries'
             }
         },
         methods: {
@@ -63,6 +74,7 @@
                     if (this.isEdit) {
                         const {status, data} = await this.send(this.route('admin.rss.countries.update', this.id), form)
                         if (status === 200) {
+                            this.setupEdit(null, data.country)
                             this.$bus.emit('alert', {text: data.status})
                         }
                     } else {

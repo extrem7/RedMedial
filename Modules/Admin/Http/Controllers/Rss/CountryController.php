@@ -50,7 +50,7 @@ class CountryController extends Controller
     {
         $country->update($request->validated());
 
-        return response()->json(['status' => 'Country has been updated']);
+        return response()->json(['status' => 'Country has been updated', 'country' => $country]);
     }
 
     public function destroy(Country $country)

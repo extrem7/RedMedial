@@ -1,5 +1,7 @@
 <?php
 
+use Torann\GeoIP\GeoIPServiceProvider;
+
 return [
 
     /*
@@ -176,6 +178,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RedMedialServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
+
+        GeoIPServiceProvider::class,
 
     ],
 

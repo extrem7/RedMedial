@@ -11,6 +11,9 @@
                 dark
                 hover
                 ref="table">
+                <template v-slot:cell(name)="{item}">
+                    <a :href="item.link" target="_blank">{{item.name}}</a>
+                </template>
                 <template v-slot:cell(created_at)="data">
                     {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
                 </template>
@@ -39,6 +42,7 @@
                     'id',
                     'name',
                     'slug',
+                    'code',
                     {key: 'created_at', thClass: 'date-column'},
                     {key: 'updated_at', thClass: 'date-column'},
                     {key: 'actions', label: '', thClass: 'actions-column'}

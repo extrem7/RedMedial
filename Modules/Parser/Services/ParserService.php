@@ -42,7 +42,7 @@ class ParserService
             foreach ($channels as $channel) {
                 $timeStart = microtime(true);
 
-                $this->info("Start working on channel #$channel->id $channel->name");
+                $this->info("Start working on channel #$channel->id $channel->slug");
                 /* @var $feed SimplePie */
                 $feed = Feeds::make($channel->feed, null, true);
                 if ($feed->error() === null) {
@@ -70,7 +70,7 @@ class ParserService
 
                 $timeEnd = microtime(true);
                 $executionTime = round($timeEnd - $timeStart, 1);
-                $this->info("End working on channel #$channel->id $channel->name. Total Execution Time: {$executionTime}s");
+                $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
             }
         }
     }

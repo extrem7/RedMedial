@@ -10,7 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::prefix('parser')->group(function () {
     Route::get('/', 'ParserController@index');
 });
+*/

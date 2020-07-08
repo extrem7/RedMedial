@@ -16,7 +16,7 @@ class CreateRssPostsTable extends Migration
         Schema::create('rss_posts', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('channel_id')->constrained('rss_channels');
+            $table->foreignId('channel_id')->constrained('rss_channels')->cascadeOnDelete();
             $table->string('slug')->unique();
             $table->string('title');
             $table->string('excerpt', 510);

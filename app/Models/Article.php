@@ -80,7 +80,8 @@ class Article extends Model implements HasMedia
     {
         return [
             'slug' => [
-                'source' => !empty($this->slug) ? 'slug' : 'title'
+                'source' => !empty($this->slug) ? 'slug' : 'title',
+                'onUpdate' => true,
             ]
         ];
     }

@@ -11,7 +11,14 @@ use Mail;
 
 class PageController extends Controller
 {
-    public function home(ArticlesService $articlesService, RssService $rssService)
+    protected RssService $rssService;
+
+    public function __construct()
+    {
+        $this->rssService = app(RssService::class);
+    }
+
+    public function home(Request $request, ArticlesService $articlesService)
     {
         $page = Page::find(1);
 
@@ -24,11 +31,15 @@ class PageController extends Controller
         $articles = $articlesService->getHome();
         $covid = $articlesService->getCovid();
 
-        $channels = $rssService->getLocalChannels();
+        $country = $this->rssService->getCountry($request->get('country'));
+        $internationalChannels = $this->rssService->getInternationalChannels();
 
-        share(compact('channels'));
+        share([
+            'localChannels' => $country !== null ? $country->channels : null,
+            'internationalChannels' => $internationalChannels
+        ]);
 
-        return view('frontend.pages.home.page', compact('articles', 'covid'));
+        return view('frontend.pages.home.page', compact('articles', 'covid', 'country'));
     }
 
     public function search()
@@ -36,6 +47,14 @@ class PageController extends Controller
         $this->seo()->setTitle('Search');
 
         return view('frontend.pages.search');
+    }
+
+    public function allRss(Page $page)
+    {
+        $channels = $this->rssService->getAll();
+        share(compact('channels'));
+
+        return view('frontend.rss.index', compact('page'), ['orderName' => 'all-rss']);
     }
 
     public function show(Page $page)
@@ -53,6 +72,8 @@ class PageController extends Controller
             $view = 'contacto';
         } elseif ($page->id === 4 || $page->slug === 'red-de-medios') {
             $view = 'red-de-medios';
+        } elseif ($page->slug == 'all-rss') {
+            return $this->allRss($page);
         }
 
         // Route2Class::addClass("page-template-$bodyClass");

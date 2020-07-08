@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\Geoip;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -53,7 +54,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapFrontendRoutes()
     {
-        Route::domain(config('redmedial.frontend_domain'))->middleware('web')
+        Route::domain(config('redmedial.frontend_domain'))
+            ->middleware(['web', Geoip::class])
             ->namespace($this->namespace)
             ->group(base_path('routes/web/frontend.php'));
     }

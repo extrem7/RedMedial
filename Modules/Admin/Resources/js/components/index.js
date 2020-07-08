@@ -7,6 +7,8 @@ export default {
     Logout,
     MenuToggle,
 
+    InternationalMedias: () => import('./settings/InternationalMedias'),
+
     PagesIndex: () => import('./pages/Index'),
     PageForm: () => import('./pages/Form'),
 

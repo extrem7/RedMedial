@@ -32,7 +32,7 @@
                                                                                                alt="{{$post->title}}"></a>
                             <div class="article-body">
                                 @if($post->channel->country!==null)
-                                    <a href="{{$post->link}}"
+                                    <a href="{{$post->channel->country->link}}"
                                        class="article-category">{{$post->channel->country->name}}</a>
                                 @endif
                                 <a href="{{$post->link}}"
@@ -57,14 +57,15 @@
             </div>
         </section>
 
-
-        <section class="section-rss-local">
-            <h2 class="title text-center medium-size line mb-4">Medias Near You</h2>
-            <rss-list order-name="local"></rss-list>
-            <div class="text-center">
-                <a href="https://redmedial.com/all-rss/" class="btn btn-cyan">See All local rss</a>
-            </div>
-        </section>
+        @if($country!==null)
+            <section class="section-rss-local">
+                <h2 class="title text-center medium-size line mb-4">Medias Near You</h2>
+                <rss-list shared-key="localChannels" order-name="local"></rss-list>
+                <div class="text-center">
+                    <a href="{{$country->link}}" class="btn btn-cyan">See All local rss</a>
+                </div>
+            </section>
+        @endif
 
         <div class="banner-bottom mt-2 mb-2">
             <div id="div-gpt-ad-RM2020-04" data-google-query-id="CMbCwKTMi-oCFbdBkQUd82sEWg">
@@ -84,7 +85,7 @@
 
         <section class="section-rss-world">
             <h2 class="title text-center medium-size line mb-4">International Medias</h2>
-            <rss-list order-name="international"></rss-list>
+            <rss-list shared-key="internationalChannels" order-name="international"></rss-list>
             <div class="text-center">
                 <a href="https://redmedial.com/all-rss/" class="btn btn-cyan">More on all rss</a>
             </div>

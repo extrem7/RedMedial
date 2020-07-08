@@ -18,10 +18,6 @@ class RssChannelsSeeder extends Seeder
                 'feed' => 'https://actualidad.rt.com/feeds/all.rss'
             ],
             [
-                'name' => 'La Iguana',
-                'feed' => 'https://www.laiguana.tv/feed/'
-            ],
-            [
                 'name' => 'Корреспондент',
                 'feed' => 'http://k.img.com.ua/rss/ru/all_news2.0.xml'
             ],
@@ -36,6 +32,14 @@ class RssChannelsSeeder extends Seeder
             [
                 'name' => 'Middle east monitor',
                 'feed' => 'https://www.middleeastmonitor.com/feed/'
+            ],
+            [
+                'name' => 'LENTA.RU',
+                'feed' => 'https://lenta.ru/rss'
+            ],
+            [
+                'name' => '24 Канал',
+                'feed' => 'https://24tv.ua/rss/all.xml?lang=ru'
             ]
         ];
         /* @var $chile Country */
@@ -44,7 +48,7 @@ class RssChannelsSeeder extends Seeder
             $channel['is_active'] = true;
             $channel = $chile->channels()->create($channel);
             /* @var $channel Channel */
-            $channel->addMediaFromUrl('https://picsum.photos/260/48')->toMediaCollection('logo');
+            $channel->addMediaFromUrl('https://picsum.photos/200/48')->toMediaCollection('logo');
         }
     }
 }

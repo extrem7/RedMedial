@@ -14,11 +14,15 @@
 
     export default {
         props: {
+            sharedKey: {
+                type: String,
+                default: 'channels'
+            },
             orderName: String
         },
         data() {
             return {
-                channels: [...this.shared('channels')],
+                channels: [...this.shared(this.sharedKey)],
                 dragOptions: {
                     animation: 200
                 },

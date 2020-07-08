@@ -24,7 +24,8 @@ class Category extends Model
     {
         return [
             'slug' => [
-                'source' => !empty($this->slug) ? 'slug' : 'name'
+                'source' => !empty($this->slug) ? 'slug' : 'name',
+                'onUpdate' => true,
             ]
         ];
     }

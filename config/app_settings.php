@@ -11,15 +11,10 @@ return [
             'icon' => 'fa fa-cog',
             'inputs' => [
                 [
-                    'name' => 'app_name',
-                    'type' => 'text',
-                    'label' => 'App Name',
-                    'placeholder' => 'MiMedio',
-                    'class' => 'form-control',
-                    'style' => '',
-                    'rules' => 'required',
-                    'value' => 'MiMedio',
-                    'hint' => 'You can set the site name here'
+                    'name' => 'international_medias',
+                    'type' => 'international_medias',
+                    'label' => 'International Medias',
+                    'rules' => ['required', 'string'],
                 ],
             ]
         ],

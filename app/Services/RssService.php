@@ -9,10 +9,36 @@ use Illuminate\Support\Collection;
 
 class RssService
 {
-    public function getLocalChannels(): Collection
+    public function getAll(): Collection
     {
         return $this->transformChannels(
             Channel::with($this->getChannelsRelations())->get($this->getChannelsColumns())
+        );
+    }
+
+    public function getCountry(string $code = null): ?Country
+    {
+        $that = $this;
+
+        $country = Country::whereCode($code)
+            ->with(['channels' => function ($channels) use ($that) {
+                $channels->with($that->getChannelsRelations())->select(['country_id', ...$that->getChannelsColumns()]);
+            }])
+            ->first();
+        if ($country !== null)
+            $country->channels->transform(fn($channel) => $this->transformChannel($channel));
+
+        return $country;
+    }
+
+    public function getInternationalChannels(): Collection
+    {
+        $international = explode(',', setting('international_medias'));
+
+        return $this->transformChannels(
+            Channel::whereIn('id', $international)
+                ->with($this->getChannelsRelations())
+                ->get($this->getChannelsColumns())
         );
     }
 
@@ -36,10 +62,13 @@ class RssService
 
     protected function transformChannels(Collection $channels)
     {
-        return $channels->transform(function (Channel $channel) {
-            $channel->append('logo');
-            return $channel;
-        });
+        return $channels->transform(fn($channel) => $this->transformChannel($channel));
+    }
+
+    protected function transformChannel(Channel $channel)
+    {
+        $channel->append('logo');
+        return $channel;
     }
 
     protected function getChannelsRelations()

@@ -26,7 +26,10 @@ class CreateRssChannelsTable extends Migration
             $table->string('link')->nullable();
             $table->string('description')->nullable();
 
+            $table->boolean('use_fulltext')->default(false);
+            $table->boolean('use_og')->default(false);
             $table->boolean('is_active')->default(false);
+
             $table->enum('status', $statuses)->default(Channel::IDLE);
             $table->timestamp('last_run')->nullable();
 
