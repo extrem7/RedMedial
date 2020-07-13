@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Article;
-use App\Services\ArticlesService;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
 
 class ArticleController extends Controller
 {
-    public function index(ArticlesService $articlesService)
+    protected ArticleRepositoryInterface $articleRepository;
+
+    public function __construct()
+    {
+        $this->articleRepository = app(ArticleRepositoryInterface::class);
+    }
+
+    public function index(int $page = 1)
     {
         $this->seo()->setTitle('Blog');
 
-        $articles = $articlesService->getIndex();
+        $articles = $this->articleRepository->getIndex($page);
 
         if (request()->expectsJson()) {
             return $articles;

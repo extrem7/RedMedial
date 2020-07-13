@@ -7,6 +7,8 @@ import RedCropper from "@/components/includes/forms/RedCropper"
 
 import {errors} from "@/helpers/helpers"
 
+import {ReactiveProvideMixin} from 'vue-reactive-provide'
+
 export default {
     data() {
         return {
@@ -72,6 +74,12 @@ export default {
             }
         }
     },
+    mixins: [
+        ReactiveProvideMixin({
+            name: 'errorsInject',
+            include: ['errors']
+        })
+    ],
     components: {
         Editor,
         Invalid,

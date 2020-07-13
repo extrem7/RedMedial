@@ -1,7 +1,8 @@
 <template>
     <div class="col-12">
-        <div class="d-flex justify-content-lg-between">
+        <div class="d-flex align-items-center justify-content-lg-between">
             <create-btn></create-btn>
+            <a :href="route('admin.rss.channels.sort')" class="btn btn-outline-warning">Sort</a>
             <search @search="search" v-model="searchQuery"></search>
         </div>
 

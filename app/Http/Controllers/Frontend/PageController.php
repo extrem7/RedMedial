@@ -4,21 +4,32 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Mail\ContactForm;
 use App\Models\Page;
-use App\Services\ArticlesService;
-use App\Services\RssService;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\ChannelRepositoryInterface;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use Mail;
 
 class PageController extends Controller
 {
-    protected RssService $rssService;
+    protected ArticleRepositoryInterface $articleRepository;
+
+    protected CountryRepositoryInterface $countryRepository;
+
+    protected ChannelRepositoryInterface $channelRepository;
+
+    protected PostRepositoryInterface $postRepository;
 
     public function __construct()
     {
-        $this->rssService = app(RssService::class);
+        $this->articleRepository = app(ArticleRepositoryInterface::class);
+        $this->countryRepository = app(CountryRepositoryInterface::class);
+        $this->channelRepository = app(ChannelRepositoryInterface::class);
+        $this->postRepository = app(PostRepositoryInterface::class);
     }
 
-    public function home(Request $request, ArticlesService $articlesService)
+    public function home(Request $request)
     {
         $page = Page::find(1);
 
@@ -28,11 +39,11 @@ class PageController extends Controller
             $this->seo()->setDescription($description);
         }
 
-        $articles = $articlesService->getHome();
-        $covid = $articlesService->getCovid();
+        $articles = $this->articleRepository->getHome();
+        $covid = $this->postRepository->getCovid();
 
-        $country = $this->rssService->getCountry($request->get('country'));
-        $internationalChannels = $this->rssService->getInternationalChannels();
+        $country = $this->countryRepository->getByCode($request->get('country'));
+        $internationalChannels = $this->channelRepository->getInternational();
 
         share([
             'localChannels' => $country !== null ? $country->channels : null,
@@ -51,14 +62,21 @@ class PageController extends Controller
 
     public function allRss(Page $page)
     {
-        $channels = $this->rssService->getAll();
-        share(compact('channels'));
+        $channels = $this->channelRepository->paginate();
+
+        if (request()->expectsJson()) {
+            return $channels;
+        } else {
+            share(compact('channels'));
+        }
 
         return view('frontend.rss.index', compact('page'), ['orderName' => 'all-rss']);
     }
 
-    public function show(Page $page)
+    public function show(Page $pageModel)
     {
+        $page = $pageModel;
+
         $this->seo()->setTitle($page->meta_title ?? $page->title);
         if ($description = $page->meta_description) {
             $this->seo()->setDescription($description);

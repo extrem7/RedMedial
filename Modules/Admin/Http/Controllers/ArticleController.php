@@ -3,17 +3,17 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Models\Article;
-use App\Services\ArticlesService;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Modules\Admin\Http\Requests\ArticleRequest;
 use Modules\Admin\Http\Requests\IndexRequest;
 
 class ArticleController extends Controller
 {
-    protected ArticlesService $articleService;
+    protected ArticleRepositoryInterface $articleRepository;
 
     public function __construct()
     {
-        $this->articleService = app(ArticlesService::class);
+        $this->articleRepository = app(ArticleRepositoryInterface::class);
     }
 
     public function index(IndexRequest $request)
@@ -45,7 +45,7 @@ class ArticleController extends Controller
     {
         $this->seo()->setTitle('Create a new article');
 
-        $this->articleService->shareForCRUD();
+        $this->articleRepository->shareForCRUD();
 
         return view('admin::articles.form');
     }
@@ -54,9 +54,11 @@ class ArticleController extends Controller
     {
         $article = new Article($request->validated());
 
-        if ($request->hasFile('image')) $article->uploadImage($request->file('image'));
+        if ($request->hasFile('image'))
+            $article->uploadImage($request->file('image'));
 
         $article->save();
+        $this->articleRepository->cacheHome();
 
         return response()->json([
             'status' => 'Article has been created',
@@ -70,7 +72,7 @@ class ArticleController extends Controller
 
         $article->oldImage = $article->getImage();
 
-        $this->articleService->shareForCRUD();
+        $this->articleRepository->shareForCRUD();
 
         share(compact('article'));
 
@@ -85,6 +87,8 @@ class ArticleController extends Controller
 
         $article->save();
         $article->load('imageMedia');
+
+        $this->articleRepository->cacheHome();
 
         return response()->json(['status' => 'Article has been updated', 'image' => $article->getImage()]);
     }

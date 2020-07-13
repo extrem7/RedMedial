@@ -24,7 +24,7 @@ class CreateRssChannelsTable extends Migration
             $table->string('name');
             $table->string('feed');
             $table->string('link')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
 
             $table->boolean('use_fulltext')->default(false);
             $table->boolean('use_og')->default(false);
@@ -35,6 +35,8 @@ class CreateRssChannelsTable extends Migration
 
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
+
+            $table->unsignedBigInteger('order_column')->nullable();
 
             $table->timestamps();
         });

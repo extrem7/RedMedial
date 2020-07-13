@@ -25,6 +25,10 @@
                 type: String,
                 default: ''
             },
+            menubar: {
+                type: Boolean,
+                default: true
+            },
             value: String
         },
         data() {
@@ -32,6 +36,7 @@
                 init: {
                     height: null,
                     placeholder: this.placeholder,
+                    menubar: this.menubar,
                     plugins: [
                         "advlist autolink lists link image charmap print preview anchor",
                         "searchreplace visualblocks code fullscreen",

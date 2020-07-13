@@ -485,6 +485,7 @@ class Readability
      */
     public function clean($e, $tag)
     {
+        if ($e === null) return;
         $targetList = $e->getElementsByTagName($tag);
         $isEmbed = ($tag == 'iframe' || $tag == 'object' || $tag == 'embed');
 

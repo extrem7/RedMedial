@@ -5,6 +5,9 @@ namespace Modules\Parser\Services;
 use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
+use App\Repositories\Interfaces\ChannelRepositoryInterface;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use Carbon\Carbon;
 use DB;
 use Exception;
@@ -22,6 +25,12 @@ class ParserService
 {
     protected Command $command;
 
+    protected CountryRepositoryInterface $countryRepository;
+
+    protected ChannelRepositoryInterface $channelRepository;
+
+    protected PostRepositoryInterface $postRepository;
+
     protected Collection $categories;
 
     protected ?string $html;
@@ -31,6 +40,9 @@ class ParserService
     public function __construct(Command $command)
     {
         $this->command = $command;
+        $this->countryRepository = app(CountryRepositoryInterface::class);
+        $this->channelRepository = app(ChannelRepositoryInterface::class);
+        $this->postRepository = app(PostRepositoryInterface::class);
         $this->categories = Category::all('id', 'keywords');
     }
 
@@ -46,7 +58,13 @@ class ParserService
             foreach ($channels as $channel) {
                 $timeStart = microtime(true);
 
+                $channel->refresh();
+                if ($channel->status === Channel::WORKING) {
+                    if ($channel->last_run === null || $channel->last_run->diffInMinutes() < 2) continue;
+                }
+
                 $this->info("Start working on channel #$channel->id $channel->slug");
+                $this->updateLastRun($channel);
                 $channel->update(['status' => Channel::WORKING]);
                 /* @var $feed SimplePie */
                 $feed = Feeds::make($channel->feed, null, true);
@@ -70,6 +88,13 @@ class ParserService
                     });
 
                     $this->info("Created $count items");
+
+                    if (in_array($channel->id, setting('international_medias'))) {
+                        $this->channelRepository->cacheInternational();
+                    }
+                    if ($country = $channel->country) {
+                        if ($count > 0) $this->countryRepository->cacheByCode($country->code);
+                    }
                 } else {
                     $this->error('SimplePie returned error: ' . $feed->error());
                 }
@@ -78,7 +103,6 @@ class ParserService
                 $executionTime = round($timeEnd - $timeStart, 1);
                 $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
                 $channel->update(['status' => Channel::IDLE]);
-                $this->updateLastRun($channel);
             }
         }
     }
@@ -91,7 +115,15 @@ class ParserService
     /* @return Channel[] */
     protected function getChannels(): iterable
     {
-        return Channel::active()->orderBy('last_run')->get(['id', 'name', 'feed', 'use_fulltext', 'use_og'])->all();
+        return Channel::active()
+            ->when($this->command->option('international'), function ($query) {
+                $query->whereIn('id', setting('international_medias'));
+            })->when($this->command->option('country'), function ($query) {
+                $query->where('country_id', (int)$this->command->option('country'));
+            })->with(['country'])
+            ->orderBy('last_run')
+            ->get(['id', 'country_id', 'slug', 'name', 'feed', 'use_fulltext', 'use_og', 'last_run', 'status'])
+            ->all();
     }
 
     protected function createItem(SimplePie_Item $item, Channel $channel): ?Post
@@ -103,7 +135,7 @@ class ParserService
             $this->html = Http::get($item->get_link());
             if ($channel->use_fulltext) {
                 try {
-                    $content = $this->parseFullContent($item);
+                    $content = $this->parseFullContent($item) ?? $content;
                 } catch (Exception $e) {
                     $this->error("Error while parsing full content in file :\n"
                         . $e->getFile() . ' line: ' . $e->getLine() . "\n"
@@ -114,8 +146,8 @@ class ParserService
 
         $post = new Post([
             'channel_id' => $channel->id,
-            'title' => $item->get_title(),
-            'excerpt' => mb_substr($item->get_description(), 0, 510),
+            'title' => strip_tags(htmlspecialchars_decode($item->get_title())),
+            'excerpt' => strip_tags(mb_substr($item->get_description(), 0, 510)),
             'body' => $content,
             'link' => $item->get_link(),
             'created_at' => $date
@@ -195,6 +227,7 @@ class ParserService
             $tags = array_combine($out[1], $out[2]);
             return $tags['og:image'] ?? null;
         }
+        return null;
     }
 
     protected function parseFullContent(SimplePie_Item $item)
@@ -209,28 +242,30 @@ class ParserService
 
         $readability->clean($content_block, 'select');
         // remove empty text nodes
-        foreach ($content_block->childNodes as $_n) {
-            if ($_n->nodeType === XML_TEXT_NODE && trim($_n->textContent) == '') {
-                $content_block->removeChild($_n);
+        if (is_object($content_block)) {
+            foreach ($content_block->childNodes as $_n) {
+                if ($_n->nodeType === XML_TEXT_NODE && trim($_n->textContent) == '') {
+                    $content_block->removeChild($_n);
+                }
+            }
+            // remove nesting: <div><div><div><p>test</p></div></div></div> = <p>test</p>
+            while ($content_block->childNodes->length == 1 && $content_block->firstChild->nodeType === XML_ELEMENT_NODE) {
+                // only follow these tag names
+                if (!in_array(strtolower($content_block->tagName), array('div', 'article', 'section', 'header', 'footer'))) break;
+                //$html = $content_block->firstChild->innerHTML; // FTR 2.9.5
+                $content_block = $content_block->firstChild;
+            }
+
+            // convert content block to HTML string
+            // Need to preserve things like body: //img[@id='feature']
+            if (in_array(strtolower($content_block->tagName), array('div', 'article', 'section', 'header', 'footer', 'li', 'td'))) {
+                $html = $content_block->innerHTML;
+                //} elseif (in_array(strtolower($content_block->tagName), array('td', 'li'))) {
+                //	$html = '<div>'.$content_block->innerHTML.'</div>';
+            } else {
+                $html = $content_block->ownerDocument->saveXML($content_block); // essentially outerHTML
             }
         }
-        // remove nesting: <div><div><div><p>test</p></div></div></div> = <p>test</p>
-        while ($content_block->childNodes->length == 1 && $content_block->firstChild->nodeType === XML_ELEMENT_NODE) {
-            // only follow these tag names
-            if (!in_array(strtolower($content_block->tagName), array('div', 'article', 'section', 'header', 'footer'))) break;
-            //$html = $content_block->firstChild->innerHTML; // FTR 2.9.5
-            $content_block = $content_block->firstChild;
-        }
-        // convert content block to HTML string
-        // Need to preserve things like body: //img[@id='feature']
-        if (in_array(strtolower($content_block->tagName), array('div', 'article', 'section', 'header', 'footer', 'li', 'td'))) {
-            $html = $content_block->innerHTML;
-            //} elseif (in_array(strtolower($content_block->tagName), array('td', 'li'))) {
-            //	$html = '<div>'.$content_block->innerHTML.'</div>';
-        } else {
-            $html = $content_block->ownerDocument->saveXML($content_block); // essentially outerHTML
-        }
-
         //unset($content_block);
         // post-processing cleanup
         $html = preg_replace('!<p>[\s\h\v]*</p>!u', '', $html);
@@ -257,6 +292,9 @@ class ParserService
                 foreach ($fields as $field) {
                     if (mb_stripos($field, $keyword) !== false) {
                         $category->posts()->attach($post->id);
+                        if ($category->id == config('redmedial.covid_category')) {
+                            $this->postRepository->cacheCovid();
+                        }
                         $categoryBreak = true;
                         break;
                     }

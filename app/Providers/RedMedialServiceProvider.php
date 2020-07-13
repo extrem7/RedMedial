@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
 use App\Models\Rss\Country;
-use App\Services\ArticlesService;
+use App\Observers\ArticleObserver;
+use App\Observers\Rss\CountryObserver;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Services\SocialService;
 use Blade;
 use Illuminate\Support\Facades\View;
@@ -37,6 +41,9 @@ class RedMedialServiceProvider extends ServiceProvider
         $this->schema();
 
         $this->directives();
+
+        Article::observe(ArticleObserver::class);
+        Country::observe(CountryObserver::class);
     }
 
     protected function sharedData()
@@ -67,12 +74,12 @@ class RedMedialServiceProvider extends ServiceProvider
             $view->with('bodyClass', $bodyClass);
         });
         View::composer('frontend.errors.404', function ($view) {
-            $articlesService = app(ArticlesService::class);
-            $view->with('articles', $articlesService->get404());
+            $articleRepository = app(ArticleRepositoryInterface::class);
+            $view->with('articles', $articleRepository->get404());
         });
         View::composer('frontend.includes.archive-sidebar', function ($view) {
-            $articlesService = app(ArticlesService::class);
-            $view->with('articlesInSidebar', $articlesService->getSidebar());
+            $articleRepository = app(ArticleRepositoryInterface::class);
+            $view->with('articlesInSidebar', $articleRepository->getSidebar());
         });
     }
 
@@ -100,7 +107,8 @@ class RedMedialServiceProvider extends ServiceProvider
 
     protected function getCountries()
     {
-        return Country::pluck('name', 'slug');
+        $countryRepository = app(CountryRepositoryInterface::class);
+        return $countryRepository->getForHeader();
     }
 
     protected function getSocial()

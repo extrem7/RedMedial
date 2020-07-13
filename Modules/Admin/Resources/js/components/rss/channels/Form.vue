@@ -37,8 +37,7 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" placeholder="Description" rows="2"
-                          v-model="form.description" v-valid.description></textarea>
+                <editor height="250" id="description" placeholder="description" v-model="form.description"></editor>
                 <invalid name="description"></invalid>
             </div>
 
@@ -93,7 +92,7 @@
                     meta_title: '',
                     meta_description: '',
                 },
-                countries: [...this.shared('countries')],
+                countries: [{label: 'None', value: null}, ...this.shared('countries')],
                 oldLogo: null,
                 resource: 'rss.channels'
             }
@@ -105,8 +104,11 @@
                 if (this.isEdit) form.append('_method', 'PATCH')
 
                 for (let field in this.form)
-                    if (this.form[field] !== null)
+                    if (this.form[field] !== null) {
                         form.append(field, this.form[field])
+                    } else {
+                        form.append(field, '')
+                    }
 
                 const logo = await this.$refs.cropper.getBlob()
                 if (logo) form.append('logo', logo, logo.name)
@@ -141,7 +143,9 @@
         },
         created() {
             this.setupEdit('channel')
-            this.oldLogo = this.shared('channel').logo
+            if (this.isEdit) {
+                this.oldLogo = this.shared('channel').logo
+            }
         },
         mixins: [form]
     }

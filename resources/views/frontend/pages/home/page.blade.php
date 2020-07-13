@@ -87,7 +87,7 @@
             <h2 class="title text-center medium-size line mb-4">International Medias</h2>
             <rss-list shared-key="internationalChannels" order-name="international"></rss-list>
             <div class="text-center">
-                <a href="https://redmedial.com/all-rss/" class="btn btn-cyan">More on all rss</a>
+                <a href="/all-rss" class="btn btn-cyan">More on all rss</a>
             </div>
         </section>
 

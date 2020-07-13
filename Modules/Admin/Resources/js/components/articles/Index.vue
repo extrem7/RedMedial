@@ -36,7 +36,7 @@
 
                 <template v-slot:cell(actions)="data">
                     <actions-buttons :id="data.item.id" :resource="resource"
-                                     @delete="destroy(data.item.id)"></actions-buttons>
+                                     @delete="destroy(data.item.id,true)"></actions-buttons>
                 </template>
             </b-table>
 

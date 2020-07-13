@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\RepositoryServiceProvider;
 use Torann\GeoIP\GeoIPServiceProvider;
 
 return [
@@ -180,6 +181,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
 
         GeoIPServiceProvider::class,
+        RepositoryServiceProvider::class,
 
     ],
 

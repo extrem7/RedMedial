@@ -20,6 +20,7 @@ export default {
 
     RssChannelsIndex: () => import('./rss/channels/Index'),
     RssChannelForm: () => import('./rss/channels/Form'),
+    RssChannelsSort: () => import('./rss/channels/Sort'),
 
     RssCountriesIndex: () => import('./rss/countries/Index'),
     RssCountryForm: () => import('./rss/countries/Form'),

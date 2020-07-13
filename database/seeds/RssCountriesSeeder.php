@@ -14,7 +14,8 @@ class RssCountriesSeeder extends Seeder
                 Country::create([
                     'slug' => $country['slug'],
                     'name' => $country['name'],
-                    'code' => $country['code']
+                    'code' => $country['code'],
+                    'order_column' => $country['order']
                 ]);
             }
         });

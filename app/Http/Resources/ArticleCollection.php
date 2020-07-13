@@ -22,6 +22,7 @@ class ArticleCollection extends ResourceCollection
         ];
         if ($this->resource instanceof LengthAwarePaginator) {
             $array['lastPage'] = $this->resource->lastPage();
+            $array['currentPage'] = $this->resource->currentPage();
         }
         return $array;
     }

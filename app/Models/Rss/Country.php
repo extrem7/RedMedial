@@ -4,10 +4,12 @@ namespace App\Models\Rss;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\SortableTrait;
 
 class Country extends Model
 {
     use Sluggable;
+    use SortableTrait;
 
     protected $table = 'rss_countries';
 

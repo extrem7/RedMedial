@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\IndexRequest;
 use Modules\Admin\Http\Requests\Rss\ChannelRequest;
+use Modules\Admin\Http\Requests\Rss\SortRequest;
 
 class ChannelController extends Controller
 {
@@ -105,10 +106,31 @@ class ChannelController extends Controller
         ]);
 
         $channel->is_active = $request->boolean('is_active');
+        $channel->status = Channel::IDLE;
         $channel->save();
 
         return response()->json([
             'status' => "'$channel->name' channel parsing has been " . ($channel->is_active ? 'activated' : 'deactivated')
         ]);
+    }
+
+    public function sortForm()
+    {
+        $this->seo()->setTitle('Sort channels');
+
+        $channels = Channel::ordered()->get();
+
+        share(compact('channels'));
+
+        return view('admin::rss.channels.sort');
+    }
+
+    public function sort(SortRequest $request)
+    {
+        $order = $request->input('order');
+        \DB::transaction(function () use ($order) {
+            Channel::setNewOrder($order);
+        });
+        return response()->json(['status' => 'Channels has been sorted']);
     }
 }

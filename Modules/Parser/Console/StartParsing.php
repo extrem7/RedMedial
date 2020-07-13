@@ -7,7 +7,7 @@ use Modules\Parser\Services\ParserService;
 
 class StartParsing extends Command
 {
-    protected $signature = 'parser:start';
+    protected $signature = 'parser:start {--international} {--country=}';
 
     protected ParserService $service;
 

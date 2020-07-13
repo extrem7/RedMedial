@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -18,6 +19,7 @@ class Channel extends Model implements HasMedia
     use Sluggable;
     use SearchTrait;
     use HasEagerLimit;
+    use SortableTrait;
 
     public const IDLE = 'IDLE';
     public const WORKING = 'WORKING';
@@ -42,6 +44,14 @@ class Channel extends Model implements HasMedia
     ];
 
     // FUNCTIONS
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('order_column', 'asc');
+        });
+    }
+
     public function uploadLogo(UploadedFile $image = null): Media
     {
         if ($this->logoMedia) $this->deleteMedia($this->logoMedia);

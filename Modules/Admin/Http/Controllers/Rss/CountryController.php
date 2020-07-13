@@ -5,6 +5,7 @@ namespace Modules\Admin\Http\Controllers\Rss;
 use App\Models\Rss\Country;
 use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\Rss\CountryRequest;
+use Modules\Admin\Http\Requests\Rss\SortRequest;
 
 class CountryController extends Controller
 {
@@ -12,7 +13,7 @@ class CountryController extends Controller
     {
         $this->seo()->setTitle('Countries');
 
-        $countries = Country::all();
+        $countries = Country::ordered()->get();
 
         share(compact('countries'));
 
@@ -57,5 +58,12 @@ class CountryController extends Controller
     {
         $country->delete();
         return response()->json(['status' => 'Country has been deleted']);
+    }
+
+    public function sort(SortRequest $request)
+    {
+        $order = $request->input('order');
+        Country::setNewOrder($order);
+        return response()->json(['status' => 'Countries has been sorted']);
     }
 }

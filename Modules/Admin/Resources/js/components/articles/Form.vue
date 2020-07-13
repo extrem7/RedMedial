@@ -89,6 +89,7 @@
 
                     status: null,
                 },
+                resource: 'articles',
                 statuses: this.shared('statuses'),
                 oldImage: null
             }

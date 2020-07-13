@@ -1,7 +1,6 @@
 <template>
     <div>
-        <span class="invalid-feedback" v-for="error in array" v-if="isArray && array.length">{{error}}</span>
-        <span class="invalid-feedback" v-if="!isArray && name in parentErrors">{{parentErrors[name]}}</span>
+        <span class="invalid-feedback" v-for="error in errorsInject.errors[name]" v-if="name in errorsInject.errors">{{error}}</span>
     </div>
 </template>
 
@@ -15,22 +14,6 @@
             },
             deep: Boolean
         },
-        computed: {
-            parentErrors() {
-                return this.deep ? this.$parent.$parent.errors : this.$parent.errors
-            },
-            array() {
-                const parentErrors = this.parentErrors
-                const errors = []
-                if (Object.keys(parentErrors).length && this.isArray) {
-                    for (let key in parentErrors) {
-                        if (key.includes(this.name)) {
-                            errors.push(parentErrors[key])
-                        }
-                    }
-                }
-                return errors
-            }
-        }
+        inject: ['errorsInject']
     }
 </script>

@@ -2,53 +2,65 @@
     <div class="col-12">
         <create-btn></create-btn>
         <b-overlay :opacity="0.5" :show="isBusy" variant="dark">
-            <b-table
-                :fields="fields"
-
-                :items="items"
-                bordered
-
-                dark
-                hover
-                ref="table">
-                <template v-slot:cell(name)="{item}">
-                    <a :href="item.link" target="_blank">{{item.name}}</a>
-                </template>
-                <template v-slot:cell(created_at)="data">
-                    {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
-                </template>
-                <template v-slot:cell(updated_at)="data">
-                    {{ data.item.updated_at | moment("DD.MM.YYYY HH:mm") }}
-                </template>
-
-                <template v-slot:cell(actions)="data">
-                    <actions-buttons :id="data.item.id" :resource="resource"
-                                     @delete="destroy(data.item.id)"></actions-buttons>
-                </template>
-            </b-table>
+            <table class="table table-striped table-hover table-dark table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Slug</th>
+                    <th>Code</th>
+                    <th class="date-column">Created</th>
+                    <th class="date-column">Updated</th>
+                    <th class="actions-column"></th>
+                </tr>
+                </thead>
+                <draggable @update="sort" handle=".drag" tag="tbody" v-model="items">
+                    <tr :key="item.id" v-for="item in items">
+                        <td class="vertical-align-center p-0">
+                            <div class="drag">
+                                <svg-vue icon="hand-rock" style="width:20px;"></svg-vue>
+                            </div>
+                        </td>
+                        <td>{{ item.id }}</td>
+                        <td><a :href="item.link" target="_blank">{{item.name}}</a></td>
+                        <td>{{ item.slug }}</td>
+                        <td>{{ item.code }}</td>
+                        <td>{{ item.created_at | moment("DD.MM.YYYY HH:mm") }}</td>
+                        <td>{{ item.updated_at | moment("DD.MM.YYYY HH:mm") }}</td>
+                        <td>
+                            <actions-buttons :id="item.id" @delete="destroy(item.id)"></actions-buttons>
+                        </td>
+                    </tr>
+                </draggable>
+            </table>
         </b-overlay>
     </div>
 </template>
 
 <script>
+    import Draggable from 'vuedraggable'
     import {destroy, index} from '@/mixins/index-table'
 
     export default {
         data() {
             return {
                 items: this.shared('countries'),
-                resource: 'rss.countries',
-                fields: [
-                    'id',
-                    'name',
-                    'slug',
-                    'code',
-                    {key: 'created_at', thClass: 'date-column'},
-                    {key: 'updated_at', thClass: 'date-column'},
-                    {key: 'actions', label: '', thClass: 'actions-column'}
-                ],
+                resource: 'rss.countries'
             }
         },
-        mixins: [index, destroy]
+        methods: {
+            async sort() {
+                const order = this.items.map(({id}) => id)
+                const {status, data} = await this.axios.post(this.route(`admin.${this.resource}.sort`), {order})
+                if (status === 200 && data.status) {
+                    this.$bus.emit('alert', {text: data.status})
+                }
+            }
+        },
+        mixins: [index, destroy],
+        components: {
+            Draggable,
+        }
     }
 </script>

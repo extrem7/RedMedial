@@ -6,10 +6,6 @@
     </div>
 
     <main class="container">
-        <rss-list order-name="{{$orderName}}"></rss-list>
-
-        <!--<div class="text-center">
-            <button class="btn btn-cyan">Load more</button>
-        </div>-->
+        <rss-list :with-pagination="true" order-name="{{$orderName}}"></rss-list>
     </main>
 @endsection

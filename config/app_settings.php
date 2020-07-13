@@ -15,6 +15,7 @@ return [
                     'type' => 'international_medias',
                     'label' => 'International Medias',
                     'rules' => ['required', 'string'],
+                    'accessor' => App\Helpers\Accessors\International::class
                 ],
             ]
         ],

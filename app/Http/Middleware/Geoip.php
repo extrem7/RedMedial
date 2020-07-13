@@ -17,7 +17,7 @@ class Geoip
      */
     public function handle($request, Closure $next)
     {
-        $location = geoip('191.101.119.37');
+        $location = config('app.env') === 'local' ? geoip(env('LOCAL_GEOIP')) : geoip();
         if ($location instanceof Location) {
             $code = $location->iso_code;
             $request->attributes->add(['country' => $code]);

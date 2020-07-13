@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('articles') }}
+        {{ Breadcrumbs::render() }}
     </div>
     <main class="container">
         <div class="row">

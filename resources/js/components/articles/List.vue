@@ -7,8 +7,9 @@
         </div>
         <nav class="navigation pagination" role="navigation">
             <div class="nav-links">
-                <a @click.prevent="load(false)" class="prev page-numbers" href="#" v-if="page>1">previous</a>
-                <a @click.prevent="load" class="next page-numbers" href="#" v-if="page<lastPage">Next</a>
+                <a :href="link(page-1)" @click.prevent="load(false)" class="prev page-numbers"
+                   v-if="page>1">previous</a>
+                <a :href="link(page+1)" @click.prevent="load" class="next page-numbers" v-if="page<lastPage">Next</a>
             </div>
         </nav>
     </div>
@@ -20,11 +21,17 @@
     import Item from "./Item"
 
     export default {
+        props: {
+            isChannel: {
+                type: Boolean,
+                default: false
+            }
+        },
         data() {
             const articles = this.shared('articles')
             return {
                 articles: articles.data,
-                page: 1,
+                page: articles.currentPage || 1,
                 lastPage: articles.lastPage,
                 isLoading: false
             }
@@ -34,8 +41,9 @@
                 this.isLoading = true
                 this.page = next ? this.page + 1 : this.page - 1
                 try {
-                    const response = await this.axios.get(`?page=${this.page}`)
+                    const response = await this.axios.get(this.link(this.page))
                     this.articles = response.data.data
+                    window.history.pushState('', '', this.link(this.page))
                 } catch (e) {
                     console.log(e)
                 }
@@ -43,6 +51,16 @@
                     this.isLoading = false
                 }, 100)
 
+            },
+            link(page) {
+                const route = 'frontend.' + (this.isChannel ? 'rss.channels.show' : 'articles.index')
+                const params = {}
+                if (this.isChannel) params.channel = this.shared('channel').slug
+
+                if (page === 1) return this.route(route, params)
+
+                params.page = page
+                return this.route(route + '.page', params)
             }
         },
         components: {

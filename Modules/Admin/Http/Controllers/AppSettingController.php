@@ -16,7 +16,7 @@ class AppSettingController extends Controller
     {
         $this->seo()->setTitle('Settings');
 
-        $selectedChannels = explode(',', setting('international_medias'));
+        $selectedChannels = setting('international_medias');
         $channels = Channel::get(['id', 'name'])->map(function (Channel $channel) use ($selectedChannels) {
             return [
                 'id' => $channel->id,

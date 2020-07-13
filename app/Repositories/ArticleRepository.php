@@ -1,48 +1,41 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories;
 
 use App\Http\Resources\ArticleCollection;
 use App\Models\Article;
-use App\Models\Rss\Category;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use Cache;
 use Illuminate\Support\Collection;
 
-class ArticlesService
+class ArticleRepository implements ArticleRepositoryInterface
 {
-    public function getIndex(): ArticleCollection
+    public function getIndex(int $page = 1): ArticleCollection
     {
         $articles = Article::published()
             ->select(['id', 'slug', 'title', 'excerpt', 'created_at'])
             ->orderByDesc('id')
             ->with('imageMedia')
-            ->paginate(4);
+            ->paginate(4, null, null, $page);
 
         return new ArticleCollection($articles);
     }
 
     public function getHome(): array
     {
-        $articles = Article::published()
-            ->select(['id', 'slug', 'title', 'excerpt', 'created_at'])
-            ->orderByDesc('id')
-            ->with('imageMedia')
-            ->limit(3)
-            ->get();
+        return Cache::rememberForever('articles.home', function () {
+            $articles = Article::published()
+                ->select(['id', 'slug', 'title', 'excerpt', 'created_at'])
+                ->orderByDesc('id')
+                ->with('imageMedia')
+                ->limit(3)
+                ->get();
 
-        return [
-            'main' => $articles[0],
-            'column' => $articles->slice(1)
-        ];
-    }
-
-    public function getCovid(): array
-    {
-        return Category::find(config('redmedial.covid_category'))
-            ->posts()
-            ->limit(8)
-            ->with('imageMedia', 'channel.country')
-            ->get(['rss_posts.id', 'rss_posts.channel_id', 'rss_posts.slug', 'rss_posts.title', 'rss_posts.created_at'])
-            ->all();
+            return [
+                'main' => $articles[0],
+                'column' => $articles->slice(1)
+            ];
+        });
     }
 
     public function getSidebar(): ArticleCollection
@@ -59,14 +52,12 @@ class ArticlesService
 
     public function get404(): Collection
     {
-        $articles = Article::published()
+        return Article::published()
             ->select(['id', 'slug', 'title', 'created_at'])
             ->orderByDesc('id')
             ->with('imageMedia')
             ->limit(8)
             ->get();
-
-        return $articles;
     }
 
     public function shareForCRUD(): void
@@ -76,5 +67,11 @@ class ArticlesService
         share([
             'statuses' => $statuses
         ]);
+    }
+
+    public function cacheHome(): void
+    {
+        Cache::delete('articles.home');
+        $this->getHome();
     }
 }

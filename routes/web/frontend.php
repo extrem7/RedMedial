@@ -7,12 +7,15 @@ Route::namespace('Frontend')->as('frontend.')->group(function () {
 
     Route::prefix('/blog')->as('articles.')->group(function () {
         Route::get('/', 'ArticleController@index')->name('index');
+        Route::get('/page/{page?}', 'ArticleController@index')->name('index.page');
+
         Route::get('/{article:slug}', 'ArticleController@show')->name('show');
     });
 
     Route::as('rss.')->group(function () {
         Route::get('/countries/{country:slug}', 'RssController@country')->name('countries.show');
         Route::get('/channels/{channel:slug}', 'RssController@channel')->name('channels.show');
+        Route::get('/channels/{channel:slug}/page/{page?}', 'RssController@channel')->name('channels.show.page');
         Route::get('/rss/{post:slug}', 'RssController@show')->name('posts.show');
     });
 
@@ -20,5 +23,5 @@ Route::namespace('Frontend')->as('frontend.')->group(function () {
 
     Route::post('/contact-form', 'PageController@contactForm')->name('contact-form');
 
-    Route::get('/{page:slug}', 'PageController@show')->name('pages.show');
+    Route::get('/{pageModel:slug}', 'PageController@show')->name('pages.show');
 });
