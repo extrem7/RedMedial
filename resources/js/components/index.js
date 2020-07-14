@@ -4,6 +4,7 @@ import RedHeader from "~/components/layout/Header"
 import RedFooter from '~/components/layout/Footer'
 
 import Social from "~/components/layout/Social"
+import CopyIframe from "~/components/includes/CopyIframe"
 //import RssItem from "~/components/layout/RssItem"
 import YoutubePlayer from "~/components/layout/YoutubePlayer"
 //import ArticlesList from "~/components/Articles/List"
@@ -17,6 +18,7 @@ export default {
     RedFooter,
 
     Social,
+    CopyIframe,
     RssItem: () => import('./rss/channels/Channel'),
     YoutubePlayer,
 

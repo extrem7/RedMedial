@@ -5,21 +5,18 @@ namespace Modules\Parser\Services;
 use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
+
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+
 use Carbon\Carbon;
-use DB;
-use Exception;
-use Feeds;
-use Http;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Log;
 use Modules\Parser\Services\FullText\ContentExtractor\ContentExtractor;
+
 use SimplePie;
 use SimplePie_Item;
-use Str;
 
 class ParserService
 {
@@ -67,7 +64,7 @@ class ParserService
                 $this->updateLastRun($channel);
                 $channel->update(['status' => Channel::WORKING]);
                 /* @var $feed SimplePie */
-                $feed = Feeds::make($channel->feed, null, true);
+                $feed = \Feeds::make($channel->feed, null, true);
                 if ($feed->error() === null) {
                     $this->info('Feed has been fetched');
 
@@ -75,7 +72,7 @@ class ParserService
 
                     $count = 0;
 
-                    DB::transaction(function () use ($items, $channel, &$count) {
+                    \DB::transaction(function () use ($items, $channel, &$count) {
                         foreach ($items as $item) {
                             $this->html = null;
 
@@ -118,9 +115,11 @@ class ParserService
         return Channel::active()
             ->when($this->command->option('international'), function ($query) {
                 $query->whereIn('id', setting('international_medias'));
-            })->when($this->command->option('country'), function ($query) {
+            })
+            ->when($this->command->option('country'), function ($query) {
                 $query->where('country_id', (int)$this->command->option('country'));
-            })->with(['country'])
+            })
+            ->with(['country'])
             ->orderBy('last_run')
             ->get(['id', 'country_id', 'slug', 'name', 'feed', 'use_fulltext', 'use_og', 'last_run', 'status'])
             ->all();
@@ -132,11 +131,11 @@ class ParserService
         $date = Carbon::create($item->get_date());
 
         if ($channel->use_og | $channel->use_fulltext) {
-            $this->html = Http::get($item->get_link());
+            $this->html = \Http::get($item->get_link());
             if ($channel->use_fulltext) {
                 try {
                     $content = $this->parseFullContent($item) ?? $content;
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->error("Error while parsing full content in file :\n"
                         . $e->getFile() . ' line: ' . $e->getLine() . "\n"
                         . $e->getMessage());
@@ -155,7 +154,7 @@ class ParserService
 
         try {
             if ($post->save()) return $post;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error(
                 "Error while saving item to DB in file :\n"
                 . $e->getFile() . ' line: ' . $e->getLine() . "\n"
@@ -170,7 +169,7 @@ class ParserService
         $enclosure = $item->get_enclosure();
         $url = null;
 
-        if (Str::contains($enclosure->get_type(), 'image')) {
+        if (\Str::contains($enclosure->get_type(), 'image')) {
             $url = $enclosure->get_link();
         } else if ($useOG) {
             $url = $this->parseOGTagsForImage();
@@ -178,7 +177,7 @@ class ParserService
         if ($url !== null) {
             try {
                 $itemRss->uploadImage($url);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->error("Error while attaching image to post $itemRss->id :\n {$e->getMessage()}");
             }
         }
@@ -307,13 +306,13 @@ class ParserService
     {
         if (is_array($message)) $message = print_r($message, true);
         $this->command->info($message);
-        Log::channel('rss')->info($message);
+        \Log::channel('rss')->info($message);
     }
 
     protected function error(string $message): void
     {
         if (is_array($message)) $message = print_r($message, true);
         $this->command->error($message);
-        Log::channel('rss')->error($message);
+        \Log::channel('rss')->error($message);
     }
 }

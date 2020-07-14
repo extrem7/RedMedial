@@ -197,3 +197,91 @@ body {
     }
 }
 */
+
+body .vue-tags-input {
+    background: #324652;
+
+    .ti-new-tag-input {
+        background: transparent;
+        color: #b7c4c9;
+    }
+
+    .ti-input {
+        padding: 4px 10px;
+        transition: border-bottom 200ms ease;
+    }
+
+    &.ti-focus .ti-input {
+        border: 1px solid #ebde6e;
+    }
+
+    .ti-autocomplete {
+        background: #283944;
+        border: 1px solid #8b9396;
+        border-top: none;
+    }
+
+    .ti-item.ti-selected-item {
+        background: #ebde6e;
+        color: #283944;
+    }
+
+    &::-webkit-input-placeholder {
+        color: #a4b1b6;
+    }
+
+    &::-moz-placeholder {
+        color: #a4b1b6;
+    }
+
+    &:-ms-input-placeholder {
+        color: #a4b1b6;
+    }
+
+    &:-moz-placeholder {
+        color: #a4b1b6;
+    }
+
+    .ti-tag {
+        position: relative;
+        background: #ebde6e;
+        color: #283944;
+    }
+
+    .ti-tag.custom-class {
+        background: transparent;
+        border: 1px solid #ebde6e;
+        color: #ebde6e;
+        margin-right: 4px;
+        border-radius: 0px;
+        font-size: 13px;
+    }
+
+    .ti-tag.ti-invalid {
+        background-color: #e88a74;
+    }
+
+    .ti-new-tag-input.ti-invalid {
+        color: #e88a74;
+    }
+
+    .ti-duplicate span, .ti-new-tag-input.ti-duplicate {
+        text-decoration: line-through;
+    }
+
+    .ti-tag:after {
+        transition: transform .2s;
+        position: absolute;
+        content: '';
+        height: 2px;
+        width: 108%;
+        left: -4%;
+        top: calc(50% - 1px);
+        background-color: #000;
+        transform: scaleX(0);
+    }
+
+    .ti-deletion-mark:after {
+        transform: scaleX(1);
+    }
+}

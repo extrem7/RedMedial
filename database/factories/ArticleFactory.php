@@ -24,6 +24,6 @@ $factory->define(Article::class, function (Faker $faker) {
         'body' => $faker->realText(1000),
         'authors' => $faker->word,
         'original' => $faker->url,
-        'status' => collect(Article::$statuses)->values()->random(),
+        'status' => Article::PUBLISHED,
     ];
 });

@@ -30,7 +30,8 @@ class CountryRepository implements CountryRepositoryInterface
                 ->with(['channels' => function ($channels) {
                     $channels->with(
                         $this->channelRepository->getChannelsRelations())
-                        ->select(['country_id', ...$this->channelRepository->getChannelsColumns()]);
+                        ->select(['country_id', ...$this->channelRepository->getChannelsColumns()])
+                        ->limit(8);
                 }])
                 ->first();
             if ($country !== null)
