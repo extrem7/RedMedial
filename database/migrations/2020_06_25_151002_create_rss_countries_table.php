@@ -23,6 +23,8 @@ class CreateRssCountriesTable extends Migration
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
 
+            $table->unsignedBigInteger('order_column')->nullable();
+
             $table->timestamps();
         });
     }
