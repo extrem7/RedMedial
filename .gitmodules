@@ -1,4 +1,3 @@
-[submodule "resources/frontend"]
-	path = resources/frontend
+[submodule "Modules/Frontend/Resources/layout"]
+	path = Modules/Frontend/Resources/layout
 	url = https://gitlab.com/alex.roox5/redmedial-l.git
-    ignore = all
