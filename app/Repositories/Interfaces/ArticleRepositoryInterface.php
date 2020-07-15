@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Http\Resources\ArticleCollection;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 use Illuminate\Support\Collection;
 
 interface ArticleRepositoryInterface
@@ -16,6 +16,4 @@ interface ArticleRepositoryInterface
     public function get404(): Collection;
 
     public function shareForCRUD(): void;
-
-    public function cacheHome(): void;
 }

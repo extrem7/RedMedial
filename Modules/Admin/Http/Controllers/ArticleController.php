@@ -58,7 +58,7 @@ class ArticleController extends Controller
             $article->uploadImage($request->file('image'));
 
         $article->save();
-        $this->articleRepository->cacheHome();
+        \Cacher::articlesHome();
 
         return response()->json([
             'status' => 'Article has been created',
@@ -88,7 +88,7 @@ class ArticleController extends Controller
         $article->save();
         $article->load('imageMedia');
 
-        $this->articleRepository->cacheHome();
+        \Cacher::articlesHome();
 
         return response()->json(['status' => 'Article has been updated', 'image' => $article->getImage()]);
     }
@@ -96,6 +96,7 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
+        \Cacher::articlesHome();
         return response()->json(['status' => 'Article has been deleted']);
     }
 }

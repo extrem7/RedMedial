@@ -3,11 +3,11 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Models\User;
-use App\Services\UsersService;
 use Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Admin\Http\Requests\IndexRequest;
 use Modules\Admin\Http\Requests\UserRequest;
+use Modules\Admin\Services\UsersService;
 
 class UserController extends Controller
 {

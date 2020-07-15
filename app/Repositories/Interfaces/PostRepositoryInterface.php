@@ -4,12 +4,13 @@ namespace App\Repositories\Interfaces;
 
 
 use App\Models\Rss\Channel;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 
 interface PostRepositoryInterface
 {
     public function getCovid(): array;
 
-    public function getByChannel(Channel $channel, int $page = 1);
+    public function getByChannel(Channel $channel): ArticleCollection;
 
-    public function cacheCovid(): void;
+    public function search(string $query): ArticleCollection;
 }

@@ -3,12 +3,12 @@
 namespace Modules\Admin\Http\Controllers\Rss;
 
 use App\Models\Rss\Channel;
-use App\Services\ChannelsService;
 use Illuminate\Http\Request;
 use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\IndexRequest;
 use Modules\Admin\Http\Requests\Rss\ChannelRequest;
 use Modules\Admin\Http\Requests\Rss\SortRequest;
+use Modules\Admin\Services\ChannelsService;
 
 class ChannelController extends Controller
 {

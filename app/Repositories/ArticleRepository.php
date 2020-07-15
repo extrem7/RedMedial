@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\ArticleCollection;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 use App\Models\Article;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use Cache;
@@ -67,11 +67,5 @@ class ArticleRepository implements ArticleRepositoryInterface
         share([
             'statuses' => $statuses
         ]);
-    }
-
-    public function cacheHome(): void
-    {
-        Cache::delete('articles.home');
-        $this->getHome();
     }
 }

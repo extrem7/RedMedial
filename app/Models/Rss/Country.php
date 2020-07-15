@@ -20,6 +20,14 @@ class Country extends Model
     protected $appends = ['link'];
 
     // FUNCTIONS
+    public static function boot()
+    {
+        static::saved(fn() => \Cacher::countiesForHeader());
+        static::deleted(fn() => \Cacher::countiesForHeader());
+
+        parent::boot();
+    }
+
     public function sluggable()
     {
         return [

@@ -1,4 +1,5 @@
 {
     "Admin": true,
-    "Parser": true
+    "Parser": true,
+    "Frontend": true
 }

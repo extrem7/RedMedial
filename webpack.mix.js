@@ -11,12 +11,12 @@ mix.webpackConfig({
 
 mix.options({processCssUrls: false})
 
-mix.sass('resources/scss/app.scss', 'public/dist/css').version().sourceMaps()
+mix.sass('Modules/Frontend/Resources/scss/app.scss', 'public/dist/css').version().sourceMaps()
 
-    .copy('resources/frontend/src/img', 'public/dist/img')
+    .copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')
 
-    .js('resources/js/app.js', 'public/dist/js/').svgVue({
-    svgPath: 'resources/frontend/src/svg',
+    .js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
+    svgPath: 'Modules/Frontend/Resources/layout/src/svg',
 }).version().sourceMaps()
 
     .mergeManifest()

@@ -2,7 +2,7 @@
 
 namespace App\Models\Rss;
 
-use App\Traits\SearchTrait;
+use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -48,7 +48,7 @@ class Channel extends Model implements HasMedia
     {
         parent::boot();
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('order_column', 'asc');
+            $builder->orderBy('order_column');
         });
     }
 

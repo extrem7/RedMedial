@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'view' => 'frontend.includes.breadcrumbs',
+    'view' => 'frontend::includes.breadcrumbs',
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
     |
     */
 
-    'files' => base_path('routes/web/breadcrumbs.php'),
+    'files' => base_path('Modules/Frontend/Routes/breadcrumbs.php'),
 
     /*
     |--------------------------------------------------------------------------

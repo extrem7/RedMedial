@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\SearchTrait;
+use App\Models\Traits\SearchTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\HasMedia;

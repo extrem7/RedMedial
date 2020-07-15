@@ -40,16 +40,4 @@ class CountryRepository implements CountryRepositoryInterface
             return $country;
         });
     }
-
-    public function cacheForHeader(): void
-    {
-        \Cache::delete('countries.header');
-        $this->getForHeader();
-    }
-
-    public function cacheByCode(string $code = null): void
-    {
-        \Cache::delete("country.$code");
-        $this->getByCode($code);
-    }
 }

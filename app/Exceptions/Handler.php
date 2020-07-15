@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
                         return response()->view('admin::errors.404', [], 404);
                     }
                 }
-                return response()->view('frontend.errors.404', [], 404);
+                return response()->view('frontend::errors.404', [], 404);
             }
         }
 

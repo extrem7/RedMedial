@@ -15,6 +15,4 @@ interface ChannelRepositoryInterface
     public function getInternational(): Collection;
 
     public function getByCountry(Country $country);
-
-    public function cacheInternational(): void;
 }

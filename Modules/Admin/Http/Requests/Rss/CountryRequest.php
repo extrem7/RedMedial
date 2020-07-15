@@ -8,7 +8,7 @@ class CountryRequest extends FormRequest
 {
     public function rules()
     {
-        $countryCodes = implode(',', config('redmedial.countries_codes'));
+        $countryCodes = implode(',', config('admin.countries_codes'));
 
         return [
             'slug' => ['nullable', 'string', 'max:255'],

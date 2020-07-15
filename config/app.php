@@ -243,6 +243,7 @@ return [
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
 
         'Feeds' => willvincent\Feeds\Facades\FeedsFacade::class,
+        'Cacher' => App\Facades\CacherFacade::class
     ],
 
 ];

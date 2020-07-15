@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\SearchTrait;
+use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;

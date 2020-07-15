@@ -2,8 +2,9 @@
 
 namespace App\Models\Rss;
 
-use App\Traits\SearchTrait;
+use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -23,10 +24,18 @@ class Post extends Model implements HasMedia
         'channel_id', 'title', 'excerpt', 'body', 'link', 'created_at'
     ];
     protected $search = [
-        'name', 'excerpt', 'body'
+        'title', 'excerpt', 'body'
     ];
 
     // FUNCTIONS
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('created_at', 'desc');
+        });
+    }
+
     public function uploadImage(string $url): ?Media
     {
         if ($this->imageMedia) $this->deleteMedia($this->imageMedia);

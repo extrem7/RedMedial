@@ -87,10 +87,10 @@ class ParserService
                     $this->info("Created $count items");
 
                     if (in_array($channel->id, setting('international_medias'))) {
-                        $this->channelRepository->cacheInternational();
+                        \Cacher::channelsInternational();
                     }
                     if ($country = $channel->country) {
-                        if ($count > 0) $this->countryRepository->cacheByCode($country->code);
+                        if ($count > 0) \Cacher::countyByCode($country->code);
                     }
                 } else {
                     $this->error('SimplePie returned error: ' . $feed->error());
@@ -291,8 +291,8 @@ class ParserService
                 foreach ($fields as $field) {
                     if (mb_stripos($field, $keyword) !== false) {
                         $category->posts()->attach($post->id);
-                        if ($category->id == config('redmedial.covid_category')) {
-                            $this->postRepository->cacheCovid();
+                        if ($category->id == config('frontend.covid_category')) {
+                            \Cacher::postsCovid();
                         }
                         $categoryBreak = true;
                         break;

@@ -1,0 +1,20 @@
+@import "../layout/src/scss/main";
+
+.invalid-feedback {
+    display: block !important;
+    font-weight: bold;
+    font-size: 100%;
+}
+
+body {
+    top: 0 !important;
+}
+
+.skiptranslate {
+    display: none !important;
+}
+
+red-header {
+    height: 147px;
+    display: inline-table;
+}

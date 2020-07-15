@@ -69,10 +69,4 @@ class ChannelRepository implements ChannelRepositoryInterface
     {
         return ['id', 'slug', 'name', 'link'];
     }
-
-    public function cacheInternational(): void
-    {
-        \Cache::delete('channels.international');
-        $this->getInternational();
-    }
 }
