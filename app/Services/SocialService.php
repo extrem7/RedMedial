@@ -41,7 +41,7 @@ class SocialService
     public function instagram(): string
     {
         $followers = 429272;
-        $result = $this->client->request('GET', 'https://www.instagram.com/' . config('redmedial.social.instagram.id') . '/?__a=1');
+        $result = $this->client->request('GET', 'https://www.instagram.com/' . config('frontend.social.instagram.id') . '/?__a=1');
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json->graphql->user->edge_followed_by->count);
@@ -53,7 +53,7 @@ class SocialService
     public function twitter(): string
     {
         $followers = 0;
-        $result = $this->client->request('GET', 'https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=' . config('redmedial.social.twitter.id'));
+        $result = $this->client->request('GET', 'https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=' . config('frontend.social.twitter.id'));
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json[0]->followers_count);
@@ -65,7 +65,7 @@ class SocialService
     public function youtube(): string
     {
         $followers = 0;
-        $result = $this->client->request('GET', 'https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=' . config('redmedial.social.youtube.id') . '&fields=items/statistics/subscriberCount&key=AIzaSyASnsUn91RmZMEJFRVNk12LEk2qeFcCDqs');
+        $result = $this->client->request('GET', 'https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=' . config('frontend.social.youtube.id') . '&fields=items/statistics/subscriberCount&key=AIzaSyASnsUn91RmZMEJFRVNk12LEk2qeFcCDqs');
         try {
             $json = json_decode($result->getBody()->getContents());
             $followers = number_format($json->items[0]->statistics->subscriberCount);

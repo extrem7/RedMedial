@@ -30,6 +30,13 @@ class CacheService
     {
         Cache::delete('articles.home');
         $this->articleRepository->getHome();
+        $this->articlesSidebar();
+    }
+
+    public function articlesSidebar(): void
+    {
+        Cache::delete('articles.sidebar');
+        $this->articleRepository->getSidebar();
     }
 
     public function countiesForHeader(): void

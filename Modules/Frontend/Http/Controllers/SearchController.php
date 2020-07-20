@@ -18,16 +18,16 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        $this->seo()->setTitle($query);
-        if ($query !== null) {
-            $posts = $this->postRepository->search($query);
+        $this->seo()->setTitle($query ?? 'Search');
 
-            if (request()->expectsJson()) {
-                return $posts;
-            } else {
-                share(['articles' => $posts]);
-            }
+        $posts = $this->postRepository->search($query ?? '');
+
+        if (request()->expectsJson()) {
+            return $posts;
+        } else {
+            share(['articles' => $posts]);
         }
+
         share(compact('query'));
 
         return view('frontend::pages.search', compact('query', 'page'));

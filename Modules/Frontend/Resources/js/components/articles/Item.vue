@@ -8,9 +8,7 @@
             <div class="d-flex align-items-center flex-wrap">
                 <div class="article-date">{{ createdAt | moment("DD MMMM, YYYY") }}</div>
             </div>
-            <div class="article-description line-cap">
-                <p>{{ excerpt }}</p>
-            </div>
+            <div class="article-description line-cap" v-html="excerpt"></div>
         </div>
     </div>
 </template>

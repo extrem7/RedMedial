@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('frontend::rss.posts.show',$post) }}
+        {{ Breadcrumbs::render('frontend.rss.posts.show',$post) }}
     </div>
     <main class="container">
         <div class="row">

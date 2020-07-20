@@ -66,8 +66,8 @@
                     {key: 'id', sortable: true},
                     {key: 'title', sortable: true},
                     {key: 'status', sortable: true},
-                    {key: 'created_at', sortable: true},
-                    {key: 'updated_at', sortable: true},
+                    {key: 'created_at', thClass: 'date-column', sortable: true},
+                    {key: 'updated_at', thClass: 'date-column', sortable: true},
                     {key: 'actions', label: '', thClass: 'actions-column'}
                 ],
                 sortDesc: true,

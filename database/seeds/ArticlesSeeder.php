@@ -13,8 +13,24 @@ class ArticlesSeeder extends Seeder
      */
     public function run()
     {
-        factory(Article::class, (int)env('ARTICLES_SEEDER_COUNT', 100))->create()->each(function (Article $article) {
-            $article->addMediaFromUrl('https://picsum.photos/650/556')->toMediaCollection('image');
+        DB::transaction(function () {
+            $articles = collect(json_decode(file_get_contents(database_path('old/articles.json'))));
+            $articles->each(function ($data, $i) {
+                dump($i);
+                $data = [
+                    'title' => htmlspecialchars_decode($data->title, ENT_QUOTES),
+                    'slug' => $data->slug,
+                    'excerpt' => htmlspecialchars_decode($data->excerpt),
+                    'body' => htmlspecialchars_decode($data->body),
+                    'created_at' => $data->created_at,
+                    'status' => Article::PUBLISHED
+                ];
+                $article = Article::create((array)$data);
+                if ($files = glob(resource_path('old/articles/' . ($i + 1) . '.*'))) {
+                    dump($files[0]);
+                    $article->addMedia($files[0])->preservingOriginal()->toMediaCollection('image');
+                }
+            });
         });
     }
 }

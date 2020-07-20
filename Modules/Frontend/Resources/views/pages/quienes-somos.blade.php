@@ -25,9 +25,9 @@
             </div>
             <div class="col-xl-3 col-lg-4 indent-sm">
                 <social></social>
-                <rss-item :rss="singleRss" class="mt-4"></rss-item>
+                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
                 @include('frontend::articles.includes.ads-single')
-                <rss-item :rss="singleRss" class="mt-4"></rss-item>
+                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
             </div>
         </div>
     </main>

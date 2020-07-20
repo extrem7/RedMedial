@@ -29,6 +29,7 @@
         "vue-moment": "^4.1.0",
         "vue-reactive-provide": "^0.3.0",
         "vue-rocker-switch": "^1.2.4",
+        "vue-scrollto": "^2.18.1",
         "vue-select": "^3.10.3",
         "vue-super-call": "^1.0.0",
         "vue-upload-component": "^2.8.20",

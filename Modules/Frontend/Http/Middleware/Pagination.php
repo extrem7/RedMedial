@@ -17,7 +17,15 @@ class Pagination
     public function handle($request, Closure $next)
     {
         if ($page = $request->route()->parameter('page')) {
-            $request->attributes->add(['page' => $page]);
+            if ($page == 1) {
+                $route = $request->route()->getName();
+                $parameters = $request->route()->parameters();
+                unset($parameters['page']);
+                return redirect(
+                    route(\Str::replaceFirst('.page', '', $route), $parameters)
+                );
+            }
+            // $request->attributes->add(['page' => $page]);
         }
 
         return $next($request);

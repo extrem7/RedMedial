@@ -81,7 +81,7 @@
             </div>
             <div class="col-xl-3 col-lg-4 indent-sm">
                 <social></social>
-                <rss-item :rss="singleRss" class="mt-4"></rss-item>
+                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
                 <div class="ads-single mt-4">
                     <div id="div-gpt-ad-RM2020-01" data-google-query-id="CP7R7sX6jeoCFQIZewodFYkH4Q">
                         <div id="google_ads_iframe_/30128925/RM2020_SINGLE/RM2020_single_01_0__container__"
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                <rss-item :rss="singleRss" class="mt-4"></rss-item>
+                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
             </div>
         </div>
 

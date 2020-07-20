@@ -47,7 +47,8 @@
                     role: null,
                 },
                 roles: [...this.shared('roles')],
-                oldAvatar: null
+                oldAvatar: null,
+                resource: 'users'
             }
         },
         methods: {

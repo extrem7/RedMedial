@@ -40,14 +40,16 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function getSidebar(): ArticleCollection
     {
-        $articles = Article::published()
-            ->select(['id', 'slug', 'title', 'created_at'])
-            ->orderByDesc('id')
-            ->with('imageMedia')
-            ->limit(2)
-            ->get();
+        return Cache::rememberForever('articles.sidebar', function () {
+            $articles = Article::published()
+                ->select(['id', 'slug', 'title', 'created_at'])
+                ->orderByDesc('id')
+                ->with('imageMedia')
+                ->limit(2)
+                ->get();
 
-        return new ArticleCollection($articles);
+            return new ArticleCollection($articles);
+        });
     }
 
     public function get404(): Collection

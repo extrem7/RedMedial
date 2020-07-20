@@ -8,16 +8,14 @@ use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\Request;
+use Modules\Frontend\Http\Requests\ContactFormRequest;
 use Modules\Frontend\Mail\ContactForm;
 
 class PageController extends Controller
 {
     protected ArticleRepositoryInterface $articleRepository;
-
     protected CountryRepositoryInterface $countryRepository;
-
     protected ChannelRepositoryInterface $channelRepository;
-
     protected PostRepositoryInterface $postRepository;
 
     public function __construct()
@@ -86,21 +84,12 @@ class PageController extends Controller
             return $this->allRss($page);
         }
 
-        // Route2Class::addClass("page-template-$bodyClass");
         return view("frontend::pages.$view", compact('page'));
     }
 
-    public function contactForm(Request $request)
+    public function contactForm(ContactFormRequest $request)
     {
-        $data = $this->validate($request, [
-            'name' => ['nullable', 'string'],
-            'email' => ['required', 'email'],
-            'phone' => ['nullable', 'string'],
-            'link' => ['nullable', 'url'],
-            'message' => ['nullable', 'string'],
-        ]);
-
-        \Mail::to(get_admins_mails())->send(new ContactForm($data));
+        \Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
 
         return response()->json(['status' => 'Your message has been sent']);
     }

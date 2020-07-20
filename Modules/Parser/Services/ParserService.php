@@ -145,7 +145,7 @@ class ParserService
 
         $post = new Post([
             'channel_id' => $channel->id,
-            'title' => strip_tags(htmlspecialchars_decode($item->get_title())),
+            'title' => strip_tags(htmlspecialchars_decode($item->get_title(), ENT_QUOTES)),
             'excerpt' => strip_tags(mb_substr($item->get_description(), 0, 510)),
             'body' => $content,
             'link' => $item->get_link(),

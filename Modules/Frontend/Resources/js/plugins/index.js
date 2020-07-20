@@ -10,6 +10,7 @@ import './ls'
 import route, {Ziggy} from 'ziggy'
 import VueMoment from "vue-moment"
 import VueLazyload from 'vue-lazyload'
+import VueScrollTo from 'vue-scrollto'
 
 Vue.use(VueBus)
 
@@ -18,6 +19,7 @@ Vue.use(SvgVue)
 Vue.use(VueMoment)
 
 Vue.use(VueLazyload)
+Vue.use(VueScrollTo)
 
 Vue.mixin({
     methods: {

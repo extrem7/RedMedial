@@ -1,6 +1,6 @@
 <template>
     <div class="col-xl-9 col-lg-8">
-        <div class="article-list">
+        <div class="article-list" id="article-list">
             <b-overlay :opacity="0.9" :show="isLoading" variant="white">
                 <item :key="article.id" v-bind="article" v-for="article in articles"></item>
             </b-overlay>
@@ -8,8 +8,10 @@
         <nav class="navigation pagination" role="navigation">
             <div class="nav-links">
                 <a :href="link(page-1)" @click.prevent="load(false)" class="prev page-numbers"
+                   v-scroll-to="{ el: '#article-list', offset: -100 }"
                    v-if="page>1">previous</a>
-                <a :href="link(page+1)" @click.prevent="load" class="next page-numbers" v-if="page<lastPage">Next</a>
+                <a :href="link(page+1)" @click.prevent="load" class="next page-numbers"
+                   v-if="page<lastPage" v-scroll-to="{ el: '#article-list', offset: -100 }">Next</a>
             </div>
         </nav>
     </div>

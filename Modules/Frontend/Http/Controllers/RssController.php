@@ -38,6 +38,7 @@ class RssController extends Controller
         if ($description = $channel->meta_description) $this->seo()->setDescription($description);
 
         $posts = $this->postRepository->getByChannel($channel);
+        abort_if($posts->collection->isEmpty(), 404);
 
         if (request()->expectsJson()) {
             return $posts;
@@ -54,6 +55,8 @@ class RssController extends Controller
     public function show(Post $post)
     {
         $this->seo()->setTitle($post->title);
+        $this->seo()->setDescription(strip_tags($post->excerpt));
+        if ($post->imageMedia) $this->seo()->addImages(url($post->getImage()));
 
         return view('frontend::rss.post', compact('post'));
     }

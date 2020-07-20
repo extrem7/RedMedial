@@ -20,6 +20,8 @@ class ArticleController extends Controller
 
         $articles = $this->articleRepository->getIndex($page);
 
+        abort_if($articles->collection->isEmpty(), 404);
+
         if (request()->expectsJson()) {
             return $articles;
         } else {
@@ -31,7 +33,9 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        $this->seo()->setTitle($article->title);
+        $this->seo()->setTitle($article->meta_title ?? $article->title);
+        $this->seo()->setDescription($article->meta_description ?? strip_tags($article->excerpt));
+        if ($article->imageMedia) $this->seo()->addImages(url($article->getImage()));
 
         return view('frontend::articles.show', compact('article'));
     }
