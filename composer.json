@@ -12,7 +12,6 @@
         "ext-dom": "*",
         "ext-json": "*",
         "artesaos/seotools": "^0.18.0",
-        "butschster/meta-tags": "^1.4",
         "coderello/laravel-shared-data": "^2.0",
         "cviebrock/eloquent-sluggable": "^7.0",
         "davejamesmiller/laravel-breadcrumbs": "^5.3",

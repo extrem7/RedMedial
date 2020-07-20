@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44292793ee4c2f1b806a66e41ff0812e",
+    "content-hash": "1a470ca3e1f4cf3efa1d0a1342b36129",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -176,76 +176,6 @@
                 }
             ],
             "time": "2020-04-15T15:59:35+00:00"
-        },
-        {
-            "name": "butschster/meta-tags",
-            "version": "v1.6.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/butschster/LaravelMetaTags.git",
-                "reference": "751f4ea0e45d8b8471604a0dc9378f31b5783b35"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/butschster/LaravelMetaTags/zipball/751f4ea0e45d8b8471604a0dc9378f31b5783b35",
-                "reference": "751f4ea0e45d8b8471604a0dc9378f31b5783b35",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/config": "^5.6|^6.0|^7.0",
-                "illuminate/console": "^5.6|^6.0|^7.0",
-                "illuminate/contracts": "^5.6|^6.0|^7.0",
-                "illuminate/support": "^5.6|^6.0|^7.0",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "phpspec/phpspec": "^5.1",
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Butschster\\Head\\Providers\\MetaTagsServiceProvider"
-                    ],
-                    "aliases": {
-                        "Meta": "Butschster\\Head\\Facades\\Meta",
-                        "PackageManager": "Butschster\\Head\\Facades\\PackageManager"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Butschster\\Head\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pavel Buchnev",
-                    "email": "butschster@gmail.com"
-                }
-            ],
-            "description": "The most powerful and extendable tools for managing SEO Meta Tags in your Laravel project",
-            "keywords": [
-                "laravel5",
-                "lumen",
-                "metatags",
-                "opengraph",
-                "seo",
-                "webmaster"
-            ],
-            "funding": [
-                {
-                    "url": "https://liberapay.com/butschster",
-                    "type": "liberapay"
-                }
-            ],
-            "time": "2020-04-08T20:06:51+00:00"
         },
         {
             "name": "cocur/slugify",

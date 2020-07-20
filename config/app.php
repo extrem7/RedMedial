@@ -168,7 +168,7 @@ return [
         /*
          * Package Service Providers...
          */
-        App\Providers\MetaTagsServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
