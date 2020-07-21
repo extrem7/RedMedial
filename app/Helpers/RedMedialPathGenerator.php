@@ -35,16 +35,16 @@ class RedMedialPathGenerator implements PathGenerator
 
         switch ($media->model_type) {
             case Post::class:
-                return "rss/posts/" . $media->model_id . "/$collection/";
+                return "rss/posts/" . $media->model_id . "/$collection";
                 break;
             case Article::class:
-                return "articles/" . $media->model_id . "/$collection/";
+                return "articles/" . $media->model_id . "/$collection";
                 break;
             case Channel::class:
-                return "rss/channels/" . $media->model_id . "/$collection/";
+                return "rss/channels/" . $media->model_id . "/$collection";
                 break;
             case User::class:
-                return "users/" . $media->model_id . "/$collection/";
+                return "users/" . $media->model_id . "/$collection";
                 break;
         }
 

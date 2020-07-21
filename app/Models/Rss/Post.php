@@ -40,7 +40,7 @@ class Post extends Model implements HasMedia
     {
         if ($this->imageMedia) $this->deleteMedia($this->imageMedia);
 
-        return $this->addMediaFromUrl($url)->toMediaCollection('image');
+        return $this->addMediaFromUrl($url)->toMediaCollection('image', 's3');
     }
 
     public function getImage(string $size = ''): string
