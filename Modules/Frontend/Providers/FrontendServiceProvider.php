@@ -8,6 +8,8 @@ use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Services\SocialService;
 use Illuminate\Support\ServiceProvider;
 use Route2Class;
+use Spatie\SchemaOrg\BaseType;
+use Spatie\SchemaOrg\Schema;
 use View;
 
 class FrontendServiceProvider extends ServiceProvider
@@ -23,6 +25,10 @@ class FrontendServiceProvider extends ServiceProvider
 
         $this->sharedData();
         $this->viewComposer();
+
+        $this->schema();
+
+        $this->directives();
     }
 
     public function register()
@@ -94,6 +100,26 @@ class FrontendServiceProvider extends ServiceProvider
         });
     }
 
+    private function schema()
+    {
+        View::composer('frontend::layouts.master', function ($view) {
+            $schema = collect();
+
+            $organization = Schema::organization()
+                ->name(config('seotools.meta.defaults.title'))
+                ->email('CONTACTO@ELCIUDADANO.CL')
+                ->description(config('seotools.meta.defaults.description'))
+                ->logo(url(asset('/dist/img/logo.svg')))
+                ->url(url('/'));
+
+            $schema->push($organization);
+
+            $schema = $schema->map(fn(BaseType $item) => $item->toScript());
+
+            $view->with('schema', $schema);
+        });
+    }
+
     protected function getCountries()
     {
         $countryRepository = app(CountryRepositoryInterface::class);
@@ -112,5 +138,12 @@ class FrontendServiceProvider extends ServiceProvider
                 $social[$type]['count'] = $counters[$type];
         }
         return $social;
+    }
+
+    private function directives()
+    {
+        \Blade::directive('schema', function () {
+            return '<?php $schema->each(fn($item)=>print($item)); ?>';
+        });
     }
 }

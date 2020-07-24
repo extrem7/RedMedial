@@ -21,5 +21,6 @@
 @routes('frontend')
 @stack('scripts')
 <script src="{{mix('dist/js/app.js')}}"></script>
+@schema
 </body>
 </html>

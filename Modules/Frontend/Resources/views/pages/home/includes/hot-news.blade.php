@@ -1,12 +1,13 @@
 <section class="hot-news mb-4">
     <h2 class="title red-color text-center medium-size line">Latest Coronavirus News</h2>
-    <div class="row article-main-list mt-3 inline-block-xs">
+    <div class="row article-main-list mt-3 inline-block-xs" v-lazy-container="{ selector: 'img' }">
         @php /* @var $post \App\Models\Rss\Post */  @endphp
         @foreach($covid as $post)
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="article-card">
-                    <a href="{{$post->link}}" class="article-header overflow-box"><img src="{{$post->image}}"
-                                                                                       alt="{{$post->title}}"></a>
+                    <a href="{{$post->link}}" class="article-header overflow-box">
+                        <img data-src="{{$post->thumb}}" alt="{{$post->title}}">
+                    </a>
                     <div class="article-body">
                         @if($post->channel->country!==null)
                             <a href="{{$post->channel->country->link}}"

@@ -69,5 +69,10 @@ const app = new Vue({
             sidebarChannels: this.shared('sidebarChannels') || [],
         }
     },
+    methods: {
+        mapVisible(visible) {
+            if (visible) this.$refs.map.src = 'https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6'
+        }
+    },
     components,
 })

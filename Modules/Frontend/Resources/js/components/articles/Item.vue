@@ -1,7 +1,7 @@
 <template>
     <div class="article-archive">
         <a :href="link" class="article-archive-header overflow-box">
-            <img :alt="title" :src="thumb" class="img-fluid">
+            <img :alt="title" class="img-fluid" v-lazy="thumb">
         </a>
         <div class="article-archive-body">
             <a :href="link" class="title">{{ title }}</a>

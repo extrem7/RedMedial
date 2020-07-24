@@ -14,7 +14,7 @@
                             <img src="{{asset('dist/img/quienes-somos.png')}}" class="img-fluid" alt="{{$page->title}}">
                         </div>
                         <div class="main-article-card height-mod-2">
-                            <div class="title title-cyan">{{$page->title}}</div>
+                            <h1 class="title title-cyan">{{$page->title}}</h1>
                             <div class="d-flex justify-content-center article-description">
                                 {{$page->meta_description}}
                             </div>

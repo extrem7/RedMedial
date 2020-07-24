@@ -60,7 +60,9 @@
         </section>
 
         <section class="section-subscribe">
-            <social></social>
+            <div>
+                <social></social>
+            </div>
         </section>
 
         <section class="youtube-list pt-3">

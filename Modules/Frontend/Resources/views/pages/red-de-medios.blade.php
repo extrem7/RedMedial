@@ -10,7 +10,7 @@
         {{ Breadcrumbs::render('page',$page) }}
         <div class="row">
             <div class="col-xl-9 col-lg-8">
-                <div class="title title-cyan page-title mb-3">{{$page->title}}</div>
+                <h1 class="title title-cyan page-title mb-3">{{$page->title}}</h1>
                 <div class="semi-bold">{!!$page->body!!}</div>
                 <div class="box box-form mt-0 mt-md-4">
                     <div class="page-title title title-cyan">Contact us</div>

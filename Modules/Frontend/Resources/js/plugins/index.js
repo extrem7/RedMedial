@@ -11,15 +11,14 @@ import route, {Ziggy} from 'ziggy'
 import VueMoment from "vue-moment"
 import VueLazyload from 'vue-lazyload'
 import VueScrollTo from 'vue-scrollto'
+import VueObserveVisibility from 'vue-observe-visibility'
 
 Vue.use(VueBus)
-
 Vue.use(SvgVue)
-
 Vue.use(VueMoment)
-
 Vue.use(VueLazyload)
 Vue.use(VueScrollTo)
+Vue.use(VueObserveVisibility)
 
 Vue.mixin({
     methods: {
@@ -27,3 +26,4 @@ Vue.mixin({
         shared: (key) => shared()[key]
     }
 })
+

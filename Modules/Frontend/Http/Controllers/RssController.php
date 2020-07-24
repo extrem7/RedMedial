@@ -7,6 +7,7 @@ use App\Models\Rss\Country;
 use App\Models\Rss\Post;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Modules\Frontend\Services\SchemaService;
 
 class RssController extends Controller
 {
@@ -52,7 +53,7 @@ class RssController extends Controller
         return view('frontend::rss.channel', compact('channel'));
     }
 
-    public function show(Post $post)
+    public function show(Post $post, SchemaService $schemaService)
     {
         $post->load('imageMedia');
         $post->append(['image', 'link']);
@@ -65,6 +66,8 @@ class RssController extends Controller
             'article' => $post
         ]);
 
-        return view('frontend::rss.post', compact('post'));
+        $articleSchema = $schemaService->article($post);
+
+        return view('frontend::rss.post', compact('post', 'postSchema'));
     }
 }

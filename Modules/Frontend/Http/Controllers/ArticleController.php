@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Article;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use Modules\Frontend\Services\SchemaService;
 
 class ArticleController extends Controller
 {
@@ -31,7 +32,7 @@ class ArticleController extends Controller
         return view('frontend::articles.index');
     }
 
-    public function show(Article $article)
+    public function show(Article $article, SchemaService $schemaService)
     {
         $article->load('imageMedia');
         $article->append(['image', 'link']);
@@ -42,6 +43,8 @@ class ArticleController extends Controller
 
         share(compact('article'));
 
-        return view('frontend::articles.show', compact('article'));
+        $articleSchema = $schemaService->article($article);
+
+        return view('frontend::articles.show', compact('article', 'articleSchema'));
     }
 }

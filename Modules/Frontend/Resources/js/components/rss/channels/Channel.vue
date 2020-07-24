@@ -2,7 +2,7 @@
     <div class="rss-item">
         <div class="rss-header">
             <a :href="link" target="_blank">
-                <img :alt="name" :src="logo">
+                <img :alt="name" v-lazy="logo">
             </a>
             <button class="icon btn-open-rss" v-b-toggle="`channel-${id}`">
                 <img alt="burger-menu" src="/dist/img/icons/chevron-circle-down.svg">

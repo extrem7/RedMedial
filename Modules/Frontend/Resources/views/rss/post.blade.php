@@ -14,14 +14,16 @@
                             <img src="{{$post->image}}" class="img-fluid" alt="alt">
                         </div>
                         <div class="main-article-card">
-                            <div class="title title-cyan line-cap">{{$post->title}}</div>
+                            <h1 class="title title-cyan line-cap">{{$post->title}}</h1>
                             <div class="d-flex justify-content-between mt-4">
                                 <div class="article-date">{{$post->date}}</div>
                             </div>
                         </div>
                     </div>
                     <div class="mt-3 d-flex align-items-center">
-                        <share></share>
+                        <div>
+                            <share></share>
+                        </div>
                         @include('frontend::articles.includes.donate')
                     </div>
                     @include('frontend::articles.includes.banner-bottom')
@@ -39,6 +41,7 @@
 @endsection
 
 @push('scripts')
+    {!!$postSchema!!}
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0&appId=2267874190154020&autoLogAppEvents=1"
             nonce="UGIJPutf"></script>

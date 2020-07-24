@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-xl-9 col-lg-8">
                 <div class="box box-form">
-                    <div class="page-title title title-cyan">{{$page->title}}</div>
+                    <h1 class="page-title title title-cyan">{{$page->title}}</h1>
                     <div class="mt-3 mb-4">{!!$page->body!!}</div>
                     <form-contacto></form-contacto>
                 </div>

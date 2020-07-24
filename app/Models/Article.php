@@ -70,7 +70,7 @@ class Article extends Model implements HasMedia
     public function getImage(string $size = ''): string
     {
         if ($this->imageMedia !== null) {
-            return $this->imageMedia->getUrl($size);
+            return url($this->imageMedia->getUrl($size));
         } else {
             return asset('dist/img/no-image.jpg');
         }

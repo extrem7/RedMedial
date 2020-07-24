@@ -14,7 +14,7 @@
                             <img src="{{$article->image}}" class="img-fluid" alt="alt">
                         </div>
                         <div class="main-article-card">
-                            <div class="title title-cyan line-cap">{{$article->title}}</div>
+                            <h1 class="title title-cyan line-cap">{{$article->title}}</h1>
                             <div class="d-flex justify-content-between mt-4">
                                 <div class="article-date">{{$article->date}}</div>
                             </div>
@@ -59,6 +59,7 @@
 @endsection
 
 @push('scripts')
+    {!!$articleSchema!!}
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0&appId=2267874190154020&autoLogAppEvents=1"
             nonce="UGIJPutf"></script>

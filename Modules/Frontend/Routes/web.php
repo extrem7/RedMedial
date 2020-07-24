@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PageController@home')->name('home');
 
+Route::get('/sitemap.xml', 'HelperController@sitemap');
+
 Route::prefix('/blog')->as('articles.')->group(function () {
     Route::get('/', 'ArticleController@index')->name('index');
     Route::get('/page/{page?}', 'ArticleController@index')->name('index.page');

@@ -8,7 +8,7 @@
     @if($query)
         <div class="box-info">
             <div class="container text-center">
-                <div class="title error-title mb-2">Search Results for “{{$query}}” – Red Medial</div>
+                <h1 class="title error-title mb-2">Search Results for “{{$query}}” – Red Medial</h1>
             </div>
         </div>
     @endif
