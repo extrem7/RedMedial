@@ -41,17 +41,17 @@
                     <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>
                 </ul>
                 <div class="media-block">
-                    <a href="" target="_blank">
+                    <a :href="social.facebook.link" target="_blank">
                         <svg-vue icon="facebook"></svg-vue>
                     </a>
-                    <a href="" target="_blank">
-                        <svg-vue icon="viber"></svg-vue>
+                    <a :href="social.instagram.link" target="_blank">
+                        <svg-vue icon="instagram"></svg-vue>
                     </a>
-                    <a href="" target="_blank">
-                        <svg-vue icon="youtube"></svg-vue>
+                    <a :href="social.twitter.link" target="_blank">
+                        <svg-vue icon="twitter"></svg-vue>
                     </a>
-                    <a href="" target="_blank">
-                        <svg-vue icon="google-plus-g"></svg-vue>
+                    <a :href="social.youtube.link" target="_blank">
+                        <svg-vue icon="play"></svg-vue>
                     </a>
                 </div>
             </div>
@@ -64,6 +64,7 @@
         data() {
             return {
                 countries: {...this.shared('countries')},
+                social: {...this.shared('social')},
                 openSearch: false,
                 openMenu: false,
                 isScroll: false,

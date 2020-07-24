@@ -8,7 +8,7 @@
                 <img alt="burger-menu" src="/dist/img/icons/chevron-circle-down.svg">
             </button>
         </div>
-        <b-collapse :id="`channel-${id}`">
+        <b-collapse :id="`channel-${id}`" :visible="first">
             <div class="rss-body">
                 <a :href="route('frontend.rss.posts.show',post.slug)" class="rss-link title" v-for="post in posts">
                     <div class="title-rss line-cap">{{ post.title }}</div>
@@ -34,7 +34,9 @@
             link: String,
             created_at: String,
             logo: String,
-            posts: Array
+            posts: Array,
+
+            first: Boolean
         },
         directives: {
             'b-toggle': VBToggle

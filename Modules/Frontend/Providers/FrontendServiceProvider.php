@@ -3,6 +3,7 @@
 namespace Modules\Frontend\Providers;
 
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Services\SocialService;
 use Illuminate\Support\ServiceProvider;
@@ -10,7 +11,6 @@ use View;
 
 class FrontendServiceProvider extends ServiceProvider
 {
-
     protected $moduleName = 'Frontend';
 
     protected $moduleNameLower = 'frontend';
@@ -78,6 +78,12 @@ class FrontendServiceProvider extends ServiceProvider
         View::composer('frontend::includes.archive-sidebar', function ($view) {
             $articleRepository = app(ArticleRepositoryInterface::class);
             $view->with('articlesInSidebar', $articleRepository->getSidebar());
+        });
+        View::composer('frontend::includes.single-sidebar', function ($view) {
+            $channelRepository = app(ChannelRepositoryInterface::class);
+            share([
+                'sidebarChannel' => $channelRepository->getSidebar()
+            ]);
         });
     }
 

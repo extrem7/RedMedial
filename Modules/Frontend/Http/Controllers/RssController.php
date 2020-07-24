@@ -54,9 +54,16 @@ class RssController extends Controller
 
     public function show(Post $post)
     {
+        $post->load('imageMedia');
+        $post->append(['image', 'link']);
+
         $this->seo()->setTitle($post->title);
         $this->seo()->setDescription(strip_tags($post->excerpt));
         if ($post->imageMedia) $this->seo()->addImages(url($post->getImage()));
+
+        share([
+            'article' => $post
+        ]);
 
         return view('frontend::rss.post', compact('post'));
     }

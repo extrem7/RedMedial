@@ -33,9 +33,14 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
+        $article->load('imageMedia');
+        $article->append(['image', 'link']);
+
         $this->seo()->setTitle($article->meta_title ?? $article->title);
         $this->seo()->setDescription($article->meta_description ?? strip_tags($article->excerpt));
         if ($article->imageMedia) $this->seo()->addImages(url($article->getImage()));
+
+        share(compact('article'));
 
         return view('frontend::articles.show', compact('article'));
     }

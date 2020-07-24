@@ -9,7 +9,7 @@ import CopyIframe from "./includes/CopyIframe"
 import YoutubePlayer from "./layout/YoutubePlayer"
 //import ArticlesList from "~/components/Articles/List"
 import Article from "./articles/Item"
-
+import Share from "./includes/Share"
 
 export default {
     AlertNotification,
@@ -21,6 +21,7 @@ export default {
     CopyIframe,
     RssItem: () => import('./rss/channels/Channel'),
     YoutubePlayer,
+    Share,
 
     ArticlesList: () => import('./articles/List'),
     ArticleItem: Article,//temp

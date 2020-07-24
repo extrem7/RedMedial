@@ -47,6 +47,12 @@ class ChannelRepository implements ChannelRepositoryInterface
         );
     }
 
+    public function getSidebar(): Channel
+    {
+        $international = $this->getInternational();
+        return $international->random();
+    }
+
     public function transformChannels(Collection $channels)
     {
         return $channels->transform(fn($channel) => $this->transformChannel($channel));

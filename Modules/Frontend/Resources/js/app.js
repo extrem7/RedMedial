@@ -65,29 +65,7 @@ const app = new Vue({
                     ]
                 },
             ],
-            singleRss: {
-                id: 258,
-                name: 'Лига информ',
-                slug: "liga-inform",
-                link: 'https://ligainform.net',
-                logo: 'http://redmedial.loc/dist/img/no-image.jpg',
-                posts: [
-                    {
-                        title: 'Queiroz, envolvido em “rachadinha” no gabinete de Flávio Bolsonaro, é preso em SP',
-                        slug: 'v-dnepre-oficer-policii-vystrelila-sebe-v-golovu-nahodyas-na-sluzhbe'
-                    },
-                ]
-            },
-        }
-    },
-    computed: {
-        myList: {
-            get() {
-                return this.$store.state.myList
-            },
-            set(value) {
-                this.$store.commit('updateList', value)
-            }
+            sidebarChannel: this.shared('sidebarChannel') || null,
         }
     },
     components,

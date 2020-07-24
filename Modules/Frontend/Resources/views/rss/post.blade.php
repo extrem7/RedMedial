@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="mt-3 d-flex align-items-center">
-                        <div class="addtonay"></div>
+                        <share></share>
                         @include('frontend::articles.includes.donate')
                     </div>
                     @include('frontend::articles.includes.banner-bottom')

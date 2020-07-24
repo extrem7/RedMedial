@@ -2,8 +2,8 @@
     <b-overlay :opacity="0.9" :show="isLoading" variant="white">
         <draggable :disabled="disabled" @update="sort" handle=".drag" tag="div" v-bind="dragOptions" v-model="channels">
             <transition-group class="rss-lists row justify-content-center" name="flip-list" tag="div" type="transition">
-                <div :key="channel.id" class="col-xl-3 col-lg-4 col-sm-6 drag" v-for="channel in channels">
-                    <channel v-bind="channel"></channel>
+                <div :key="channel.id" class="col-xl-3 col-lg-4 col-sm-6 drag" v-for="(channel,i) in channels">
+                    <channel :first="i===0" v-bind="channel"></channel>
                 </div>
             </transition-group>
         </draggable>
@@ -38,7 +38,7 @@
                     animation: 200
                 },
                 orderNameLs: `channels_${this.orderName}_order`,
-                disabled: this.withPagination,
+                disabled: this.withPagination || window.innerWidth < 768,
 
                 page: 1,
                 lastPage: this.withPagination ? shared.last_page : 1,
