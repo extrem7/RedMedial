@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Services\SocialService;
 use Illuminate\Support\ServiceProvider;
+use Route2Class;
 use View;
 
 class FrontendServiceProvider extends ServiceProvider
@@ -68,7 +69,7 @@ class FrontendServiceProvider extends ServiceProvider
     protected function viewComposer()
     {
         View::composer('frontend::layouts.master', function ($view) {
-            $bodyClass = \Route2Class::generateClassString();
+            $bodyClass = Route2Class::generateClassString();
             $view->with('bodyClass', $bodyClass);
         });
         View::composer('frontend::errors.404', function ($view) {
@@ -85,7 +86,7 @@ class FrontendServiceProvider extends ServiceProvider
                 'sidebarChannel' => $channelRepository->getSidebar()
             ]);
         });
-        View::composer('frontend::pages.red-de-medios', function ($view) {
+        View::composer(['frontend::pages.quienes-somos', 'frontend::pages.red-de-medios'], function ($view) {
             $channelRepository = app(ChannelRepositoryInterface::class);
             share([
                 'sidebarChannels' => $channelRepository->getSidebar(2)

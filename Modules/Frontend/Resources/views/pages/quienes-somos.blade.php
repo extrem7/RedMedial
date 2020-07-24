@@ -23,12 +23,7 @@
                     <div class="description dynamic-content">{!!$page->body!!}</div>
                 </article>
             </div>
-            <div class="col-xl-3 col-lg-4 indent-sm">
-                <social></social>
-                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
-                @include('frontend::articles.includes.ads-single')
-                <rss-item v-bind="singleRss" class="mt-4"></rss-item>
-            </div>
+            @include('frontend::includes.page-sidebar')
         </div>
     </main>
 @endsection
