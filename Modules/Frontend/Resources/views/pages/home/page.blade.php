@@ -31,7 +31,7 @@
             <img src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
         </div>
 
-        @if(config('app.env')!=='local')
+        @if(config('app.env')!=='local'&&false)
             @include('frontend::pages.home.includes.covid-map')
         @endif
         <div class="banner-bottom mt-2 mb-2">

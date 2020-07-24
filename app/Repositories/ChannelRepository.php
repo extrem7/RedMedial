@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Country;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
+use Cache;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -30,7 +31,7 @@ class ChannelRepository implements ChannelRepositoryInterface
 
     public function getInternational(): Collection
     {
-        return \Cache::rememberForever('channels.international', function () {
+        return Cache::rememberForever('channels.international', function () {
             $international = setting('international_medias');
             return $this->transformChannels(
                 Channel::whereIn('id', $international)
@@ -68,7 +69,7 @@ class ChannelRepository implements ChannelRepositoryInterface
     public function getChannelsRelations(): array
     {
         return ['logoMedia', 'posts' => function ($posts) {
-            $posts->select(['channel_id', 'slug', 'title'])->limit(6);
+            $posts->select(['channel_id', 'slug', 'title', 'created_at'])->limit(6);
         }];
     }
 
