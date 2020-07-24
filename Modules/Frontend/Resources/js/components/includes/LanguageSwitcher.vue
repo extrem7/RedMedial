@@ -34,6 +34,15 @@
             }
         },
         methods: {
+            load(callback) {
+                const apiScript = document.createElement('script')
+                apiScript.src = '//translate.google.com/translate_a/element.js'
+                document.head.append(apiScript)
+
+                apiScript.onload = () => {
+                    callback
+                }
+            },
             translate(code = null) {
                 new google.translate.TranslateElement({
                     pageLanguage: 'es',
@@ -60,15 +69,15 @@
             }
         },
         mounted() {
-            const apiScript = document.createElement('script')
-            apiScript.src = '//translate.google.com/translate_a/element.js'
-            document.head.append(apiScript)
-
-            apiScript.onload = () => {
+            if (this.$ls.get('lang')) this.load(() => {
                 setTimeout(() => {
                     if (this.$ls.get('lang')) this.translate()
                 }, 100)
-            }
+            })
+            setTimeout(() => {
+                this.load()
+            }, 5000)
+
         },
         components: {
             BDropdown,
