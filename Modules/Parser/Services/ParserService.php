@@ -52,62 +52,60 @@ class ParserService
     public function start(): void
     {
         $this->categories = Category::all('id', 'keywords');
-        while ($this->run) {
-            $channels = $this->getChannels();
-            if (empty($channels)) {
-                $this->error('No active channels');
-                return;
+        $channels = $this->getChannels();
+        if (empty($channels)) {
+            $this->error('No active channels');
+            return;
+        }
+
+        foreach ($channels as $channel) {
+            $timeStart = microtime(true);
+
+            //$channel->refresh();
+            if ($channel->status === Channel::WORKING) {
+                if ($channel->last_run === null || $channel->last_run->diffInMinutes() < 2) continue;
             }
 
-            foreach ($channels as $channel) {
-                $timeStart = microtime(true);
+            $this->info("Start working on channel #$channel->id $channel->slug");
+            $this->updateLastRun($channel);
+            $channel->update(['status' => Channel::WORKING]);
+            /* @var $feed SimplePie */
+            $feed = Feeds::make($channel->feed, null, true);
+            if ($feed->error() === null) {
+                $this->info('Feed has been fetched');
 
-                $channel->refresh();
-                if ($channel->status === Channel::WORKING) {
-                    if ($channel->last_run === null || $channel->last_run->diffInMinutes() < 2) continue;
-                }
+                $items = $this->filterNewItems($feed, $channel);
 
-                $this->info("Start working on channel #$channel->id $channel->slug");
-                $this->updateLastRun($channel);
-                $channel->update(['status' => Channel::WORKING]);
-                /* @var $feed SimplePie */
-                $feed = Feeds::make($channel->feed, null, true);
-                if ($feed->error() === null) {
-                    $this->info('Feed has been fetched');
+                $count = 0;
 
-                    $items = $this->filterNewItems($feed, $channel);
+                DB::transaction(function () use ($items, $channel, &$count) {
+                    foreach ($items as $item) {
+                        $this->html = null;
 
-                    $count = 0;
-
-                    DB::transaction(function () use ($items, $channel, &$count) {
-                        foreach ($items as $item) {
-                            $this->html = null;
-
-                            if ($post = $this->createItem($item, $channel)) {
-                                $count++;
-                                $this->attachImage($item, $post, $channel->use_og);
-                                $this->attachToCategories($item, $post);
-                            }
+                        if ($post = $this->createItem($item, $channel)) {
+                            $count++;
+                            $this->attachImage($item, $post, $channel->use_og);
+                            $this->attachToCategories($item, $post);
                         }
-                    });
-
-                    $this->info("Created $count items");
-
-                    if (in_array($channel->id, setting('international_medias'))) {
-                        Cacher::channelsInternational();
                     }
-                    if ($country = $channel->country) {
-                        if ($count > 0) Cacher::countyByCode($country->code);
-                    }
-                } else {
-                    $this->error('SimplePie returned error: ' . $feed->error());
+                });
+
+                $this->info("Created $count items");
+
+                if (in_array($channel->id, setting('international_medias'))) {
+                    Cacher::channelsInternational();
                 }
-
-                $timeEnd = microtime(true);
-                $executionTime = round($timeEnd - $timeStart, 1);
-                $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
-                $channel->update(['status' => Channel::IDLE]);
+                if ($country = $channel->country) {
+                    if ($count > 0) Cacher::countyByCode($country->code);
+                }
+            } else {
+                $this->error('SimplePie returned error: ' . $feed->error());
             }
+
+            $timeEnd = microtime(true);
+            $executionTime = round($timeEnd - $timeStart, 1);
+            $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
+            $channel->update(['status' => Channel::IDLE]);
         }
     }
 
@@ -138,7 +136,13 @@ class ParserService
         $date = Carbon::create($item->get_date());
 
         if ($channel->use_og | $channel->use_fulltext) {
-            $this->html = Http::get($item->get_link());
+            try {
+                $this->html = Http::get($item->get_link());
+            } catch (Exception $e) {
+                $this->error("Error while trying to get post origin:\n"
+                    . $e->getFile() . ' line: ' . $e->getLine() . "\n"
+                    . $e->getMessage());
+            }
             if ($channel->use_fulltext) {
                 try {
                     $content = $this->parseFullContent($item) ?? $content;

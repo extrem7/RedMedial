@@ -85,6 +85,12 @@ class FrontendServiceProvider extends ServiceProvider
                 'sidebarChannel' => $channelRepository->getSidebar()
             ]);
         });
+        View::composer('frontend::pages.red-de-medios', function ($view) {
+            $channelRepository = app(ChannelRepositoryInterface::class);
+            share([
+                'sidebarChannels' => $channelRepository->getSidebar(2)
+            ]);
+        });
     }
 
     protected function getCountries()

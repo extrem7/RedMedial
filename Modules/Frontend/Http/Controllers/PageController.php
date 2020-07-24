@@ -3,6 +3,7 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Rss\Country;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
@@ -63,6 +64,16 @@ class PageController extends Controller
         return view('frontend::rss.index', compact('page'), ['orderName' => 'all-rss']);
     }
 
+    public function redDeMedios(Page $page)
+    {
+        $international = $this->channelRepository->getInternational();
+        $chile = $this->channelRepository->getByCountry(
+            Country::whereSlug('chile')->orWhereIn('id', [11])->first()
+        );
+
+        return view("frontend::pages.red-de-medios", compact('page', 'international', 'chile'));
+    }
+
     public function show(Page $pageModel)
     {
         $page = $pageModel;
@@ -79,7 +90,7 @@ class PageController extends Controller
         } elseif ($page->id === 3 || $page->slug === 'contacto') {
             $view = 'contacto';
         } elseif ($page->id === 4 || $page->slug === 'red-de-medios') {
-            $view = 'red-de-medios';
+            return $this->redDeMedios($page);
         } elseif ($page->slug == 'all-rss') {
             return $this->allRss($page);
         }

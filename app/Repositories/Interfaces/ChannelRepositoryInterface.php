@@ -17,5 +17,6 @@ interface ChannelRepositoryInterface
 
     public function getByCountry(Country $country);
 
-    public function getSidebar(): Channel;
+    /* @return Channel[] */
+    public function getSidebar(int $number = 1): iterable;
 }

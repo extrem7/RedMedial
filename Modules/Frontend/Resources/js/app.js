@@ -66,6 +66,7 @@ const app = new Vue({
                 },
             ],
             sidebarChannel: this.shared('sidebarChannel') || null,
+            sidebarChannels: this.shared('sidebarChannels') || [],
         }
     },
     components,

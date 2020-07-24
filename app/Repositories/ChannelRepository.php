@@ -47,10 +47,11 @@ class ChannelRepository implements ChannelRepositoryInterface
         );
     }
 
-    public function getSidebar(): Channel
+    /* @return Channel[] */
+    public function getSidebar(int $number = 1): iterable
     {
         $international = $this->getInternational();
-        return $international->random();
+        return $international->random($number);
     }
 
     public function transformChannels(Collection $channels)
