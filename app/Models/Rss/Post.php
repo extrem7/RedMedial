@@ -61,6 +61,10 @@ class Post extends Model implements HasMedia
                     ->crop('crop-center', 150, 150)
                     ->sharpen(0)
                     ->nonQueued();
+                $this->addMediaConversion('thumbnail')
+                    ->crop('crop-center', 260, 144)
+                    ->sharpen(0)
+                    ->nonQueued();
             });
     }
 
@@ -104,6 +108,11 @@ class Post extends Model implements HasMedia
     public function getThumbAttribute()
     {
         return $this->getImage('thumb');
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return $this->getImage('thumbnail');
     }
 
     public function getLinkAttribute()

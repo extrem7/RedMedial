@@ -2,7 +2,7 @@
 <div class="col-lg-9">
     <div class="position-relative">
         <a href="{{$article->link}}" class="main-article-banner">
-            <img src="{{$article->image}}" class="img-fluid" alt="{{$article->title}}">
+            <img src="{{$article->banner}}" class="img-fluid" alt="{{$article->title}}">
         </a>
         <div class="main-article-card height-mod-3">
             <a href="{{$article->link}}" class="title title-cyan line-cap">{{$article->title}}</a>

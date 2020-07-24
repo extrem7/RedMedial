@@ -11,7 +11,7 @@
                 <article class="article">
                     <div class="position-relative">
                         <div class="main-article-banner">
-                            <img src="{{$article->image}}" class="img-fluid" alt="alt">
+                            <img src="{{$article->banner}}" class="img-fluid" alt="alt">
                         </div>
                         <div class="main-article-card">
                             <h1 class="title title-cyan line-cap">{{$article->title}}</h1>

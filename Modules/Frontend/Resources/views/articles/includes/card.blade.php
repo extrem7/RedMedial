@@ -1,7 +1,7 @@
 @php /* @var $article \App\Models\Article */  @endphp
 <div class="article-card">
     <a href="{{$article->link}}" class="article-header overflow-box">
-        <img src="{{$article->thumb}}" alt="{{$article->title}}">
+        <img src="{{$article->thumbnail}}" alt="{{$article->title}}">
     </a>
     <div class="article-body">
         <a href="{{$article->link}}" class="article-title title title-cyan line-cap">{{$article->title}}</a>

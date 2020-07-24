@@ -6,7 +6,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="article-card">
                     <a href="{{$post->link}}" class="article-header overflow-box">
-                        <img data-src="{{$post->thumb}}" alt="{{$post->title}}">
+                        <img data-src="{{$post->thumbnail}}" alt="{{$post->title}}">
                     </a>
                     <div class="article-body">
                         @if($post->channel->country!==null)
