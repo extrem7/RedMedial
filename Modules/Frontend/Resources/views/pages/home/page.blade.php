@@ -1,7 +1,7 @@
 @extends('frontend::layouts.master')
 
 @section('content')
-    <main class="container">
+    <main class="container" v-lazy-container="{ selector: '.banner-bottom img' }">
 
         <div class="main-archive">
             <div class="row">
@@ -17,7 +17,7 @@
             </div>
 
             <div class="banner-bottom">
-                <img src="https://i.ibb.co/6tj8fC4/image.png" class="img-fluid" alt="">
+                <img data-src="https://i.ibb.co/6tj8fC4/image.png" class="img-fluid" alt="">
             </div>
         </div>
 
@@ -28,14 +28,14 @@
         @include('frontend::pages.home.includes.hot-news')
 
         <div class="banner-bottom mt-2 mb-2">
-            <img src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
+            <img data-src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
         </div>
 
         @if(config('app.env')!=='local'&&false)
             @include('frontend::pages.home.includes.covid-map')
         @endif
         <div class="banner-bottom mt-2 mb-2">
-            <img src="https://i.ibb.co/8PqQV70/image.png" class="img-fluid" alt="">
+            <img data-src="https://i.ibb.co/8PqQV70/image.png" class="img-fluid" alt="">
         </div>
         @if($country!==null)
             <section class="section-rss-local">
@@ -48,7 +48,7 @@
         @endif
 
         <div class="banner-bottom mt-2 mb-2">
-            <img src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
+            <img data-src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
         </div>
 
         <section class="section-rss-world">

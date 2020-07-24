@@ -2,9 +2,6 @@
     <div class="video-chanel">
         <div class="chanel-name">{{ player.title }}</div>
         <div class="chanel-main-video">
-            <iframe :src="player.lists[0].src"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
         </div>
         <div class="chanel-play-box">
             <div class="play-btn"><img alt="" src="/dist/img/icons/play.svg"></div>
