@@ -13,20 +13,19 @@
                 <h1 class="title title-cyan page-title mb-3">{{$page->title}}</h1>
                 <div class="semi-bold">{!!$page->body!!}</div>
                 <div class="box box-form mt-0 mt-md-4">
-                    <div class="page-title title title-cyan">Contact us</div>
-                    <div class="mt-3">Toma contacto haciendo uso del formulario.</div>
+                    <h2 class="page-title title title-cyan">Contact us</h2>
+                    <div class="mt-3 mb-4">Toma contacto haciendo uso del formulario.</div>
                     <form-red-de-medios></form-red-de-medios>
                 </div>
-                @php //todo lists in second sprint @endphp
                 <div class="row rss-lists media-list mt-0 mt-md-5">
                     <div class="col-md-6">
                         <div class="rss-item">
                             <div class="rss-header">
-                                <div class="title title-cyan medium-size">RED DE MEDIOS-INTERNACIONAL</div>
+                                <h3 class="title title-cyan medium-size">RED DE MEDIOS-INTERNACIONAL</h3>
                             </div>
                             <div class="rss-body">
                                 @foreach($international as $channel)
-                                    <a href="{{$channel->link}}" class="rss-link title">
+                                    <a href="{{$channel->link}}" class="rss-link title" rel="nofollow">
                                         <img src="{{$channel->logo}}" alt="">
                                         {{$channel->name}}
                                     </a>
@@ -37,7 +36,7 @@
                     <div class="col-md-6">
                         <div class="rss-item">
                             <div class="rss-header">
-                                <div class="title title-cyan medium-size">RED DE MEDIOS-CHILE</div>
+                                <h3 class="title title-cyan medium-size">RED DE MEDIOS-CHILE</h3>
                             </div>
                             <div class="rss-body">
                                 <div class="rss-body">

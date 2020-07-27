@@ -4,6 +4,7 @@
 @section('content')
     <div class="container">
         {{ Breadcrumbs::render() }}
+        <h1 class="page-title title title-cyan line text-center mb-4">{{$channel->name}}</h1>
     </div>
     <div class="box-info box-info-archive">
         <div class="container text-center">
