@@ -21,6 +21,7 @@ class SchemaService
             ->datePublished($article->created_at)
             ->dateModified($article->updated_at ?? $article->created_at)
             ->author(Schema::person()->name('RedMedial'))
+            ->mainEntityOfPage(Schema::webPage())
             ->publisher(Schema::organization()
                 ->name('RedMedial')
                 ->logo(Schema::imageObject()->url(url(asset('/dist/img/logo.png')))));
