@@ -11,20 +11,7 @@
                 <li><a href="/all-youtube">All Youtube</a></li>
                 <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>
             </ul>
-            <div class="media-block">
-                <a href="" target="_blank">
-                    <svg-vue icon="facebook"></svg-vue>
-                </a>
-                <a href="" target="_blank">
-                    <svg-vue icon="viber"></svg-vue>
-                </a>
-                <a href="" target="_blank">
-                    <svg-vue icon="youtube"></svg-vue>
-                </a>
-                <a href="" target="_blank">
-                    <svg-vue icon="google-plus-g"></svg-vue>
-                </a>
-            </div>
+            <social-icons></social-icons>
             <div class="mt-3 mb-3">©{{ new Date().getFullYear()}}</div>
             <div>
                 Una más de <a href="https://www.elciudadano.com" rel="nofollow" target="_blank">El Ciudadano</a> con
@@ -45,3 +32,13 @@
         </div>
     </footer>
 </template>
+
+<script>
+    import SocialIcons from "./SocialIcons"
+
+    export default {
+        components: {
+            SocialIcons,
+        }
+    }
+</script>

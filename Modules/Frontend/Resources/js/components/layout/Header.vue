@@ -40,31 +40,19 @@
                     <li><a href="/all-youtube">All Youtube</a></li>
                     <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>
                 </ul>
-                <div class="media-block">
-                    <a :href="social.facebook.link" target="_blank">
-                        <svg-vue icon="facebook"></svg-vue>
-                    </a>
-                    <a :href="social.instagram.link" target="_blank">
-                        <svg-vue icon="instagram"></svg-vue>
-                    </a>
-                    <a :href="social.twitter.link" target="_blank">
-                        <svg-vue icon="twitter"></svg-vue>
-                    </a>
-                    <a :href="social.youtube.link" target="_blank">
-                        <svg-vue icon="play"></svg-vue>
-                    </a>
-                </div>
+                <social-icons></social-icons>
             </div>
         </div>
     </header>
 </template>
 
 <script>
+    import SocialIcons from "./SocialIcons"
+
     export default {
         data() {
             return {
                 countries: {...this.shared('countries')},
-                social: {...this.shared('social')},
                 openSearch: false,
                 openMenu: false,
                 isScroll: false,
@@ -80,6 +68,7 @@
             window.addEventListener("scroll", this.isScrollHeader, false);
         },
         components: {
+            SocialIcons,
             LanguageSwitcher: () => import('../includes/LanguageSwitcher')
         }
     }
