@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Services\SocialService;
+use Blade;
 use Illuminate\Support\ServiceProvider;
 use Route2Class;
 use Spatie\SchemaOrg\BaseType;
@@ -109,7 +110,7 @@ class FrontendServiceProvider extends ServiceProvider
                 ->name(config('seotools.meta.defaults.title'))
                 ->email('CONTACTO@ELCIUDADANO.CL')
                 ->description(config('seotools.meta.defaults.description'))
-                ->logo(url(asset('/dist/img/logo.svg')))
+                ->logo(url(asset('/dist/img/logo.png')))
                 ->url(url('/'));
 
             $schema->push($organization);
@@ -142,7 +143,7 @@ class FrontendServiceProvider extends ServiceProvider
 
     private function directives()
     {
-        \Blade::directive('schema', function () {
+        Blade::directive('schema', function () {
             return '<?php $schema->each(fn($item)=>print($item)); ?>';
         });
     }

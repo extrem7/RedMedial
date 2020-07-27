@@ -23,6 +23,6 @@ class SchemaService
             ->author(Schema::person()->name('RedMedial'))
             ->publisher(Schema::organization()
                 ->name('RedMedial')
-                ->logo(Schema::imageObject()->url(url(asset('/dist/img/logo.svg')))));
+                ->logo(Schema::imageObject()->url(url(asset('/dist/img/logo.png')))));
     }
 }
