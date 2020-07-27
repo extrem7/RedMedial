@@ -73,7 +73,8 @@ const app = new Vue({
         mapVisible(visible) {
             if (visible) {
                 setTimeout(() => {
-                    this.$refs.map.src = 'https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6'
+                    const src = `https://www.arcgis.com/apps/opsdashboard/index.html#/`
+                    this.$refs.map.src = `${src}${window.innerWidth > 768 ? 'bda7594740fd40299423467b48e9ecf6' : '85320e2ea5424dfaaa75ae62e5c06e61'}`
                 }, 3000)
             }
         }

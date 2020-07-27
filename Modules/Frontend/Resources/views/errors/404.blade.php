@@ -6,7 +6,7 @@
     </div>
     <div class="box-info">
         <div class="container text-center">
-            <div class="title error-title mb-2">The Page You Are Looking Is Not Found</div>
+            <h1 class="title error-title mb-2">The Page You Are Looking Is Not Found</h1>
             <div class="small-title">The page you are looking for does not exist. It may have been moved,
                 or removed altogether. Perhaps you can return back to the <br> site's homepage and see if you can find
                 what

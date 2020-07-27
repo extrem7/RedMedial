@@ -31,5 +31,7 @@ Route::middleware(Admin::class)->group(function () {
         Route::get('/search', 'UserController@search')->name('search');
     });
 
+    Route::post('/media', 'MediaController@upload')->name('media.upload');
+
     Route::post('logout', 'LoginController@logout')->name('logout');
 });

@@ -28,6 +28,7 @@
         "predis/predis": "^1.1",
         "qcod/laravel-app-settings": "^1.2",
         "spatie/eloquent-sortable": "^3.7",
+        "spatie/laravel-image-optimizer": "^1.6",
         "spatie/laravel-medialibrary": "^7.0.0",
         "spatie/laravel-permission": "^3.13",
         "spatie/laravel-sitemap": "^5.7",

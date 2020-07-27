@@ -13,7 +13,7 @@
         </div>
     @endif
     <main class="container">
-        <div class="title title-cyan medium-size mb-3 text-center">NEW SEARCH:</div>
+        <h1 class="title title-cyan medium-size mb-3 text-center">NEW SEARCH:</h1>
         <div class="search-additional w-100">
             <form action="{{route('frontend.search')}}"
                   class="d-flex justify-content-between align-items-end flex-column flex-sm-row">

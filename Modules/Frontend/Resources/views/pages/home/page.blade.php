@@ -2,7 +2,7 @@
 
 @section('content')
     <main class="container" v-lazy-container="{ selector: '.banner-bottom img' }">
-
+        <h1 class="sr-only">{!!SEO::getTitle()!!}</h1>
         <div class="main-archive">
             <div class="row">
                 @include('frontend::articles.includes.card-big',['article'=>$articles['main']])
@@ -31,7 +31,7 @@
             <img data-src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
         </div>
 
-        @if(config('app.env')!=='loacal')
+        @if(config('app.env')!=='local')
             @include('frontend::pages.home.includes.covid-map')
         @endif
         <div class="banner-bottom mt-2 mb-2">

@@ -32,12 +32,12 @@
             </div>
             <div class="row app-download">
                 <div class="col-md-6 text-center mt-3 mt-md-0">
-                    <a :href="shared('mobileApp').android">
+                    <a :href="shared('mobileApp').android" rel="nofollow" target="_blank">
                         <img alt="mobile-app-android" src="/dist/img/playmarket.png">
                     </a>
                 </div>
                 <div class="col-md-6 text-center mt-3 mt-md-0">
-                    <a :href="shared('mobileApp').apple">
+                    <a :href="shared('mobileApp').apple" rel="nofollow" target="_blank">
                         <img alt="mobile-app-apple" src="/dist/img/appstore.png">
                     </a>
                 </div>

@@ -1,4 +1,4 @@
-<section class="container d-none d-lg-block">
+<section class="container">
     <h2 class="title red-color text-center medium-size line">Coronavirus Map</h2>
     <iframe id="covid-map"
             ref="map" v-observe-visibility="{once:true,callback:mapVisible}"></iframe>

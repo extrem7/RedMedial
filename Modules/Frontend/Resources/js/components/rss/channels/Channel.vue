@@ -1,7 +1,7 @@
 <template>
     <div class="rss-item">
         <div class="rss-header">
-            <a :href="link" target="_blank">
+            <a :href="link" rel="nofollow" target="_blank">
                 <img :alt="name" v-lazy="logo">
             </a>
             <button class="icon btn-open-rss" v-b-toggle="`channel-${id}`">
