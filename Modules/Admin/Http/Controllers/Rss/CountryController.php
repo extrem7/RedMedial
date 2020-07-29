@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers\Rss;
 
 use App\Models\Rss\Country;
+use Cacher;
 use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\Rss\CountryRequest;
 use Modules\Admin\Http\Requests\Rss\SortRequest;
@@ -64,6 +65,7 @@ class CountryController extends Controller
     {
         $order = $request->input('order');
         Country::setNewOrder($order);
+        Cacher::countiesForHeader();
         return response()->json(['status' => 'Countries has been sorted']);
     }
 }

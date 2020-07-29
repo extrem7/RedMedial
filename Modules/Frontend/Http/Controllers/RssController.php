@@ -66,7 +66,7 @@ class RssController extends Controller
             'article' => $post
         ]);
 
-        $articleSchema = $schemaService->article($post);
+        $postSchema = $schemaService->article($post);
 
         return view('frontend::rss.post', compact('post', 'postSchema'));
     }
