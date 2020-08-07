@@ -2,6 +2,7 @@
 
 namespace App\Models\Rss;
 
+use Cacher;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
@@ -22,8 +23,8 @@ class Country extends Model
     // FUNCTIONS
     public static function boot()
     {
-        static::saved(fn() => \Cacher::countiesForHeader());
-        static::deleted(fn() => \Cacher::countiesForHeader());
+        static::saved(fn() => Cacher::countriesForHeader());
+        static::deleted(fn() => Cacher::countriesForHeader());
 
         parent::boot();
     }

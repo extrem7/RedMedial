@@ -26,6 +26,8 @@ Route::middleware(Admin::class)->group(function () {
 
     Route::resource('/articles', 'ArticleController')->except('show');
 
+    Route::resource('/playlists', 'PlaylistController')->except('show');
+
     Route::resource('/users', 'UserController', ['names' => 'users'])->except(['show']);
     Route::group(['as' => 'users.', 'prefix' => 'users'], function () {
         Route::get('/search', 'UserController@search')->name('search');

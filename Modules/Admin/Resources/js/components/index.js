@@ -27,4 +27,7 @@ export default {
 
     RssCategoriesIndex: () => import('./rss/categories/Index'),
     RssCategoryForm: () => import('./rss/categories/Form'),
+
+    PlaylistsIndex: () => import('./playlists/Index'),
+    PlaylistForm: () => import('./playlists/Form'),
 }

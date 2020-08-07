@@ -65,7 +65,7 @@ class CountryController extends Controller
     {
         $order = $request->input('order');
         Country::setNewOrder($order);
-        Cacher::countiesForHeader();
+        Cacher::countriesForHeader();
         return response()->json(['status' => 'Countries has been sorted']);
     }
 }

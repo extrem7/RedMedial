@@ -5,6 +5,7 @@
 @import '~cropperjs/dist/cropper.css';
 @import "~vue-rocker-switch/dist/vue-rocker-switch.css";
 @import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~vue-repeater/dist/lib/vue-repeater.css';
 @import "theme";
 
 body {
@@ -130,7 +131,7 @@ body {
         justify-content: center;
     }
 
-    th:first-child {
+    th:first-child, .id-column {
         width: 50px;
     }
 
@@ -283,5 +284,29 @@ body .vue-tags-input {
 
     .ti-deletion-mark:after {
         transform: scaleX(1);
+    }
+}
+
+.repeater-block {
+    background-color: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    min-height: unset !important;
+
+    .up, .down {
+        left: 3px !important;
+    }
+
+    .up {
+        top: -10px !important;
+    }
+
+    .down {
+        top: 30px !important;
+    }
+
+    .navigation .nav-anchor {
+        top: 5px !important;
+        left: 3px !important;
     }
 }

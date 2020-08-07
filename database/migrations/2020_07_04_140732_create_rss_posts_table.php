@@ -21,7 +21,7 @@ class CreateRssPostsTable extends Migration
             $table->string('title');
             $table->string('excerpt', 510);
             $table->text('body');
-            $table->string('link');
+            $table->string('source');
 
             $table->timestamp('created_at')->nullable();
         });

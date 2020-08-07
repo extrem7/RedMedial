@@ -21,7 +21,7 @@ Route::as('rss.')->group(function () {
         Route::get('/page/{page?}', 'RssController@channel')->name('.page');
     });
 
-    Route::get('/rss/{post:slug}', 'RssController@show')->name('posts.show');
+    Route::get('/posts/{post:slug}', 'RssController@show')->name('posts.show');
 });
 
 Route::prefix('/search')->as('search')->group(function () {

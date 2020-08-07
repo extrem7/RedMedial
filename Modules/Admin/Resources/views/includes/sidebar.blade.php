@@ -67,6 +67,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{route('admin.playlists.index')}}" class="nav-link {{ Nav::isResource('playlists') }}">
+                    <i class="nav-icon fab fa-youtube"></i>
+                    <p>Playlists</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{route('admin.users.index')}}" class="nav-link {{ Nav::isResource('users') }}">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Users</p>

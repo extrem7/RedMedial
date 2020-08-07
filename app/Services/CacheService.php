@@ -39,27 +39,27 @@ class CacheService
         $this->articleRepository->getSidebar();
     }
 
-    public function countiesForHeader(): void
+    public function countriesForHeader(): void
     {
-        \Cache::delete('countries.header');
+        Cache::delete('countries.header');
         $this->countryRepository->getForHeader();
     }
 
     public function countyByCode(string $code = null): void
     {
-        \Cache::delete("country.$code");
+        Cache::delete("country.$code");
         $this->countryRepository->getByCode($code);
     }
 
     public function channelsInternational(): void
     {
-        \Cache::delete('channels.international');
+        Cache::delete('channels.international');
         $this->channelRepository->getInternational();
     }
 
     public function postsCovid(): void
     {
-        \Cache::delete('posts.covid');
+        Cache::delete('posts.covid');
         $this->postRepository->getCovid();
     }
 }

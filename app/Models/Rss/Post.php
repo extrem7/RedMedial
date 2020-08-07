@@ -21,7 +21,7 @@ class Post extends Model implements HasMedia
     const UPDATED_AT = null;
     protected $table = 'rss_posts';
     protected $fillable = [
-        'channel_id', 'title', 'excerpt', 'body', 'link', 'created_at'
+        'channel_id', 'title', 'excerpt', 'body', 'source', 'created_at'
     ];
     protected $search = [
         'title', 'excerpt', 'body'
