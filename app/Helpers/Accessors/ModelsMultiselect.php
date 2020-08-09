@@ -4,7 +4,7 @@
 namespace App\Helpers\Accessors;
 
 
-class International
+class ModelsMultiselect
 {
     public function handle($value): array
     {

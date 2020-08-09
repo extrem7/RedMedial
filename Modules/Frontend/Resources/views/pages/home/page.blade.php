@@ -66,11 +66,7 @@
         </section>
 
         <section class="youtube-list pt-3">
-            <div class="row">
-                <div class="col-md-4" v-for="player in youtube">
-                    <youtube-player :player="player"></youtube-player>
-                </div>
-            </div>
+            <playlists order-name="home"></playlists>
             <div class="text-center">
                 <a href="/all-youtube" class="btn btn-cyan">More on All video</a>
             </div>

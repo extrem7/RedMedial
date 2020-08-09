@@ -13,7 +13,6 @@
 </template>
 <script>
     export default {
-        name: 'video',
         props: {
             value: {
                 type: Object,

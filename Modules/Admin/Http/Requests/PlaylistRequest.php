@@ -14,7 +14,7 @@ class PlaylistRequest extends FormRequest
             'videos' => ['required', 'array'],
             'videos.*.title' => ['required', 'string'],
             'videos.*.id' => ['required', 'string'],
-            'videos.*.duration' => ['required', 'string'],
+            'videos.*.duration' => ['nullable', 'string'],
 
             'country_id' => ['nullable', 'exists:rss_countries,id'],
         ];

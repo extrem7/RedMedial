@@ -7,7 +7,7 @@
                         @tags-changed="newTags => selected = newTags"
                         class="bg-dark"
                         v-model="name"></vue-tags-input>
-        <input :value="value" name="international_medias" type="hidden">
+        <input :name="inputName" :value="value" type="hidden">
     </div>
 </template>
 
@@ -15,11 +15,14 @@
     import VueTagsInput from '@johmun/vue-tags-input'
 
     export default {
+        props: {
+            inputName: String
+        },
         data() {
             return {
                 name: '',
                 selected: [],
-                channels: this.shared('channels')
+                channels: this.shared(this.inputName)
             }
         },
         computed: {

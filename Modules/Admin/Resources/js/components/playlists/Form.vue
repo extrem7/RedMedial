@@ -5,10 +5,10 @@
                 <label for="title">Title</label>
                 <input class="form-control" id="title" placeholder="Title" type="text"
                        v-model="form.title" v-valid.title>
-                <invalid name="name"></invalid>
+                <invalid name="title"></invalid>
             </div>
             <div class="form-group">
-                <label for="title">Videos</label>
+                <label for="videos">Videos</label>
                 <vue-repeater v-model="fields"></vue-repeater>
                 <invalid name="videos"></invalid>
             </div>

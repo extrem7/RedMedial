@@ -6,19 +6,21 @@ use App\Models\Rss\Channel;
 use App\Models\Rss\Country;
 use App\Models\Rss\Post;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
+use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Modules\Frontend\Services\SchemaService;
 
 class RssController extends Controller
 {
     protected ChannelRepositoryInterface $channelRepository;
-
     protected PostRepositoryInterface $postRepository;
+    protected PlaylistRepositoryInterface $playlistRepository;
 
     public function __construct()
     {
         $this->channelRepository = app(ChannelRepositoryInterface::class);
         $this->postRepository = app(PostRepositoryInterface::class);
+        $this->playlistRepository = app(PlaylistRepositoryInterface::class);
     }
 
     public function country(Country $country)
@@ -27,8 +29,9 @@ class RssController extends Controller
         if ($description = $country->meta_description) $this->seo()->setDescription($description);
 
         $channels = $this->channelRepository->getByCountry($country);
+        $playlists = $this->playlistRepository->getByCountry($country);
 
-        share(compact('channels'));
+        share(compact('channels', 'playlists'));
 
         return view('frontend::rss.country', compact('country'));
     }

@@ -27,6 +27,7 @@ Route::middleware(Admin::class)->group(function () {
     Route::resource('/articles', 'ArticleController')->except('show');
 
     Route::resource('/playlists', 'PlaylistController')->except('show');
+    Route::post('/playlists/sort', 'PlaylistController@sort')->name('playlists.sort');
 
     Route::resource('/users', 'UserController', ['names' => 'users'])->except(['show']);
     Route::group(['as' => 'users.', 'prefix' => 'users'], function () {

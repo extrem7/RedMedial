@@ -28,6 +28,8 @@ export default {
 
     RssList: () => import('./rss/channels/List'),
 
+    Playlists: () => import('./playlists/List'),
+
     FormContacto: () => import('./forms/Contacto'),
     FormRedDeMedios: () => import('./forms/RedDeMedios')
 }

@@ -7,8 +7,10 @@ use App\Models\Rss\Country;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\Request;
+use Mail;
 use Modules\Frontend\Http\Requests\ContactFormRequest;
 use Modules\Frontend\Mail\ContactForm;
 
@@ -18,6 +20,7 @@ class PageController extends Controller
     protected CountryRepositoryInterface $countryRepository;
     protected ChannelRepositoryInterface $channelRepository;
     protected PostRepositoryInterface $postRepository;
+    protected PlaylistRepositoryInterface $playlistRepository;
 
     public function __construct()
     {
@@ -25,6 +28,7 @@ class PageController extends Controller
         $this->countryRepository = app(CountryRepositoryInterface::class);
         $this->channelRepository = app(ChannelRepositoryInterface::class);
         $this->postRepository = app(PostRepositoryInterface::class);
+        $this->playlistRepository = app(PlaylistRepositoryInterface::class);
     }
 
     public function home(Request $request)
@@ -43,9 +47,12 @@ class PageController extends Controller
         $country = $this->countryRepository->getByCode($request->get('country'));
         $internationalChannels = $this->channelRepository->getInternational();
 
+        $playlists = $this->playlistRepository->getHome();
+
         share([
             'localChannels' => $country !== null ? $country->channels : null,
-            'internationalChannels' => $internationalChannels
+            'internationalChannels' => $internationalChannels,
+            'playlists' => $playlists
         ]);
 
         return view('frontend::pages.home.page', compact('articles', 'covid', 'country'));
@@ -62,6 +69,14 @@ class PageController extends Controller
         }
 
         return view('frontend::rss.index', compact('page'), ['orderName' => 'all-rss']);
+    }
+
+    public function allYoutube(Page $page)
+    {
+        $playlists = $this->playlistRepository->all();
+        share(compact('playlists'));
+
+        return view('frontend::pages.all-youtube', compact('page'));
     }
 
     public function redDeMedios(Page $page)
@@ -91,8 +106,10 @@ class PageController extends Controller
             $view = 'contacto';
         } elseif ($page->id === 4 || $page->slug === 'red-de-medios') {
             return $this->redDeMedios($page);
-        } elseif ($page->slug == 'all-rss') {
+        } elseif ($page->id === 10 || $page->slug == 'all-rss') {
             return $this->allRss($page);
+        } elseif ($page->id === 11 || $page->slug == 'all-youtube') {
+            return $this->allYoutube($page);
         }
 
         return view("frontend::pages.$view", compact('page'));
@@ -100,7 +117,7 @@ class PageController extends Controller
 
     public function contactForm(ContactFormRequest $request)
     {
-        \Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
+        Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
 
         return response()->json(['status' => 'Your message has been sent']);
     }

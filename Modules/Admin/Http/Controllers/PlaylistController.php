@@ -4,7 +4,6 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Models\Playlist;
 use Cacher;
-use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\PlaylistRequest;
 use Modules\Admin\Http\Requests\Rss\SortRequest;
 use Modules\Admin\Services\ChannelsService;
@@ -77,7 +76,7 @@ class PlaylistController extends Controller
     {
         $order = $request->input('order');
         Playlist::setNewOrder($order);
-        Cacher::countriesForHeader();
+        Cacher::playlistsHome();
         return response()->json(['status' => 'Playlists has been sorted']);
     }
 }

@@ -5,18 +5,17 @@ namespace App\Services;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
+use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Cache;
 
 class CacheService
 {
     protected ArticleRepositoryInterface $articleRepository;
-
     protected CountryRepositoryInterface $countryRepository;
-
     protected ChannelRepositoryInterface $channelRepository;
-
     protected PostRepositoryInterface $postRepository;
+    protected PlaylistRepositoryInterface $playlistRepository;
 
     public function __construct()
     {
@@ -24,6 +23,7 @@ class CacheService
         $this->countryRepository = app(CountryRepositoryInterface::class);
         $this->channelRepository = app(ChannelRepositoryInterface::class);
         $this->postRepository = app(PostRepositoryInterface::class);
+        $this->playlistRepository = app(PlaylistRepositoryInterface::class);
     }
 
     public function articlesHome(): void
@@ -61,5 +61,11 @@ class CacheService
     {
         Cache::delete('posts.covid');
         $this->postRepository->getCovid();
+    }
+
+    public function playlistsHome(): void
+    {
+        Cache::delete(PlaylistRepositoryInterface::CACHE_HOME);
+        $this->playlistRepository->getHome();
     }
 }

@@ -76,7 +76,7 @@ class Handler extends ExceptionHandler
             if ($exception instanceof ValidationException)
                 return response()->json([
                     'message' => 'You have validation errors',
-                    'errors' => $exception->validator->getMessageBag()
+                    'errors' => $exception->validator->messages()->toArray()
                 ], 422);
         }
 

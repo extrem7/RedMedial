@@ -12,10 +12,17 @@ return [
             'inputs' => [
                 [
                     'name' => 'international_medias',
-                    'type' => 'international_medias',
+                    'type' => 'models_multiselect',
                     'label' => 'International Medias',
                     'rules' => ['required', 'string'],
-                    'accessor' => App\Helpers\Accessors\International::class
+                    'accessor' => App\Helpers\Accessors\ModelsMultiselect::class
+                ],
+                [
+                    'name' => 'playlists_home',
+                    'type' => 'models_multiselect',
+                    'label' => 'Playlists on home',
+                    'rules' => ['required', 'string'],
+                    'accessor' => App\Helpers\Accessors\ModelsMultiselect::class
                 ],
             ]
         ],
