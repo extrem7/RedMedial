@@ -40,6 +40,7 @@
         "vuex": "^3.1.2"
     },
     "devDependencies": {
+        "apidoc": "^0.24.0",
         "axios": "^0.19",
         "cross-env": "^7.0",
         "laravel-mix": "^5.0.1",
@@ -50,5 +51,12 @@
         "sass-loader": "^8.0.0",
         "vue-ls": "^3.2.1",
         "vue-template-compiler": "^2.6.11"
+    },
+    "apidoc": {
+        "name": "RedMedial",
+        "version": "1.0.0",
+        "description": "RedMedial REST API documentation",
+        "url": "http://api.redmedial.loc",
+        "sampleUrl": "http://api.redmedial.loc"
     }
 }

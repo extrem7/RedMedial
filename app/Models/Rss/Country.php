@@ -18,7 +18,7 @@ class Country extends Model
         'slug', 'name', 'code', 'meta_title', 'meta_description'
     ];
 
-    protected $appends = ['link'];
+   // protected $appends = ['link'];
 
     // FUNCTIONS
     public static function boot()

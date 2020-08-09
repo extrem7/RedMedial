@@ -1,5 +1,6 @@
 {
     "Admin": true,
     "Parser": true,
-    "Frontend": true
+    "Frontend": true,
+    "Api": true
 }
