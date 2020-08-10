@@ -2,6 +2,7 @@
 
 namespace Modules\Api\Providers;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class ApiServiceProvider extends ServiceProvider
@@ -12,7 +13,7 @@ class ApiServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-
+        JsonResource::withoutWrapping();
     }
 
     public function register(): void

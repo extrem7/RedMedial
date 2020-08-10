@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * @apiDefine Post
+ * @apiSuccess {Number} id Post id.
+ * @apiSuccess {String} title Post title.
+ * @apiSuccess {String} excerpt Post excerpt.
+ * @apiSuccess {Date} date Post date.
+ * @apiSuccess {String} link Post link.
+ * @apiSuccess {String} thumbnail Post thumbnail.
+ */
+
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\Rss\Post;
@@ -21,12 +31,7 @@ class PostController extends Controller
      * @apiParam {Number} [offset] Offset of posts.
      * @apiParam {Number} [channel_id] Posts channel id.
      *
-     * @apiSuccess {String} id Post id.
-     * @apiSuccess {String} title Post title.
-     * @apiSuccess {String} excerpt Post excerpt.
-     * @apiSuccess {Date} date Post date.
-     * @apiSuccess {String} link Post link.
-     * @apiSuccess {String} thumbnail Post thumbnail.
+     * @apiUse Post
      */
     public function index(Request $request)
     {
@@ -42,7 +47,35 @@ class PostController extends Controller
             ->with('imageMedia')
             ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
 
-        return PostResource::collection($posts)->toArray($request);
+        return PostResource::collection($posts);
+    }
+
+    /**
+     * @api {get} /posts/search Search for posts
+     * @apiName SearchPosts
+     * @apiGroup Posts
+     *
+     * @apiParam {String} query Search query string.
+     * @apiParam {Number} [limit] Number of posts to load.
+     * @apiParam {Number} [offset] Offset of posts.
+     *
+     * @apiUse Post
+     */
+    public function search(Request $request)
+    {
+        $params = $this->validate($request, [
+            'query' => ['required', 'string'],
+            'limit' => ['nullable', 'numeric', 'min:1'],
+            'offset' => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $posts = Post::search($params['query'])
+            ->when(isset($params['limit']), fn(Builder $q) => $q->limit($params['limit']))
+            ->when(isset($params['offset']), fn(Builder $q) => $q->offset($params['offset']))
+            ->with('imageMedia')
+            ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
+
+        return PostResource::collection($posts);
     }
 
     /**

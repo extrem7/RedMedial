@@ -1,5 +1,8 @@
 <?php
 
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Modules\Api\Http\Middleware\ForceJson;
+
 return [
 
     /*
@@ -154,7 +157,8 @@ return [
     */
 
     'middleware' => [
-
+        EnsureFrontendRequestsAreStateful::class,
+        ForceJson::class,
     ],
 
     /*

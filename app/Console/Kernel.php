@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $socialService = new SocialService();
             $socialService->update();
-        })->hourly();
+        })->daily();
 
         $schedule->command('telescope:prune --hours=48')->daily();
     }

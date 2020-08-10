@@ -26,7 +26,7 @@ class CountryController extends Controller
                 'id' => $country->id,
                 'name' => $country->name
             ];
-        });//todo fix slug required
+        });
 
         return $countries->toArray();
     }

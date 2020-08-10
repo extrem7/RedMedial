@@ -3,9 +3,11 @@
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\Rss\Channel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Mail;
 use Modules\Api\Http\Resources\ChannelResource;
 
@@ -65,8 +67,15 @@ class ChannelController extends Controller
             'posts_limit' => ['nullable', 'numeric', 'min:1'],
         ]);
 
+        /* @var $user User */
+        $user = $request->user();
+        /* @var $favorite Collection */
+        $favorite = $user->favorite->pluck('channel_id');
+        $international = setting('international_medias');
+        $ids = $favorite->merge($international);
+
         $channels = Channel::ordered()
-            ->whereIn('id', setting('international_medias'))
+            ->whereIn('id', $ids)
             ->with(['logoMedia', 'posts' => function (Relation $posts) use ($params) {
                 $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6);
             }])
