@@ -10,13 +10,15 @@ class RssChannelsSeeder extends Seeder
         $channels = require(database_path('old/channels.php'));
         $countriesMapping = require(database_path('old/countriesMapping.php'));
 
+        $this->command->getOutput()->progressStart(count($channels));
+
         DB::transaction(function () use ($channels, $countriesMapping) {
             $i = 1;
             foreach ($channels as $item) {
                 $data = [
                     'name' => $item['name'],
                     'slug' => $item['slug'],
-                    'link' => $item['link'],
+                    'source' => $item['link'],
                     'feed' => $item['feed'],
                     'description' => $item['description'],
                     'use_fulltext' => $item['use_fulltext'],
@@ -34,7 +36,11 @@ class RssChannelsSeeder extends Seeder
                 if ($files = glob(resource_path('old/channels/' . $item['id'] . '.*'))) {
                     $channel->addMedia($files[0])->preservingOriginal()->toMediaCollection('logo');
                 }
+
+                $this->command->getOutput()->progressAdvance();
             }
         });
+
+        $this->command->getOutput()->progressFinish();
     }
 }

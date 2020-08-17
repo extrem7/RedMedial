@@ -23,6 +23,6 @@ return [
             'link' => 'https://www.youtube.com/channel/UCJrlV1drEWg2OEZFLUcFbTQ'
         ]
     ],
-    'covid_category' => 2,
+    'covid_category' => 1,
     'local_geoip' => env('LOCAL_GEOIP')
 ];

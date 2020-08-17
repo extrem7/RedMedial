@@ -13,8 +13,8 @@ class PostResource extends JsonResource
      */
     public function toArray($request): array
     {
-        /* @var $channel Post */
-        $channel = $this->resource;
+        /* @var Post $post */
+        $post = $this->resource;
 
         return [
             'id' => $this->id,
@@ -23,6 +23,7 @@ class PostResource extends JsonResource
             'date' => $this->created_at,
             'link' => $this->when(isset($this->slug), fn() => $this->link),
             'thumbnail' => $this->thumbnail,
+            'country' => $this->when($post->relationLoaded('country'), fn() => new CountryResource($post->country))
         ];
     }
 }

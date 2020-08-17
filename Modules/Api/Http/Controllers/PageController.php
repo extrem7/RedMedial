@@ -38,7 +38,7 @@ class PageController extends Controller
             ->get(['id', 'slug', 'name']);
 
         $chile = Country::whereSlug('chile')->orWhere('id', 11)->with(['channels' => function (Relation $channels) {
-            $channels->with('logoMedia')->select(['id', 'country_id', 'slug', 'name', 'link']);
+            $channels->with('logoMedia')->select(['id', 'country_id', 'slug', 'name', 'source']);
         }])->first();
 
         return [

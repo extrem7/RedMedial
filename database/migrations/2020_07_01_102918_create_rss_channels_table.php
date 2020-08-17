@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRssChannelsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     * php artisan migrate:refresh --path=/database/migrations/2020_07_01_102918_create_rss_channels_table.php
-     * @return void
-     */
+    /* php artisan migrate:refresh --path=/database/migrations/2020_07_01_102918_create_rss_channels_table.php */
     public function up()
     {
         $statuses = array_keys(Channel::$statuses);
@@ -23,7 +19,7 @@ class CreateRssChannelsTable extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->string('feed');
-            $table->string('link')->nullable();
+            $table->string('source')->nullable();
             $table->text('description')->nullable();
 
             $table->boolean('use_fulltext')->default(false);
@@ -42,11 +38,6 @@ class CreateRssChannelsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('rss_channels');

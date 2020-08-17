@@ -28,7 +28,7 @@ class ResetPassword extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('[Red Medial] Reset Password')
             ->greeting("Hello, {$notifiable->name}!")
-            ->line("Your new password: {$this->password}.")
-            ->line('You could change it in profile settings.');
+            ->line("Your new password: **{$this->password}**.")
+            ->line('You could change it in profile settings in your mobile.');
     }
 }

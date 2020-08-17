@@ -12,7 +12,7 @@
                 <div class="title title-cyan line">Media info:</div>
                 <div class="mb-2">{!!$channel->description!!}</div>
             </div>
-            <a href="{{$channel->link}}" target="_blank" rel="nofollow">
+            <a href="{{$channel->source}}" target="_blank" rel="nofollow">
                 <img src="{{$channel->logo}}" class="img-fluid archive-img" alt="{{$channel->title}}">
             </a>
         </div>

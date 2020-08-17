@@ -11,17 +11,19 @@ use Illuminate\Support\Collection;
 
 class ChannelRepository implements ChannelRepositoryInterface
 {
+    protected $fields = ['id', 'slug', 'name', 'source'];
+
     public function all(): Collection
     {
         return $this->transformChannels(
-            Channel::with($this->getChannelsRelations())->get($this->getChannelsColumns())
+            Channel::with($this->getChannelsRelations())->get($this->fields)
         );
     }
 
     public function paginate(int $perPage = 8): LengthAwarePaginator
     {
         $channels = Channel::with($this->getChannelsRelations())
-            ->select($this->getChannelsColumns())
+            ->select($this->fields)
             ->paginate($perPage);
 
         $channels->transform(fn($channel) => $this->transformChannel($channel));
@@ -36,7 +38,7 @@ class ChannelRepository implements ChannelRepositoryInterface
             return $this->transformChannels(
                 Channel::whereIn('id', $international)
                     ->with($this->getChannelsRelations())
-                    ->get($this->getChannelsColumns())
+                    ->get($this->fields)
             );
         });
     }
@@ -44,7 +46,7 @@ class ChannelRepository implements ChannelRepositoryInterface
     public function getByCountry(Country $country): Collection
     {
         return $this->transformChannels(
-            $country->channels()->with($this->getChannelsRelations())->get($this->getChannelsColumns())
+            $country->channels()->with($this->getChannelsRelations())->get($this->fields)
         );
     }
 
@@ -69,12 +71,12 @@ class ChannelRepository implements ChannelRepositoryInterface
     public function getChannelsRelations(): array
     {
         return ['logoMedia', 'posts' => function ($posts) {
-            $posts->select(['channel_id', 'slug', 'title', 'created_at'])->limit(6);
+            $posts->select(['channel_id', 'slug', 'title', 'source', 'created_at'])->limit(6);
         }];
     }
 
     public function getChannelsColumns(): array
     {
-        return ['id', 'slug', 'name', 'link'];
+        return $this->fields;
     }
 }

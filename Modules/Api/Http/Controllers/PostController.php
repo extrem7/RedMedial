@@ -12,9 +12,11 @@
 
 namespace Modules\Api\Http\Controllers;
 
+use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Modules\Api\Http\Resources\CountryResource;
 use Modules\Api\Http\Resources\PostResource;
 
 /**
@@ -41,11 +43,22 @@ class PostController extends Controller
             'channel_id' => ['nullable', 'numeric', 'exists:rss_channels,id']
         ]);
 
-        $posts = Post::when(isset($params['limit']), fn(Builder $q) => $q->limit($params['limit']))
+        $limit = $params['limit'] ?? 6;
+
+        $posts = Post::with('imageMedia')
             ->when(isset($params['offset']), fn(Builder $q) => $q->offset($params['offset']))
             ->when(isset($params['channel_id']), fn(Builder $q) => $q->where('channel_id', $params['channel_id']))
-            ->with('imageMedia')
+            ->limit($limit)
             ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
+
+        if (isset($params['channel_id'])) {
+            $channel = Channel::find($params['channel_id']);
+            $posts->transform(function (Post $post) use ($channel) {
+                $post->setRelation('country', $channel->country);
+                return $post;
+            });
+        }
+
 
         return PostResource::collection($posts);
     }
@@ -104,6 +117,7 @@ class PostController extends Controller
             'date' => $post->created_at,
             'link' => $post->link,
             'image' => $post->image,
+            'country' => new CountryResource($post->country),
             'previous' => $previous,
             'next' => $next,
         ];

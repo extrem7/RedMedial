@@ -3,10 +3,12 @@
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\Rss\Channel;
+use App\Models\Rss\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
 use Mail;
 use Modules\Api\Http\Resources\ChannelResource;
@@ -76,10 +78,18 @@ class ChannelController extends Controller
 
         $channels = Channel::ordered()
             ->whereIn('id', $ids)
-            ->with(['logoMedia', 'posts' => function (Relation $posts) use ($params) {
+            ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
                 $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6);
             }])
-            ->get(['id', 'name']);
+            ->get(['id', 'country_id', 'name']);
+
+        $channels->transform(function (Channel $channel) {
+            $channel->posts->transform(function (Post $post) use ($channel) {
+                if ($channel->country) $post->setRelation('country', $channel->country);
+                return $post;
+            });
+            return $channel;
+        });
 
         return ChannelResource::collection($channels);
     }
@@ -88,7 +98,6 @@ class ChannelController extends Controller
      * @api {post} /channels/suggest Suggest a feed
      * @apiName SuggestChannel
      * @apiGroup Channels
-     * todo user check
      * @apiParam {String} url Link to rss feed.
      */
     public function suggest(Request $request)
@@ -97,8 +106,10 @@ class ChannelController extends Controller
             'url' => ['required', 'url']
         ]);
 
-        Mail::raw("New rss channel suggestion: {$request->get('url')}", function ($message) {
-            $message->from('us@example.com', 'Laravel');
+        $user = $request->user();
+
+        Mail::raw("New rss channel suggestion from $user->email : {$request->get('url')}", function (Message $message) {
+            $message->subject('[RedMedial] new rss feed suggestion');
 
             $message->to('extrem7ipad@gmail.com');
         });

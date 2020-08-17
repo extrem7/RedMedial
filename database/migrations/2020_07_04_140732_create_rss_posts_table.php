@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRssPostsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     * php artisan migrate:refresh --path=/database/migrations/2020_07_04_140732_create_rss_posts_table.php
-     * @return void
-     */
+    /* php artisan migrate:refresh --path=/database/migrations/2020_07_04_140732_create_rss_posts_table.php */
     public function up()
     {
         Schema::create('rss_posts', function (Blueprint $table) {
@@ -23,15 +19,13 @@ class CreateRssPostsTable extends Migration
             $table->text('body');
             $table->string('source');
 
+            // temporary column
+            $table->string('image')->nullable();
+
             $table->timestamp('created_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('rss_posts');

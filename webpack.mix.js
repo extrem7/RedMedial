@@ -13,10 +13,10 @@ mix.options({processCssUrls: false})
 
 mix.sass('Modules/Frontend/Resources/scss/app.scss', 'public/dist/css').version().sourceMaps()
 
-    .copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')
+mix.copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')
 
-    .js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
+mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
     svgPath: 'Modules/Frontend/Resources/layout/src/svg',
 }).version().sourceMaps()
 
-    .mergeManifest()
+mix.mergeManifest()

@@ -2,23 +2,19 @@
 
 namespace Modules\Frontend\Http\Resources;
 
-use Illuminate\Http\Request;
+use App\Models\Rss\Post;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Article extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     * @param Request $request
-     * @return array
-     */
-    public function toArray($request)
+    public function toArray($request): array
     {
+        $model = $this->resource;
         return [
             'title' => $this->title,
             'excerpt' => $this->excerpt,
             'thumb' => $this->thumb,
-            'link' => $this->link,
+            'link' => $model instanceof Post ? $this->source : $this->link,
             'createdAt' => $this->created_at,
         ];
     }

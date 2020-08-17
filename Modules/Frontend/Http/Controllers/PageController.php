@@ -12,7 +12,7 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use Mail;
 use Modules\Frontend\Http\Requests\ContactFormRequest;
-use Modules\Frontend\Mail\ResetPassword;
+use Modules\Frontend\Mail\ContactForm;
 
 class PageController extends Controller
 {
@@ -117,7 +117,7 @@ class PageController extends Controller
 
     public function contactForm(ContactFormRequest $request)
     {
-        Mail::to(get_admins_mails())->send(new ResetPassword($request->validated()));
+        Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
 
         return response()->json(['status' => 'Your message has been sent']);
     }

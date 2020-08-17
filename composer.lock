@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3eff20c7251a67502d9aedf0a6bf40b",
+    "content-hash": "18a4645e7eb71bbadd4a0efe53241ed6",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -3271,12 +3271,12 @@
             "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
+                "url": "https://github.com/predishq/predis.git",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/predishq/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "shasum": ""
             },
@@ -4817,6 +4817,50 @@
                 "temporary-directory"
             ],
             "time": "2020-06-08T08:58:45+00:00"
+        },
+        {
+            "name": "staudenmeir/belongs-to-through",
+            "version": "v2.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/belongs-to-through.git",
+                "reference": "23be043a4885f696a0e5eb24da7221947e480cb5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/belongs-to-through/zipball/23be043a4885f696a0e5eb24da7221947e480cb5",
+                "reference": "23be043a4885f696a0e5eb24da7221947e480cb5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Znck\\Eloquent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rahul Kadyan",
+                    "email": "hi@znck.me"
+                },
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Laravel Eloquent BelongsToThrough relationships",
+            "time": "2020-01-31T11:29:47+00:00"
         },
         {
             "name": "staudenmeir/eloquent-eager-limit",

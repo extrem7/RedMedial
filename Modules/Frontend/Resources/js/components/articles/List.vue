@@ -2,7 +2,8 @@
     <div class="col-xl-9 col-lg-8">
         <div class="article-list" id="article-list">
             <b-overlay :opacity="0.9" :show="isLoading" variant="white">
-                <item :key="article.id" v-bind="article" v-for="article in articles"></item>
+                <item :is-channel="!currentRoute.includes('frontend.articles')" :key="article.id" v-bind="article"
+                      v-for="article in articles"></item>
             </b-overlay>
         </div>
         <nav class="navigation pagination" role="navigation">
@@ -39,14 +40,14 @@
                 this.page = next ? this.page + 1 : this.page - 1
                 try {
                     const response = await this.axios.get(this.link(this.page))
-                    this.articles = response.data.data
+                    this.articles = response.data.data.data
                     window.history.pushState('', '', this.link(this.page))
                 } catch (e) {
                     console.log(e)
                 }
                 setTimeout(() => {
                     this.isLoading = false
-                }, 100)
+                }, 200)
 
             },
             link(page) {

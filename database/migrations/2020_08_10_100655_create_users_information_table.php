@@ -10,8 +10,8 @@ class CreateUsersInformationTable extends Migration
     public function up()
     {
         Schema::create('users_information', function (Blueprint $table) {
-            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
-            $table->foreignId('country_id')->nullable()->constrained('rss_countries');
+            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('country_id')->nullable()->constrained('rss_countries')->onDelete('SET NULL');
 
             $table->string('bio')->nullable();
         });

@@ -29,10 +29,10 @@
                 <invalid name="feed"></invalid>
             </div>
             <div class="form-group">
-                <label for="link">Link</label>
-                <input class="form-control" id="link" placeholder="Link" type="text"
-                       v-model="form.link" v-valid.link>
-                <invalid name="link"></invalid>
+                <label for="source">Source</label>
+                <input class="form-control" id="source" placeholder="Source" type="text"
+                       v-model="form.source" v-valid.source>
+                <invalid name="source"></invalid>
             </div>
 
             <div class="form-group">
@@ -84,7 +84,7 @@
                     name: '',
                     slug: '',
                     feed: '',
-                    link: '',
+                    source: '',
                     description: '',
                     use_fulltext: 0,
                     use_og: 0,

@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 class Post extends Model implements HasMedia
 {
@@ -17,6 +18,7 @@ class Post extends Model implements HasMedia
     use Sluggable;
     use SearchTrait;
     use HasEagerLimit;
+    use BelongsToThrough;
 
     const UPDATED_AT = null;
     protected $table = 'rss_posts';
@@ -85,7 +87,10 @@ class Post extends Model implements HasMedia
 
     public function country()
     {
-        return $this->hasOneThrough(Country::class, Channel::class);
+        return $this->belongsToThrough(Country::class, Channel::class, null, '', [
+            Country::class => 'country_id',
+            Channel::class => 'channel_id'
+        ]);
     }
 
     public function categories()
@@ -117,7 +122,7 @@ class Post extends Model implements HasMedia
 
     public function getLinkAttribute()
     {
-        return route('frontend.rss.posts.show', $this->slug);
+        return $this->source;//route('frontend.rss.posts.show', $this->slug);
     }
 
     public function getDateAttribute()

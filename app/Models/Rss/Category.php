@@ -33,6 +33,6 @@ class Category extends Model
     // RELATIONS
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'rss_category_post')->distinct();
+        return $this->belongsToMany(Post::class, 'rss_category_post', 'category_id', 'post_id')->distinct();
     }
 }

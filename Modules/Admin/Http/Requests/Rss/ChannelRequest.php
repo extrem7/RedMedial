@@ -19,7 +19,7 @@ class ChannelRequest extends FormRequest
                 $feed = Feeds::make($value, null, true);
                 if ($feed->error()) $fail('Feed url is invalid.');
             },],
-            'link' => ['nullable', 'string', 'max:255', 'url'],
+            'source' => ['nullable', 'string', 'max:255', 'url'],
             'description' => ['nullable', 'string'],
             'use_fulltext' => ['nullable', 'boolean'],
             'use_og' => ['nullable', 'boolean'],

@@ -25,7 +25,8 @@
                             </div>
                             <div class="rss-body">
                                 @foreach($international as $channel)
-                                    <a href="{{$channel->link}}" class="rss-link title" rel="nofollow">
+                                    <a href="{{$channel->source}}" class="rss-link title" target="_blank"
+                                       rel="nofollow">
                                         <img src="{{$channel->logo}}" alt="">
                                         {{$channel->name}}
                                     </a>
@@ -41,7 +42,8 @@
                             <div class="rss-body">
                                 <div class="rss-body">
                                     @foreach($chile as $channel)
-                                        <a href="{{$channel->link}}" class="rss-link title">
+                                        <a href="{{$channel->source}}" class="rss-link title" target="_blank"
+                                           rel="nofollow">
                                             <img src="{{$channel->logo}}" alt="">
                                             {{$channel->name}}
                                         </a>

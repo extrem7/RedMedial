@@ -18,7 +18,7 @@ class Country extends Model
         'slug', 'name', 'code', 'meta_title', 'meta_description'
     ];
 
-   // protected $appends = ['link'];
+    // protected $appends = ['link'];
 
     // FUNCTIONS
     public static function boot()
@@ -47,7 +47,7 @@ class Country extends Model
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'rss_category_post')->distinct();
+        return $this->hasManyThrough(Post::class, Channel::class);
     }
 
     // ACCESSORS

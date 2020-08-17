@@ -78,15 +78,17 @@
                     <p>Users</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"
-                   target=_blank>
-                    <i class="nav-icon fa">
-                        <svg-vue icon="telescope"></svg-vue>
-                    </i>
-                    <p>Telescope</p>
-                </a>
-            </li>
+            @if(config('telescope.enabled'))
+                <li class="nav-item">
+                    <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"
+                       target=_blank>
+                        <i class="nav-icon fa">
+                            <svg-vue icon="telescope"></svg-vue>
+                        </i>
+                        <p>Telescope</p>
+                    </a>
+                </li>
+            @endif
         </ul>
     </nav>
 </div>
