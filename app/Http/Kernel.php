@@ -44,7 +44,7 @@ class Kernel extends HttpKernel
         TrimStrings::class,
         ConvertEmptyStringsToNull::class,
 
-        EncryptCookies::class,
+        EncryptCookies::class, //todo move to web group in production
         AddQueuedCookiesToResponse::class,
         StartSession::class,
     ];

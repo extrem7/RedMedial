@@ -50,7 +50,7 @@ class Post extends Model implements HasMedia
         if ($this->imageMedia !== null) {
             return $this->imageMedia->getUrl($size);
         } else {
-            return asset('/dist/img/no-image.jpg');
+            return config('app.url') . '/dist/img/no-image.jpg';
         }
     }
 

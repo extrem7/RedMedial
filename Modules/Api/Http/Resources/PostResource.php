@@ -21,7 +21,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'excerpt' => $this->when(isset($this->excerpt), $this->excerpt),
             'date' => $this->created_at,
-            'link' => $this->when(isset($this->slug), fn() => $this->link),
+            'link' => $this->source,
             'thumbnail' => $this->thumbnail,
             'country' => $this->when($post->relationLoaded('country'), fn() => new CountryResource($post->country))
         ];

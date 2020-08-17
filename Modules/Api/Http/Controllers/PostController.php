@@ -49,7 +49,7 @@ class PostController extends Controller
             ->when(isset($params['offset']), fn(Builder $q) => $q->offset($params['offset']))
             ->when(isset($params['channel_id']), fn(Builder $q) => $q->where('channel_id', $params['channel_id']))
             ->limit($limit)
-            ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
+            ->get(['id', 'slug', 'title', 'excerpt', 'source', 'created_at']);
 
         if (isset($params['channel_id'])) {
             $channel = Channel::find($params['channel_id']);
@@ -82,11 +82,13 @@ class PostController extends Controller
             'offset' => ['nullable', 'numeric', 'min:0'],
         ]);
 
+        $limit = $params['limit'] ?? 6;
+
         $posts = Post::search($params['query'])
-            ->when(isset($params['limit']), fn(Builder $q) => $q->limit($params['limit']))
             ->when(isset($params['offset']), fn(Builder $q) => $q->offset($params['offset']))
+            ->limit($limit)
             ->with('imageMedia')
-            ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
+            ->get(['id', 'slug', 'title', 'excerpt', 'source', 'created_at']);
 
         return PostResource::collection($posts);
     }

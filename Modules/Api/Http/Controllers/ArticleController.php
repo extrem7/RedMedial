@@ -41,7 +41,9 @@ class ArticleController extends Controller
             ->with('imageMedia')
             ->get(['id', 'slug', 'title', 'excerpt', 'created_at']);
 
-        return PostResource::collection($articles)->toArray($request);
+        $count = Article::count();
+
+        return PostResource::collection($articles)->additional(['count' => $count]);
     }
 
     /**
