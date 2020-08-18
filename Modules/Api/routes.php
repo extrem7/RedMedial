@@ -7,6 +7,7 @@ $api = app(Router::class);
 
 $api->version('v1', ['middleware' => ['api']], function (Router $api) {
     $api->group(['namespace' => 'Modules\Api\Http\Controllers'], function (Router $api) {
+        $api->get('/', 'HelperController@root');
         $api->group(['middleware' => ['auth:sanctum']], function (Router $api) {
             $api->get('/countries', 'CountryController@index');
             $api->get('/geoip', 'CountryController@geoip');

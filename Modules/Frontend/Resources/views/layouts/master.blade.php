@@ -20,7 +20,7 @@
 @shared
 @routes('frontend')
 @stack('scripts')
-<script src="{{mix('dist/js/app.js')}}"></script>
+<script src="{{mix('dist/js/app.js')}}" async defer></script>
 @schema
 </body>
 </html>
