@@ -194,7 +194,7 @@ class ParserService
         } else if ($useOG) {
             $url = $this->parseOGTagsForImage();
         }
-        if ($url !== null) {
+        if ($url) {
             try {
                 $itemRss->uploadImage($url);
             } catch (Exception $e) {
