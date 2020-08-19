@@ -6,7 +6,7 @@ import RedFooter from './layout/Footer'
 import Social from "./layout/Social"
 import CopyIframe from "./includes/CopyIframe"
 //import RssItem from "~/components/layout/RssItem"
-import YoutubePlayer from "./layout/YoutubePlayer"
+
 //import ArticlesList from "~/components/Articles/List"
 import Article from "./articles/Item"
 import Share from "./includes/Share"
@@ -20,7 +20,7 @@ export default {
     Social,
     CopyIframe,
     RssItem: () => import('./rss/channels/Channel'),
-    YoutubePlayer,
+    Playlist: () => import('./playlists/Playlist'),
     Share,
 
     ArticlesList: () => import('./articles/List'),

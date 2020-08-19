@@ -1,6 +1,6 @@
 <div class="col-xl-3 col-lg-4 indent-sm">
     @include('frontend::articles.includes.ads-single')
-    <youtube-player :player="singleYoutube" class="mb-4"></youtube-player>
+    <playlist v-bind="sidebarPlaylist" class="mb-4"></playlist>
     <rss-item v-bind="sidebarChannel"></rss-item>
     <social></social>
     @include('frontend::articles.includes.ads-single')

@@ -11,7 +11,7 @@
             <div class="play-btn">
                 <img :src="`/dist/img/icons/${playing?'pause':'play'}.svg`" @click="playing?pause():play()" alt="play">
             </div>
-            <div class="video-name">{{ current.name }}</div>
+            <div class="video-name">{{ current.title }}</div>
             <div class="time">{{ current.time }}</div>
         </div>
         <div class="chanel-video-list">

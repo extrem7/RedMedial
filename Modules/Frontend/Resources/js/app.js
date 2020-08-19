@@ -11,6 +11,7 @@ const app = new Vue({
         return {
             sidebarChannel: this.shared('sidebarChannel') || null,
             sidebarChannels: this.shared('sidebarChannels') || [],
+            sidebarPlaylist: this.shared('sidebarPlaylist') || null,
         }
     },
     methods: {

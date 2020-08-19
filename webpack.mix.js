@@ -17,6 +17,6 @@ mix.copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')
 
 mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
     svgPath: 'Modules/Frontend/Resources/layout/src/svg',
-}).version().sourceMaps()
+}).sourceMaps().version()
 
 mix.mergeManifest()

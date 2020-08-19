@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend\Providers;
 
+use App\Models\Playlist;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
@@ -90,7 +91,8 @@ class FrontendServiceProvider extends ServiceProvider
         View::composer('frontend::includes.single-sidebar', function ($view) {
             $channelRepository = app(ChannelRepositoryInterface::class);
             share([
-                'sidebarChannel' => $channelRepository->getSidebar()
+                'sidebarChannel' => $channelRepository->getSidebar(),
+                'sidebarPlaylist' => Playlist::inRandomOrder()->first()
             ]);
         });
         View::composer(['frontend::pages.quienes-somos', 'frontend::pages.red-de-medios'], function ($view) {
