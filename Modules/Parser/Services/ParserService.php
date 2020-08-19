@@ -65,7 +65,7 @@ class ParserService
                 if ($channel->last_run === null || $channel->last_run->diffInMinutes() < 2) continue;
             }
 
-            $this->info("Start working on channel #$channel->id $channel->slug");
+            $this->info(now()->format('Y-m-d H:i:s') . " Start working on channel #$channel->id $channel->slug");
             $this->updateLastRun($channel);
             $channel->update(['status' => Channel::WORKING]);
             /* @var $feed SimplePie */
@@ -107,6 +107,7 @@ class ParserService
             $timeEnd = microtime(true);
             $executionTime = round($timeEnd - $timeStart, 1);
             $this->info("End working on channel #$channel->id $channel->slug. Total Execution Time: {$executionTime}s");
+            $this->info('');
             $channel->update(['status' => Channel::IDLE]);
         }
     }
@@ -122,6 +123,9 @@ class ParserService
         return Channel::active()
             ->when($this->command->option('international'), function (Builder $query) {
                 $query->whereIn('id', setting('international_medias'));
+            })
+            ->when($this->command->option('international') === false, function (Builder $query) {
+                $query->whereNotIn('id', setting('international_medias'));
             })
             ->when($this->command->option('country'), function (Builder $query) {
                 $query->where('country_id', (int)$this->command->option('country'));
@@ -212,7 +216,7 @@ class ParserService
 
             $title = $item->get_title();
 
-            if ($date->lessThan($startTime)) return false;
+            if ($date->lessThan($startTime) || $date->equalTo($startTime)) return false;
 
             if (array_search($title, $titles) === false) {
                 $titles[] = $title;
