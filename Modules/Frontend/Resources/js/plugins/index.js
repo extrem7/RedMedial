@@ -17,7 +17,9 @@ import VueYoutube from 'vue-youtube'
 Vue.use(VueBus)
 Vue.use(SvgVue)
 Vue.use(VueMoment)
-Vue.use(VueLazyload)
+Vue.use(VueLazyload, {
+    error: '/dist/img/no-image.jpg',
+})
 Vue.use(VueScrollTo)
 Vue.use(VueObserveVisibility)
 Vue.use(VueYoutube)
