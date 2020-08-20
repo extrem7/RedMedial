@@ -21,12 +21,15 @@ class UserResource extends JsonResource
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'bio' => $this->when($user->relationLoaded('information'), fn() => $user->information->bio),
+            $this->mergeWhen($user->relationLoaded('information'), fn() => [
+                'bio' => $user->information->bio,
+                'settings' => json_decode($user->information->settings),
+            ]),
             'avatar' => $user->icon,
             'country' => $this->when(
                 $user->relationLoaded('information') && $user->information->relationLoaded('country'),
                 fn() => new CountryResource($user->information->country)
-            )
+            ),
         ];
     }
 }

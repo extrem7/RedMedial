@@ -29,6 +29,7 @@ use Auth;
 use Hash;
 use Illuminate\Http\Request;
 use Modules\Api\Http\Requests\Users\RegistrationRequest;
+use Modules\Api\Http\Requests\Users\UpdateRequest;
 use Modules\Api\Http\Resources\UserResource;
 use Modules\Api\Notifications\ResetPassword;
 use Str;
@@ -120,7 +121,8 @@ class UserController extends Controller
         /* @var $user User */
         $user = $request->user();
         $user->load(['avatarMedia', 'information.country']);
-        return new UserResource($user);
+
+        return $this->userWithToken($user);
     }
 
     /**
@@ -130,18 +132,19 @@ class UserController extends Controller
      *
      * @apiUse Token
      *
-     * @apiParam {String} name User name.
-     * @apiParam {String} email User email.
+     * @apiParam {String} [name] User name.
+     * @apiParam {String} [email] User email.
      * @apiParam {String} [password] User password.
      * @apiParam {File}   [avatar] User avatar file.
      * @apiParam {String} [bio] User biography.
      * @apiParam {String} [country_id] User country id.
+     * @apiParam {String} [settings] User country id.
      * @apiParam {String} _method=patch Should be provided to use PATCH method.
      *
      * @apiUse User
      * @apiSuccess {String} token Bearer Token.
      */
-    public function update(RegistrationRequest $request)
+    public function update(UpdateRequest $request)
     {
         $validated = $request->only(['name', 'email']);
 
@@ -154,9 +157,13 @@ class UserController extends Controller
             $user->password = $password;
         }
 
-        $user->save();
+        $isSaved = $user->save();
 
-        $user->information()->update($request->only(['country_id', 'bio']));
+        if ($isSaved && $request->has('password'))
+            $user->tokens()->delete();
+
+        $user->information->fill($request->only(['country_id', 'bio', 'settings']))->save();
+
         $user->load('information.country');
 
         if ($request->hasFile('avatar')) {
@@ -164,7 +171,13 @@ class UserController extends Controller
             $user->load('avatarMedia');
         }
 
-        return new UserResource($user);
+        if ($isSaved && $request->has('password')) {
+            return $this->userWithToken($user);
+        } else {
+            return [
+                'user' => new UserResource($user)
+            ];
+        }
     }
 
     /**
@@ -189,9 +202,9 @@ class UserController extends Controller
         return ['message' => 'New password has been sent to your email'];
     }
 
-    protected function userWithToken(User $user, string $device)
+    protected function userWithToken(User $user, string $device = null)
     {
-        $token = $user->createToken($device);
+        $token = $user->createToken($device ?? $user->currentAccessToken()->name);
         return [
             'user' => new UserResource($user),
             'token' => $token->plainTextToken

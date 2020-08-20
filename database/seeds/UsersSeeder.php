@@ -45,7 +45,7 @@ class UsersSeeder extends Seeder
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'created_at' => $data['created_at'],
-                'password' => $password
+                'password' => Hash::make($password)
             ]);
 
             $user->information()->create([

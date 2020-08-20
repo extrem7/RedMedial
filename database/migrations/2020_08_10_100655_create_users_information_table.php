@@ -14,6 +14,7 @@ class CreateUsersInformationTable extends Migration
             $table->foreignId('country_id')->nullable()->constrained('rss_countries')->onDelete('SET NULL');
 
             $table->string('bio')->nullable();
+            $table->json('settings')->nullable();
         });
     }
 
