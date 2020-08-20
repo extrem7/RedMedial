@@ -175,7 +175,8 @@ class UserController extends Controller
             return $this->userWithToken($user);
         } else {
             return [
-                'user' => new UserResource($user)
+                'user' => new UserResource($user),
+                'token' => $user->currentAccessToken()->plainTextToken
             ];
         }
     }
