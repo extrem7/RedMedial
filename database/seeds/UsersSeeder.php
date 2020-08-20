@@ -9,7 +9,6 @@ class UsersSeeder extends Seeder
 {
     public function run()
     {
-
         if (User::find(1) === null) {
             $user = new User([
                 'name' => env('INITIAL_USER_NAME'),
@@ -25,16 +24,7 @@ class UsersSeeder extends Seeder
         }
 
         $countriesMapping = require(database_path('old/countriesMapping.php'));
-        $users = [
-            [
-                'name' => 'Alex Hi',
-                'email' => 'extrem7ipad@gmail.com',
-                'created_at' => '2019-06-04 13:08:49',
-                'country_id' => 232,
-                'bio' => 'Sector Gaza',
-                'avatar' => 'https://redmedial.com/wp-content/uploads/2019/10/03_oyH2Jcp.jpg'
-            ]
-        ];
+        $users = collect(json_decode(file_get_contents(database_path('old/users.json'))));
 
         $this->command->getOutput()->progressStart(count($users));
 

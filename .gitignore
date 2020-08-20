@@ -15,6 +15,9 @@ public/vendor
 /resources/frontend
 /resources/old
 
+/database/old/articles.json
+/database/old/users.json
+
 /storage/*.key
 /storage/medialibrary/
 /vendor
@@ -34,4 +37,3 @@ _ide_helper.php
 _ide_helper_models.php
 
 worker.log
-/database/old/articles.json

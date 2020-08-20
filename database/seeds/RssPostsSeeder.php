@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Rss\Post;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class RssPostsSeeder extends Seeder
@@ -8,12 +9,14 @@ class RssPostsSeeder extends Seeder
     public function run()
     {
         $channels = require(database_path('old/channelsMapping.php'));
-        $posts = Http::get('https://redmedial.com/wp-json/app/v1/migration?limit=20&offset=600000')->json()['data']['posts'];
+        $posts = Http::get('https://redmedial.com/wp-json/app/v1/migration?limit=100&offset=0')->json()['data']['posts'];
 
         $this->command->getOutput()->progressStart(count($posts));
 
         DB::transaction(function () use ($posts, $channels) {
             foreach ($posts as $data) {
+                $date = Carbon::create($data['date']);
+
                 $post = Post::create([
                     'channel_id' => $channels[$data['channel_id']],
                     'title' => strip_tags($data['title']),
@@ -21,7 +24,7 @@ class RssPostsSeeder extends Seeder
                     'excerpt' => strip_tags(html_entity_decode($data['excerpt'])),
                     'body' => $data['body'],
                     'source' => $data['link'],
-                    'image' => $data['image']
+                    'image' => $date->diffInMonths() <= 2 ? $data['image'] : null
                 ]);
 
                 //  $post->addMediaFromUrl($data['image'])->toMediaCollection('image', 's3');
