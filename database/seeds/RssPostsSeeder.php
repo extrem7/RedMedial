@@ -18,7 +18,7 @@ class RssPostsSeeder extends Seeder
                 $date = Carbon::create($data['date']);
 
                 $post = Post::create([
-                    'channel_id' => $channels[$data['channel_id']],
+                    'channel_id' => $channels[$data['channel_id']] + 1,
                     'title' => strip_tags($data['title']),
                     'created_at' => $data['date'],
                     'excerpt' => strip_tags(html_entity_decode($data['excerpt'])),
