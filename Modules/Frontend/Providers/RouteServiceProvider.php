@@ -25,11 +25,12 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapWebRoutes()
     {
-        Route::domain(config('redmedial.frontend_domain'))
-            ->domain('www.' . config('redmedial.frontend_domain'))
-            ->middleware(['web', Geoip::class, Pagination::class])
+        $routes = fn() => Route::middleware(['web', Geoip::class, Pagination::class])
             ->namespace($this->moduleNamespace)
             ->as('frontend.')
             ->group(module_path('Frontend', '/Routes/web.php'));
+
+        Route::group(['domain' => config('redmedial.frontend_domain')], $routes);
+        Route::group(['domain' => 'www.' . config('redmedial.frontend_domain')], $routes);
     }
 }
