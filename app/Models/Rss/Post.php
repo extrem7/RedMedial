@@ -15,19 +15,20 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 class Post extends Model implements HasMedia
 {
     use HasMediaTrait;
-   // use Sluggable;
+    use Sluggable;
     use SearchTrait;
     use HasEagerLimit;
     use BelongsToThrough;
 
     const UPDATED_AT = null;
+
     protected $table = 'rss_posts';
+
     protected $fillable = [
-        'channel_id', 'title', 'slug', 'excerpt', 'body', 'source', 'created_at'
+        'channel_id', 'title', 'excerpt', 'body', 'source', 'created_at'
     ];
-    protected $search = [
-        'title', 'excerpt', 'body'
-    ];
+
+    protected $search = ['title'];
 
     // FUNCTIONS
     protected static function boot()
@@ -59,14 +60,14 @@ class Post extends Model implements HasMedia
         $this->addMediaCollection('image')
             ->singleFile()
             ->registerMediaConversions(function (Media $media) {
-                $this->addMediaConversion('thumb')
-                    ->crop('crop-center', 150, 150)
-                    ->sharpen(0)
-                    ->nonQueued();
-                $this->addMediaConversion('thumbnail')
-                    ->crop('crop-center', 260, 144)
-                    ->sharpen(0)
-                    ->nonQueued();
+                /*   $this->addMediaConversion('thumb')
+                       ->crop('crop-center', 150, 150)
+                       ->sharpen(0)
+                       ->nonQueued();
+                   $this->addMediaConversion('thumbnail')
+                       ->crop('crop-center', 260, 144)
+                       ->sharpen(0)
+                       ->nonQueued();*/
             });
     }
 
