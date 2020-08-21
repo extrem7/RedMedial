@@ -2,6 +2,7 @@
 
 namespace Modules\Api\Http\Resources;
 
+use App\Models\Article;
 use App\Models\Rss\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +23,7 @@ class PostResource extends JsonResource
             'excerpt' => $this->when(isset($this->excerpt), $this->excerpt),
             'date' => $this->created_at,
             'link' => $this->source,
-            'thumbnail' => $this->thumbnail,
+            'thumbnail' => $post instanceof Article ? $this->banner : $this->thumbnail,
             'country' => $this->when($post->relationLoaded('country'), fn() => new CountryResource($post->country))
         ];
     }
