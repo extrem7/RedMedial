@@ -16,8 +16,8 @@
                 </div>
             </div>
 
-            <div class="banner-bottom">
-                <img data-src="https://i.ibb.co/6tj8fC4/image.png" class="img-fluid" alt="">
+            <div class="banner-bottom mt-4 mb-4">
+                <div id='div-gpt-ad-RM2020-01'></div>
             </div>
         </div>
 
@@ -28,14 +28,14 @@
         @include('frontend::pages.home.includes.hot-news')
 
         <div class="banner-bottom mt-2 mb-2">
-            <img data-src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
+            <div id='div-gpt-ad-RM2020-02'></div>
         </div>
 
         @if(config('app.env')!=='local')
             @include('frontend::pages.home.includes.covid-map')
         @endif
         <div class="banner-bottom mt-2 mb-2">
-            <img data-src="https://i.ibb.co/8PqQV70/image.png" class="img-fluid" alt="">
+            <div id='div-gpt-ad-RM2020-03'></div>
         </div>
         @if($country!==null)
             <section class="section-rss-local">
@@ -48,7 +48,7 @@
         @endif
 
         <div class="banner-bottom mt-2 mb-2">
-            <img data-src="https://i.ibb.co/BnvC9Rd/image.png" class="img-fluid" alt="">
+            <div id='div-gpt-ad-RM2020-04'></div>
         </div>
 
         <section class="section-rss-world">
@@ -74,3 +74,14 @@
 
     </main>
 @endsection
+
+@push('scripts')
+    <script>
+        googletag.cmd.push(function () {
+            googletag.display('div-gpt-ad-RM2020-01')
+            googletag.display('div-gpt-ad-RM2020-02')
+            googletag.display('div-gpt-ad-RM2020-03')
+            googletag.display('div-gpt-ad-RM2020-04')
+        });
+    </script>
+@endpush

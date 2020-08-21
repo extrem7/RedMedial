@@ -26,7 +26,9 @@
                         </div>
                         @include('frontend::articles.includes.donate')
                     </div>
-                    @include('frontend::articles.includes.banner-bottom')
+                    <div class="banner-bottom">
+                        <div id='div-gpt-ad-RM2020-02'></div>
+                    </div>
                     <div class="description dynamic-content">{!!$post->body!!}</div>
                 </article>
 

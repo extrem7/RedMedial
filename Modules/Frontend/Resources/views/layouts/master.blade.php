@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="it-rating" content="it-rat-96ce2df79b44e83b1c096943ce4efc94"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {!! SEO::generate() !!}
     @include('includes.favicon')
     <link href="{{mix('dist/css/app.css')}}" rel="stylesheet">
     @stack('styles')
+    @include('frontend::includes.google')
 </head>
 <body class="{{ $bodyClass }}">
 <div id="app">

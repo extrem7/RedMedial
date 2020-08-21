@@ -30,8 +30,8 @@ class RouteServiceProvider extends ServiceProvider
             ->as('frontend.')
             ->group(module_path('Frontend', '/Routes/web.php'));
 
-        if (config('app.env') === 'production')
-            Route::group(['domain' => 'www.' . config('redmedial.frontend_domain')], $routes);
+        /*if (config('app.env') === 'production')
+            Route::group(['domain' => 'www.' . config('redmedial.frontend_domain')], $routes);*/
         Route::group(['domain' => config('redmedial.frontend_domain')], $routes);
     }
 }

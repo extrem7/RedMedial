@@ -24,7 +24,9 @@
                         <share></share>
                         @include('frontend::articles.includes.donate')
                     </div>
-                    @include('frontend::articles.includes.banner-bottom')
+                    <div class="banner-bottom">
+                        <div id='div-gpt-ad-RM2020-02'></div>
+                    </div>
                     <div class="description dynamic-content">{!!$article->body!!}</div>
                     <div class="d-flex flex-column flex-md-row mt-4">
                         @if($article->authors)
@@ -63,4 +65,9 @@
     <script async defer crossorigin="anonymous"
             src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0&appId=2267874190154020&autoLogAppEvents=1"
             nonce="UGIJPutf"></script>
+    <script>
+        googletag.cmd.push(function () {
+            googletag.display('div-gpt-ad-RM2020-02')
+        });
+    </script>
 @endpush
