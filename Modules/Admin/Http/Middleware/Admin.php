@@ -9,7 +9,7 @@ class Admin
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::getUser()->hasRole('admin')) {
+        if (Auth::check() && Auth::getUser()->hasRole(['admin', 'editor'])) {
             return $next($request);
         }
         abort(404);

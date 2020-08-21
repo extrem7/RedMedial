@@ -76,7 +76,7 @@ class UserController extends Controller
         $this->userService->shareForCRUD();
 
         $user->oldAvatar = $user->getAvatar();
-        $user->role = $user->roles()->first()->id;
+        $user->role = $user->roles()->first()->id ?? null;
         share(compact('user'));
 
         return view('admin::users.form');

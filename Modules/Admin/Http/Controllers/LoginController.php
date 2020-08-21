@@ -9,12 +9,9 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/';
-
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->redirectTo = route('admin.dashboard');
     }
 
     public function showLoginForm()
@@ -31,5 +28,10 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect()->route('admin.login');
+    }
+
+    public function redirectPath()
+    {
+        return route('admin.dashboard');
     }
 }

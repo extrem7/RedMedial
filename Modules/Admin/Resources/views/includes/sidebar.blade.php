@@ -10,56 +10,59 @@
 
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy">
-            <li class="nav-item">
-                <a href="{{route('admin.dashboard')}}" class="nav-link {{ Nav::isRoute('admin.dashboard') }}">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>Dashboard</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ config('app_settings.url') }}" class="nav-link {{ Nav::urlDoesContain('settings') }}">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>Settings</p>
-                </a>
-            </li>
-            <li class="nav-item has-treeview {{ Nav::urlDoesContain('rss','menu-open') }}">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fa fa-rss"></i>
-                    <p>
-                        Rss
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="{{route('admin.rss.channels.index')}}"
-                           class="nav-link {{ Nav::isResource('channels') }}">
-                            <i class="nav-icon fas fa-sitemap"></i>
-                            <p>Channels</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('admin.rss.countries.index')}}"
-                           class="nav-link {{ Nav::isResource('countries') }}">
-                            <i class="nav-icon fa fa-globe"></i>
-                            <p>Countries</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('admin.rss.categories.index')}}"
-                           class="nav-link {{ Nav::isResource('categories') }}">
-                            <i class="nav-icon fa fa-tag"></i>
-                            <p>Categories</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('admin.pages.index')}}" class="nav-link {{ Nav::isResource('pages') }}">
-                    <i class="nav-icon fa fa-file-signature"></i>
-                    <p>Pages</p>
-                </a>
-            </li>
+
+            @if(Auth::getUser()->hasRole('admin'))
+                <li class="nav-item">
+                    <a href="{{route('admin.dashboard')}}" class="nav-link {{ Nav::isRoute('admin.dashboard') }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ config('app_settings.url') }}" class="nav-link {{ Nav::urlDoesContain('settings') }}">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview {{ Nav::urlDoesContain('rss','menu-open') }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-rss"></i>
+                        <p>
+                            Rss
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.rss.channels.index')}}"
+                               class="nav-link {{ Nav::isResource('channels') }}">
+                                <i class="nav-icon fas fa-sitemap"></i>
+                                <p>Channels</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.rss.countries.index')}}"
+                               class="nav-link {{ Nav::isResource('countries') }}">
+                                <i class="nav-icon fa fa-globe"></i>
+                                <p>Countries</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.rss.categories.index')}}"
+                               class="nav-link {{ Nav::isResource('categories') }}">
+                                <i class="nav-icon fa fa-tag"></i>
+                                <p>Categories</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.pages.index')}}" class="nav-link {{ Nav::isResource('pages') }}">
+                        <i class="nav-icon fa fa-file-signature"></i>
+                        <p>Pages</p>
+                    </a>
+                </li>
+            @endif
             <li class="nav-item">
                 <a href="{{route('admin.articles.index')}}" class="nav-link {{ Nav::isResource('articles') }}">
                     <i class="nav-icon fa fa-newspaper"></i>
@@ -72,22 +75,24 @@
                     <p>Playlists</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{route('admin.users.index')}}" class="nav-link {{ Nav::isResource('users') }}">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>Users</p>
-                </a>
-            </li>
-            @if(config('telescope.enabled'))
+            @if(Auth::getUser()->hasRole('admin'))
                 <li class="nav-item">
-                    <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"
-                       target=_blank>
-                        <i class="nav-icon fa">
-                            <svg-vue icon="telescope"></svg-vue>
-                        </i>
-                        <p>Telescope</p>
+                    <a href="{{route('admin.users.index')}}" class="nav-link {{ Nav::isResource('users') }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Users</p>
                     </a>
                 </li>
+                @if(config('telescope.enabled'))
+                    <li class="nav-item">
+                        <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"
+                           target=_blank>
+                            <i class="nav-icon fa">
+                                <svg-vue icon="telescope"></svg-vue>
+                            </i>
+                            <p>Telescope</p>
+                        </a>
+                    </li>
+                @endif
             @endif
         </ul>
     </nav>
