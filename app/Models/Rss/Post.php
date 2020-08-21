@@ -15,7 +15,7 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 class Post extends Model implements HasMedia
 {
     use HasMediaTrait;
-    use Sluggable;
+   // use Sluggable;
     use SearchTrait;
     use HasEagerLimit;
     use BelongsToThrough;
@@ -23,7 +23,7 @@ class Post extends Model implements HasMedia
     const UPDATED_AT = null;
     protected $table = 'rss_posts';
     protected $fillable = [
-        'channel_id', 'title', 'excerpt', 'body', 'source', 'created_at'
+        'channel_id', 'title', 'slug', 'excerpt', 'body', 'source', 'created_at'
     ];
     protected $search = [
         'title', 'excerpt', 'body'
@@ -74,7 +74,7 @@ class Post extends Model implements HasMedia
     {
         return [
             'slug' => [
-                'source' => 'title'
+                'source' => !empty($this->slug) ? 'slug' : 'title',
             ]
         ];
     }

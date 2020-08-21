@@ -13,7 +13,7 @@ class CreateRssPostsTable extends Migration
             $table->id();
 
             $table->foreignId('channel_id')->constrained('rss_channels')->cascadeOnDelete();
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->string('title');
             $table->string('excerpt', 510);
             $table->text('body');
