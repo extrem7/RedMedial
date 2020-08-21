@@ -52,7 +52,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         });
         $api->post('/users/reset-password', 'UserController@resetPassword');
 
-        $api->group(['prefix' => '/mimedio', 'middleware' => ['guest']], function (Router $api) {
+        $api->group(['prefix' => '/mimedio'], function (Router $api) {
             $api->get('/categories', 'MiMedioController@categories');
             $api->get('/categories/{category}', 'MiMedioController@category');
         });
