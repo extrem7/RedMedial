@@ -49,7 +49,7 @@ class Post extends Model implements HasMedia
     public function getImage(string $size = ''): string
     {
         if ($this->imageMedia !== null) {
-            return $this->imageMedia->getUrl($size);
+            return $this->imageMedia->getUrl($this->imageMedia->hasGeneratedConversion($size) ? $size : '');
         } else {
             return config('app.url') . '/dist/img/no-image.jpg';
         }
@@ -59,15 +59,16 @@ class Post extends Model implements HasMedia
     {
         $this->addMediaCollection('image')
             ->singleFile()
+            ->useDisk('s3')
             ->registerMediaConversions(function (Media $media) {
-                /*   $this->addMediaConversion('thumb')
-                       ->crop('crop-center', 150, 150)
-                       ->sharpen(0)
-                       ->nonQueued();
-                   $this->addMediaConversion('thumbnail')
-                       ->crop('crop-center', 260, 144)
-                       ->sharpen(0)
-                       ->nonQueued();*/
+                $this->addMediaConversion('thumb')
+                    ->crop('crop-center', 150, 150)
+                    ->sharpen(0)
+                    ->nonQueued();
+                $this->addMediaConversion('thumbnail')
+                    ->crop('crop-center', 260, 144)
+                    ->sharpen(0)
+                    ->nonQueued();
             });
     }
 
