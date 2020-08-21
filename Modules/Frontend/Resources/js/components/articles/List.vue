@@ -39,7 +39,7 @@
                 this.isLoading = true
                 this.page = next ? this.page + 1 : this.page - 1
                 try {
-                    const response = await this.axios.get(this.link(this.page) + '?api_life_hack=1') //todo api
+                    const response = await this.axios.get(this.link(this.page))
                     this.articles = response.data.data.data
                     window.history.pushState('', '', this.link(this.page))
                 } catch (e) {
@@ -51,7 +51,9 @@
 
             },
             link(page) {
-                const routeParams = {}
+                const routeParams = {
+                    api_life_hack: 1//todo api
+                }
                 if (this.currentRoute.includes('channel')) {
                     routeParams.channel = this.shared('channel').slug
                 } else if (this.currentRoute.includes('search')) {
