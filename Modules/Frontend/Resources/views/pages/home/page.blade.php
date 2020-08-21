@@ -77,11 +77,13 @@
 
 @push('scripts')
     <script>
-        googletag.cmd.push(function () {
-            googletag.display('div-gpt-ad-RM2020-01')
-            googletag.display('div-gpt-ad-RM2020-02')
-            googletag.display('div-gpt-ad-RM2020-03')
-            googletag.display('div-gpt-ad-RM2020-04')
-        });
+        setTimeout(() => {
+            googletag.cmd.push(function () {
+                googletag.display('div-gpt-ad-RM2020-01')
+                googletag.display('div-gpt-ad-RM2020-02')
+                googletag.display('div-gpt-ad-RM2020-03')
+                googletag.display('div-gpt-ad-RM2020-04')
+            })
+        }, 5000)
     </script>
 @endpush
