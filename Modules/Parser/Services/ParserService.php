@@ -94,11 +94,13 @@ class ParserService
 
                 $this->info("Created $count items");
 
-                if (in_array($channel->id, setting('international_medias'))) {
-                    Cacher::channelsInternational();
-                }
-                if ($country = $channel->country) {
-                    if ($count > 0) Cacher::countyByCode($country->code);
+                if ($count > 0) {
+                    if (in_array($channel->id, setting('international_medias'))) {
+                        Cacher::channelsInternational();
+                    }
+                    if ($country = $channel->country) {
+                        if ($count > 0) Cacher::countyByCode($country->code);
+                    }
                 }
             } else {
                 $this->error('SimplePie returned error: ' . $feed->error());
