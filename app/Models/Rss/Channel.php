@@ -37,6 +37,11 @@ class Channel extends Model implements HasMedia
         'meta_title', 'meta_description'
     ];
 
+    protected $casts = [
+        'country_id' => 'integer',
+        'is_active' => 'integer'
+    ];
+
     protected $dates = ['created_at', 'updated_at', 'last_run'];
 
     protected $search = [

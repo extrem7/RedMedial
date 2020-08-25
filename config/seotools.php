@@ -32,12 +32,9 @@ return [
         'add_notranslate_class' => false,
     ],
     'opengraph' => [
-        /*
-         * The default configurations to be used by the opengraph generator.
-         */
         'defaults' => [
-            'title' => 'Over 9000 Thousand!', // set false to total remove
-            'description' => 'For those who helped create the Genki Dama', // set false to total remove
+            'title' => 'Red Medial', // set false to total remove
+            'description' => 'Global network of media’s', // set false to total remove
             'url' => false, // Set null for using Url::current(), set false to total remove
             'type' => false,
             'site_name' => false,
