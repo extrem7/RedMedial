@@ -43,7 +43,7 @@ class MiMedioController extends Controller
         $channels = Channel::ordered()
             ->whereIn('id', $international)
             ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) {
-                $posts->select(['channel_id', 'id', 'title', 'excerpt', 'created_at'])->limit(6);
+                $posts->select(['channel_id', 'id', 'title', 'excerpt', 'source', 'created_at'])->limit(6);
             }])
             ->get(['id', 'country_id', 'name']);
 
