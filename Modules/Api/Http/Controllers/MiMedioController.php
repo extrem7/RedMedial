@@ -3,8 +3,11 @@
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\Rss\Category;
+use App\Models\Rss\Channel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Modules\Api\Http\Resources\ChannelResource;
 use Modules\Api\Http\Resources\PostResource;
 
 class MiMedioController extends Controller
@@ -31,5 +34,19 @@ class MiMedioController extends Controller
         $count = $category->posts()->count();
 
         return PostResource::collection($posts)->additional(['count' => $count]);
+    }
+
+    public function channels(Request $request)
+    {
+        $international = setting('international_medias');
+
+        $channels = Channel::ordered()
+            ->whereIn('id', $international)
+            ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) {
+                $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit(6);
+            }])
+            ->get(['id', 'country_id', 'name']);
+
+        return ChannelResource::collection($channels);
     }
 }

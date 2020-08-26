@@ -12,6 +12,7 @@ class RssPostsImagesSeeder extends Seeder
             ->limit(100)
             ->orderByDesc('id')
             ->select(['id', 'image as image_link'])
+            ->inRandomOrder()
             ->chunk(100, function ($posts) {
                 $this->command->getOutput()->progressStart(count($posts));
 

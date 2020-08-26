@@ -55,6 +55,7 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         $api->group(['prefix' => '/mimedio'], function (Router $api) {
             $api->get('/categories', 'MiMedioController@categories');
             $api->get('/categories/{category}', 'MiMedioController@category');
+            $api->get('/channels', 'MiMedioController@channels');
         });
     });
 });
