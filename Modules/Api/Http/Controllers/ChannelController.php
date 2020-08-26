@@ -71,17 +71,32 @@ class ChannelController extends Controller
 
         /* @var $user User */
         $user = $request->user();
-        /* @var $favorite Collection */
-        $favorite = $user->favorite->pluck('channel_id');
-        $international = setting('international_medias');
-        $ids = $favorite->merge($international);
+        $channels = [];
 
-        $channels = Channel::ordered()
-            ->whereIn('id', $ids)
-            ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
+        function getChannels($query, $params = [])
+        {
+            return $query->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
                 $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6);
             }])
-            ->get(['id', 'country_id', 'name']);
+                ->get(['id', 'country_id', 'name']);
+        }
+
+        /* @var $favorite Collection */
+        $favorite = $user->favorite->pluck('channel_id');
+        $channels = getChannels(Channel::ordered()->whereIn('id', $favorite), $params);
+
+        if ($user->information->country !== null) {
+            $countryChannels = getChannels(
+                Channel::ordered()->where('country_id', $user->information->country->id), $params
+            );
+            $channels = $channels->merge($countryChannels);
+        }
+
+        $international = setting('international_medias');
+
+        $internationalChannels = getChannels(Channel::ordered()->whereIn('id', $international), $params);
+
+        $channels = $channels->merge($internationalChannels);
 
         $channels->transform(function (Channel $channel) {
             $channel->posts->transform(function (Post $post) use ($channel) {

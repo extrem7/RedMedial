@@ -46,8 +46,7 @@ class Kernel extends HttpKernel
 
         EncryptCookies::class, //todo move to web group in production
         AddQueuedCookiesToResponse::class,
-        StartSession::class,
-        DebugBarMiddleware::class
+        StartSession::class
     ];
 
     /**
@@ -60,7 +59,8 @@ class Kernel extends HttpKernel
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
-            SubstituteBindings::class
+            SubstituteBindings::class,
+            DebugBarMiddleware::class
         ],
 
         'api' => [
