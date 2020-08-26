@@ -21,6 +21,7 @@ class ChannelResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'logo' => $this->logo,
+            'link' => $this->when(isset($this->slug), fn() => route('frontend.rss.channels.show', $this->slug)),
             'posts' => PostResource::collection($this->whenLoaded('posts')),
         ];
     }

@@ -45,7 +45,7 @@ class MiMedioController extends Controller
             ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) {
                 $posts->select(['channel_id', 'id', 'title', 'excerpt', 'source', 'created_at'])->limit(6);
             }])
-            ->get(['id', 'country_id', 'name']);
+            ->get(['id', 'country_id', 'slug', 'name']);
 
         return ChannelResource::collection($channels);
     }
