@@ -71,32 +71,25 @@ class ChannelController extends Controller
 
         /* @var $user User */
         $user = $request->user();
-        $channels = [];
 
-        function getChannels($query, $params = [])
-        {
-            return $query->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
-                $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6);
-            }])
-                ->get(['id', 'country_id', 'name']);
-        }
-
-        /* @var $favorite Collection */
         $favorite = $user->favorite->pluck('channel_id');
-        $channels = getChannels(Channel::ordered()->whereIn('id', $favorite), $params);
 
+        $countryChannels = [];
         if ($user->information->country !== null) {
-            $countryChannels = getChannels(
-                Channel::ordered()->where('country_id', $user->information->country->id), $params
-            );
-            $channels = $channels->merge($countryChannels);
+            $countryChannels = Channel::ordered()
+                ->where('country_id', $user->information->country->id)
+                ->select('id')
+                ->pluck('id');
         }
 
         $international = setting('international_medias');
 
-        $internationalChannels = getChannels(Channel::ordered()->whereIn('id', $international), $params);
-
-        $channels = $channels->merge($internationalChannels);
+        $channels = Channel::query()
+            ->whereIn('id', [...$favorite, ...$countryChannels, ...$international])
+            ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
+                $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6);
+            }])
+            ->get(['id', 'country_id', 'name']);
 
         $channels->transform(function (Channel $channel) {
             $channel->posts->transform(function (Post $post) use ($channel) {
@@ -104,6 +97,22 @@ class ChannelController extends Controller
                 return $post;
             });
             return $channel;
+        });
+
+        $channels = $channels->sort(function (Channel $a, Channel $b) use ($favorite, $countryChannels, $international) {
+            if (!empty($international)) {
+                if (in_array($a->id, $international) && !in_array($b->id, $international)) return 1;
+                if (!in_array($a->id, $international) && in_array($b->id, $international)) return -1;
+            }
+            if ($favorite->isNotEmpty()) {
+                if ($favorite->contains($a->id) && !$favorite->contains($b->id)) return -1;
+                if (!$favorite->contains($a->id) && $favorite->contains($b->id)) return 1;
+            }
+            if ($countryChannels->isNotEmpty()) {
+                if ($countryChannels->contains($a->id) && !$countryChannels->contains($b->id)) return -1;
+                if (!$countryChannels->contains($a->id) && $countryChannels->contains($b->id)) return 1;
+            }
+            return $a->id > $b->id ? 1 : -1;
         });
 
         return ChannelResource::collection($channels);

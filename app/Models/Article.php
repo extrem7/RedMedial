@@ -107,6 +107,12 @@ class Article extends Model implements HasMedia
         return $query->whereStatus(self::PUBLISHED);
     }
 
+    //SETTERS
+    public function setExcerptAttribute(string $excerpt)
+    {
+        $this->attributes['excerpt'] = strip_tags($excerpt);
+    }
+
     // ACCESSORS
     public function getImageAttribute()
     {

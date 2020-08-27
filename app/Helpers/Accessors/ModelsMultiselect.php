@@ -8,6 +8,6 @@ class ModelsMultiselect
 {
     public function handle($value): array
     {
-        return explode(',', $value);
+        return array_map(fn($id) => intval($id), explode(',', $value));
     }
 }

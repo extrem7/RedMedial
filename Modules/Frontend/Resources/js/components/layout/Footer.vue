@@ -12,8 +12,8 @@
                 <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>
             </ul>
             <social-icons></social-icons>
-            <div class="mt-3 mb-3">©{{ new Date().getFullYear()}}</div>
-            <div>
+            <div class="mt-3 mb-3">Red Medial ©{{ new Date().getFullYear()}}</div>
+            <div class="d-none">
                 Una más de <a href="https://www.elciudadano.com" rel="nofollow" target="_blank">El Ciudadano</a> con
                 desarrollo de <a href="https://raxkor.com" rel="nofollow" target="_blank">Raxkor</a>
             </div>
