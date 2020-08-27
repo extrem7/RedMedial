@@ -21,7 +21,7 @@ class ArticleRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
             'body' => ['required', 'string'],
-            'excerpt' => ['nullable', 'string', 'max:510'],
+            'excerpt' => ['required', 'string', 'max:510'],
             'image' => [$update ? 'nullable' : 'required', 'image', 'mimes:jpg,jpeg,bmp,png'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:255'],
