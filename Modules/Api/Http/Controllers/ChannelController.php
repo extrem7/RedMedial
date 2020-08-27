@@ -135,7 +135,7 @@ class ChannelController extends Controller
         Mail::raw("New rss channel suggestion from $user->email : {$request->get('url')}", function (Message $message) {
             $message->subject('[RedMedial] new rss feed suggestion');
 
-            $message->to('extrem7ipad@gmail.com');
+            $message->to(get_admins_mails());
         });
 
         return response()->json([
