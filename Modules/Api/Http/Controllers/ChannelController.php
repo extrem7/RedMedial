@@ -86,12 +86,15 @@ class ChannelController extends Controller
 
         $channels = Channel::query()
             ->whereIn('id', [...$favorite, ...$countryChannels, ...$international])
-            ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) use ($params) {
-                $posts->select(['channel_id', 'id', 'title', 'created_at'])->limit($params['posts_limit'] ?? 6)->with('imageMedia');
-            }])
+            ->with(['logoMedia', 'country'])
             ->get(['id', 'country_id', 'name']);
 
-        $channels->transform(function (Channel $channel) {
+        $channels->transform(function (Channel $channel) use ($params) {
+            $posts = $channel->posts()
+                ->limit($params['posts_limit'] ?? 6)
+                ->with('imageMedia')
+                ->get(['id', 'channel_id', 'title', 'created_at']);
+            $channel->setRelation('posts', $posts);
             $channel->posts->transform(function (Post $post) use ($channel) {
                 if ($channel->country) $post->setRelation('country', $channel->country);
                 return $post;
