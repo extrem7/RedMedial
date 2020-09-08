@@ -41,7 +41,7 @@
                 try {
                     const response = await this.axios.get(this.link(this.page))
                     this.articles = response.data.data.data
-                    window.history.pushState('', '', this.link(this.page))
+                    window.history.pushState('', '', this.link(this.page, true))
                 } catch (e) {
                     console.log(e)
                 }
@@ -50,10 +50,11 @@
                 }, 200)
 
             },
-            link(page) {
-                const routeParams = {
-                    api_life_hack: 1//todo api
-                }
+            link(page, hack = false) {
+                const routeParams = {}
+
+                if (!hack) routeParams.api_life_hack = 1
+
                 if (this.currentRoute.includes('channel')) {
                     routeParams.channel = this.shared('channel').slug
                 } else if (this.currentRoute.includes('search')) {

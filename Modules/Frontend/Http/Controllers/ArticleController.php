@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Article;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use Illuminate\Http\Request;
 use Modules\Frontend\Services\SchemaService;
 
 class ArticleController extends Controller
@@ -15,7 +16,7 @@ class ArticleController extends Controller
         $this->articleRepository = app(ArticleRepositoryInterface::class);
     }
 
-    public function index(int $page = 1)
+    public function index(Request $request, int $page = 1)
     {
         $this->seo()->setTitle('Blog');
 
@@ -23,7 +24,7 @@ class ArticleController extends Controller
 
         abort_if($articles->collection->isEmpty(), 404);
 
-        if (request()->expectsJson()) {
+        if (request()->expectsJson() && $request->has('api_life_hack')) {
             return $articles;
         } else {
             share(compact('articles'));

@@ -8,6 +8,7 @@ use App\Models\Rss\Post;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Http\Request;
 use Modules\Frontend\Services\SchemaService;
 
 class RssController extends Controller
@@ -36,7 +37,7 @@ class RssController extends Controller
         return view('frontend::rss.country', compact('country'));
     }
 
-    public function channel(Channel $channel)
+    public function channel(Request $request, Channel $channel)
     {
         $this->seo()->setTitle($channel->meta_title ?? $channel->name);
         if ($description = $channel->meta_description) $this->seo()->setDescription($description);
@@ -44,7 +45,7 @@ class RssController extends Controller
         $posts = $this->postRepository->getByChannel($channel);
         abort_if($posts->collection->isEmpty(), 404);
 
-        if (request()->expectsJson()) {
+        if (request()->expectsJson() && $request->has('api_life_hack')) {
             return $posts;
         } else {
             share([
