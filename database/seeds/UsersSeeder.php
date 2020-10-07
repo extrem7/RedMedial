@@ -30,7 +30,7 @@ class UsersSeeder extends Seeder
 
         foreach ($users as $data) {
             $password = Str::random(8);
-
+            if (User::whereEmail($data['email'])->exists()) continue;
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],

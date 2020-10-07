@@ -93,7 +93,7 @@ class ChannelController extends Controller
             $posts = $channel->posts()
                 ->limit($params['posts_limit'] ?? 6)
                 ->with('imageMedia')
-                ->get(['id', 'channel_id', 'title', 'created_at']);
+                ->get(['id', 'channel_id', 'source', 'title', 'created_at']);
             $channel->setRelation('posts', $posts);
             $channel->posts->transform(function (Post $post) use ($channel) {
                 if ($channel->country) $post->setRelation('country', $channel->country);
