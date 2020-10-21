@@ -124,7 +124,7 @@ class Post extends Model implements HasMedia
 
     public function getLinkAttribute()
     {
-        return $this->source;//route('frontend.rss.posts.show', $this->slug);
+        return $this->slug ? route('frontend.rss.posts.show', $this->slug) : $this->source;
     }
 
     public function getDateAttribute()
