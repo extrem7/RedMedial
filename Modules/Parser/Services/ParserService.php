@@ -90,7 +90,7 @@ class ParserService
                     }
                 });
 
-                if ($isNeedCacheRefresh) Cacher::postsCovid();
+                if ($isNeedCacheRefresh) Cacher::postsHot();
 
                 $this->info("Created $count items");
 
@@ -114,7 +114,7 @@ class ParserService
         }
     }
 
-    public function stop()
+    public function stop(): void
     {
         $this->run = false;
     }
@@ -327,7 +327,7 @@ class ParserService
                     if (mb_stripos($field, $keyword) !== false) {
                         // dump($post->title, $field, $keyword);
                         $category->posts()->attach($post->id);
-                        if ($category->id == config('frontend.covid_category')) {
+                        if ($category->id === config('frontend.hot_category')) {
                             $isNeedCacheRefresh = true;
                         }
                         $categoryBreak = true;

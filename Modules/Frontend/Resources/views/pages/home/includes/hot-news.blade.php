@@ -5,10 +5,10 @@
         @endif
 
         <section class="hot-news mb-4 {{isset($iframe)?'container':''}}">
-            <h2 class="title red-color text-center medium-size line">Latest Coronavirus News</h2>
+            <h2 class="title red-color text-center medium-size line">{{ $title }}</h2>
             <div class="row article-main-list mt-3 inline-block-xs" v-lazy-container="{ selector: 'img' }">
                 @php /* @var $post \App\Models\Rss\Post */  @endphp
-                @foreach($covid as $post)
+                @foreach($hot as $post)
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="article-card">
                             <a href="{{$post->link}}" target="_blank" rel="nofollow"
@@ -34,13 +34,15 @@
                 @endforeach
             </div>
             <img src="{{asset('dist/img/icons/swipe.svg')}}" alt="swipe" class="swipe-tooltip">
-            <div class="text-center">
-                <a href="http://covid19alert.net" target="_blank" class="btn btn-red mt-2">more about covid-19</a>
-            </div>
-            <div class="text-center mt-3 mb-3">
-                <copy-iframe text="copy news code(iframe) to your site"
-                             iframe='<iframe src="http://redmedial.loc/iframe/covid-news" frameborder="0" width="100%" height="920px"></iframe>'></copy-iframe>
-            </div>
+            @if(isset($covid))
+                <div class="text-center">
+                    <a href="http://covid19alert.net" target="_blank" class="btn btn-red mt-2">more about covid-19</a>
+                </div>
+                <div class="text-center mt-3 mb-3">
+                    <copy-iframe text="copy news code(iframe) to your site"
+                                 iframe='<iframe src="http://redmedial.loc/iframe/covid-news" frameborder="0" width="100%" height="920px"></iframe>'></copy-iframe>
+                </div>
+            @endif
         </section>
         @if(isset($iframe))
             <alert-notification></alert-notification>

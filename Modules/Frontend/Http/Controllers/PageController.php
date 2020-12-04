@@ -42,7 +42,7 @@ class PageController extends Controller
         }
 
         $articles = $this->articleRepository->getHome();
-        $covid = $this->postRepository->getCovid();
+        $hot = $this->postRepository->getHot();
 
         $country = $this->countryRepository->getByCode($request->get('country'));
         $internationalChannels = $this->channelRepository->getInternational();
@@ -55,7 +55,7 @@ class PageController extends Controller
             'playlists' => $playlists
         ]);
 
-        return view('frontend::pages.home.page', compact('articles', 'covid', 'country'));
+        return view('frontend::pages.home.page', compact('articles', 'hot', 'country'));
     }
 
     public function allRss(Page $page)

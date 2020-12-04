@@ -25,13 +25,13 @@
             <a href="http://covid19alert.net" target="_blank" class="btn btn-red">covid-19 page</a>
         </div>
 
-        @include('frontend::pages.home.includes.hot-news')
+        @include('frontend::pages.home.includes.hot-news',['title'=>'Elecciones Venezuela Latest news'])
 
         <div class="banner-bottom mt-2 mb-2">
             <div id='div-gpt-ad-RM2020-02'></div>
         </div>
 
-        @if(config('app.env')!=='local')
+        @if(config('app.env')!=='local' && false)
             @include('frontend::pages.home.includes.covid-map')
         @endif
         <div class="banner-bottom mt-2 mb-2">

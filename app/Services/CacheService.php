@@ -57,6 +57,12 @@ class CacheService
         $this->channelRepository->getInternational();
     }
 
+    public function postsHot(): void
+    {
+        Cache::delete('posts.hot');
+        $this->postRepository->getHot();
+    }
+
     public function postsCovid(): void
     {
         Cache::delete('posts.covid');

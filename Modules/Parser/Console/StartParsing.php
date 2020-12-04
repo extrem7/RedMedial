@@ -17,7 +17,7 @@ class StartParsing extends Command
         $this->service = new ParserService($this);
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Parsing started');
 

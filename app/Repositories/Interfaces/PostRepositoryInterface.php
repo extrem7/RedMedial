@@ -8,6 +8,8 @@ use Modules\Frontend\Http\Resources\ArticleCollection;
 
 interface PostRepositoryInterface
 {
+    public function getHot(): array;
+
     public function getCovid(): array;
 
     public function getByChannel(Channel $channel): ArticleCollection;

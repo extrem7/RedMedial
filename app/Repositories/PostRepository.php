@@ -15,6 +15,18 @@ class PostRepository implements PostRepositoryInterface
 
     protected $with = ['imageMedia'];
 
+    public function getHot(): array
+    {
+        return Cache::rememberForever('posts.hot', function () {
+            return Category::find(config('frontend.hot_category'))
+                ->posts()
+                ->limit(8)
+                ->with([...$this->with, 'country'])
+                ->get(array_map(fn($f) => "rss_posts.$f", [...$this->fields, 'channel_id']))
+                ->all();
+        });
+    }
+
     public function getCovid(): array
     {
         return Cache::rememberForever('posts.covid', function () {
