@@ -1,8 +1,11 @@
 <template>
     <div class="col-12">
-        <create-btn></create-btn>
-        <b-overlay :opacity="0.5" :show="isBusy" variant="dark">
-            <b-table
+        <CreateBtn/>
+        <BOverlay
+            :opacity="0.5"
+            :show="isBusy"
+            variant="dark">
+            <BTable
                 :fields="fields"
 
                 :items="items"
@@ -11,44 +14,54 @@
                 dark
                 hover
                 ref="table">
-                <template v-slot:cell(posts)="data">
-                    {{ data.item.posts_count||0 }}
+                <template v-slot:cell(slug)="{item:{slug}}">
+                    <a
+                        :href="route('frontend.rss.categories.show',slug)"
+                        target="_blank">
+                        {{ slug }}
+                    </a>
                 </template>
-                <template v-slot:cell(created_at)="data">
-                    {{ data.item.created_at | moment("DD.MM.YYYY HH:mm") }}
+                <template v-slot:cell(posts)="{item:{posts_count}}">
+                    {{ posts_count || 0 }}
                 </template>
-                <template v-slot:cell(updated_at)="data">
-                    {{ data.item.updated_at | moment("DD.MM.YYYY HH:mm") }}
+                <template v-slot:cell(created_at)="{item:{created_at}}">
+                    {{ created_at | moment("DD.MM.YYYY HH:mm") }}
+                </template>
+                <template v-slot:cell(updated_at)="{item:{updated_at}}">
+                    {{ updated_at | moment("DD.MM.YYYY HH:mm") }}
                 </template>
 
-                <template v-slot:cell(actions)="data">
-                    <actions-buttons :id="data.item.id" :resource="resource"
-                                     @delete="destroy(data.item.id)"></actions-buttons>
+                <template v-slot:cell(actions)="{item:{id}}">
+                    <ActionsButtons
+                        :id="id"
+                        :resource="resource"
+                        @delete="destroy(id)"
+                    />
                 </template>
-            </b-table>
-        </b-overlay>
+            </BTable>
+        </BOverlay>
     </div>
 </template>
 
 <script>
-    import {destroy, index} from '@/mixins/index-table'
+import {destroy, index} from '@/mixins/index-table'
 
-    export default {
-        data() {
-            return {
-                items: this.shared('categories'),
-                resource: 'rss.categories',
-                fields: [
-                    'id',
-                    'name',
-                    'slug',
-                    'posts',
-                    {key: 'created_at', thClass: 'date-column'},
-                    {key: 'updated_at', thClass: 'date-column'},
-                    {key: 'actions', label: '', thClass: 'actions-column'}
-                ],
-            }
-        },
-        mixins: [index, destroy]
-    }
+export default {
+    data() {
+        return {
+            items: this.shared('categories'),
+            resource: 'rss.categories',
+            fields: [
+                'id',
+                'name',
+                'slug',
+                'posts',
+                {key: 'created_at', thClass: 'date-column'},
+                {key: 'updated_at', thClass: 'date-column'},
+                {key: 'actions', label: '', thClass: 'actions-column'}
+            ],
+        }
+    },
+    mixins: [index, destroy]
+}
 </script>

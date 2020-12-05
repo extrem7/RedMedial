@@ -2,6 +2,7 @@
 
 use App\Models\Article;
 use App\Models\Page;
+use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Country;
 use App\Models\Rss\Post;
@@ -66,6 +67,16 @@ Breadcrumbs::for('frontend.rss.channels.show', function (Trail $trail, Channel $
 
 Breadcrumbs::for('frontend.rss.channels.show.page', function (Trail $trail, Channel $channel, int $page = 1) {
     $trail->parent('frontend.rss.channels.show', $channel);
+    $trail->push("Page $page");
+});
+
+Breadcrumbs::for('frontend.rss.categories.show', function (Trail $trail, Category $category) {
+    $trail->parent('home');
+    $trail->push($category->name, route('frontend.rss.categories.show', $category->slug));
+});
+
+Breadcrumbs::for('frontend.rss.categories.show.page', function (Trail $trail, Category $category, int $page = 1) {
+    $trail->parent('frontend.rss.categories.show', $category);
     $trail->push("Page $page");
 });
 

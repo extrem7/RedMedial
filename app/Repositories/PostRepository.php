@@ -49,6 +49,15 @@ class PostRepository implements PostRepositoryInterface
         return new ArticleCollection($posts);
     }
 
+    public function getByCategory(Category $category): ArticleCollection
+    {
+        $posts = $category->posts()
+            ->with($this->with)
+            ->paginate(4, $this->fields, null, $this->page());
+
+        return new ArticleCollection($posts);
+    }
+
     public function search(string $query): ArticleCollection
     {
         $posts = Post::search($query)

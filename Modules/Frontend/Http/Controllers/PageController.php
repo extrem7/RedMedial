@@ -9,6 +9,7 @@ use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mail;
 use Modules\Frontend\Http\Requests\ContactFormRequest;
@@ -64,9 +65,9 @@ class PageController extends Controller
 
         if (request()->expectsJson()) {
             return $channels;
-        } else {
-            share(compact('channels'));
         }
+
+        share(compact('channels'));
 
         return view('frontend::rss.index', compact('page'), ['orderName' => 'all-rss']);
     }
@@ -106,16 +107,16 @@ class PageController extends Controller
             $view = 'contacto';
         } elseif ($page->id === 4 || $page->slug === 'red-de-medios') {
             return $this->redDeMedios($page);
-        } elseif ($page->id === 10 || $page->slug == 'all-rss') {
+        } elseif ($page->id === 10 || $page->slug === 'all-rss') {
             return $this->allRss($page);
-        } elseif ($page->id === 11 || $page->slug == 'all-youtube') {
+        } elseif ($page->id === 11 || $page->slug === 'all-youtube') {
             return $this->allYoutube($page);
         }
 
         return view("frontend::pages.$view", compact('page'));
     }
 
-    public function contactForm(ContactFormRequest $request)
+    public function contactForm(ContactFormRequest $request): JsonResponse
     {
         Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
 

@@ -21,11 +21,11 @@
             </div>
         </div>
 
-        <div class="text-center mt-3 mb-3">
+        <!--<div class="text-center mt-3 mb-3">
             <a href="http://covid19alert.net" target="_blank" class="btn btn-red">covid-19 page</a>
-        </div>
+        </div>-->
 
-        @include('frontend::pages.home.includes.hot-news',['title'=>'Elecciones Venezuela Latest news'])
+        @include('frontend::pages.home.includes.hot-news',['title'=>'Elecciones Venezuela Latest news','route'=>'hot'])
 
         <div class="banner-bottom mt-2 mb-2">
             <div id='div-gpt-ad-RM2020-02'></div>

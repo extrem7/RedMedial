@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers\Rss;
 
 use App\Models\Rss\Category;
+use Illuminate\Http\JsonResponse;
 use Modules\Admin\Http\Controllers\Controller;
 use Modules\Admin\Http\Requests\Rss\CategoryRequest;
 
@@ -26,7 +27,7 @@ class CategoryController extends Controller
         return view('admin::rss.categories.form');
     }
 
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): JsonResponse
     {
         $category = new Category($request->validated());
         $category->save();
@@ -46,14 +47,14 @@ class CategoryController extends Controller
         return view('admin::rss.categories.form');
     }
 
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category): JsonResponse
     {
         $category->update($request->validated());
 
         return response()->json(['status' => 'Category has been updated']);
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category): JsonResponse
     {
         $category->delete();
         return response()->json(['status' => 'Category has been deleted']);

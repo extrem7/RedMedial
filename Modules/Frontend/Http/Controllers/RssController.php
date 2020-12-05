@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend\Http\Controllers;
 
+use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Country;
 use App\Models\Rss\Post;
@@ -27,7 +28,9 @@ class RssController extends Controller
     public function country(Country $country)
     {
         $this->seo()->setTitle($country->meta_title ?? $country->name);
-        if ($description = $country->meta_description) $this->seo()->setDescription($description);
+        if ($description = $country->meta_description) {
+            $this->seo()->setDescription($description);
+        }
 
         $channels = $this->channelRepository->getByCountry($country);
         $playlists = $this->playlistRepository->getByCountry($country);
@@ -40,21 +43,45 @@ class RssController extends Controller
     public function channel(Request $request, Channel $channel)
     {
         $this->seo()->setTitle($channel->meta_title ?? $channel->name);
-        if ($description = $channel->meta_description) $this->seo()->setDescription($description);
+        if ($description = $channel->meta_description) {
+            $this->seo()->setDescription($description);
+        }
 
         $posts = $this->postRepository->getByChannel($channel);
         abort_if($posts->collection->isEmpty(), 404);
 
-        if (request()->expectsJson() && $request->has('api_life_hack')) {
+        if ($request->has('api_life_hack') && request()->expectsJson()) {
             return $posts;
-        } else {
-            share([
-                'articles' => $posts,
-                'channel' => $channel
-            ]);
         }
 
+        share([
+            'articles' => $posts,
+            'channel' => $channel
+        ]);
+
         return view('frontend::rss.channel', compact('channel'));
+    }
+
+    public function category(Request $request, Category $category)
+    {
+        $this->seo()->setTitle($category->meta_title ?? $category->name);
+        if ($description = $category->meta_description) {
+            $this->seo()->setDescription($description);
+        }
+
+        $posts = $this->postRepository->getByCategory($category);
+        abort_if($posts->collection->isEmpty(), 404);
+
+        if ($request->has('api_life_hack') && request()->expectsJson()) {
+            return $posts;
+        }
+
+        share([
+            'articles' => $posts,
+            'category' => $category
+        ]);
+
+        return view('frontend::rss.channel', compact('category'));
     }
 
     public function show(Post $post, SchemaService $schemaService)
@@ -64,11 +91,11 @@ class RssController extends Controller
 
         $this->seo()->setTitle($post->title);
         $this->seo()->setDescription(strip_tags($post->excerpt));
-        if ($post->imageMedia) $this->seo()->addImages(url($post->getImage()));
+        if ($post->imageMedia) {
+            $this->seo()->addImages(url($post->getImage()));
+        }
 
-        share([
-            'article' => $post
-        ]);
+        share(['article' => $post]);
 
         $postSchema = $schemaService->article($post);
 

@@ -4,6 +4,7 @@ namespace App\Models\Rss;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -20,7 +21,7 @@ class Category extends Model
     ];
 
     // FUNCTIONS
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -31,8 +32,10 @@ class Category extends Model
     }
 
     // RELATIONS
-    public function posts()
+    public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'rss_category_post', 'category_id', 'post_id')->distinct();
+        return $this->belongsToMany(
+            Post::class, 'rss_category_post', 'category_id', 'post_id'
+        )->distinct();
     }
 }

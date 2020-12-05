@@ -11,7 +11,7 @@
                 @foreach($hot as $post)
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="article-card">
-                            <a href="{{$post->link}}" target="_blank" rel="nofollow"
+                            <a href="{{$post->source}}" target="_blank" rel="nofollow"
                                class="article-header overflow-box">
                                 <img data-src="{{$post->thumbnail}}" alt="{{$post->title}}">
                             </a>
@@ -20,7 +20,7 @@
                                     <a href="{{$post->country->link}}"
                                        class="article-category">{{$post->country->name}}</a>
                                 @endif
-                                <a href="{{$post->link}}"
+                                <a href="{{$post->source}}"
                                    target="_blank"
                                    rel="nofollow"
                                    class="article-title title title-cyan line-cap">{{$post->title}}</a>
@@ -38,11 +38,11 @@
                 <div class="text-center">
                     <a href="http://covid19alert.net" target="_blank" class="btn btn-red mt-2">more about covid-19</a>
                 </div>
-                <div class="text-center mt-3 mb-3">
-                    <copy-iframe text="copy news code(iframe) to your site"
-                                 iframe='<iframe src="http://redmedial.loc/iframe/covid-news" frameborder="0" width="100%" height="920px"></iframe>'></copy-iframe>
-                </div>
             @endif
+            <div class="text-center mt-3 mb-3">
+                <copy-iframe text="copy news code(iframe) to your site"
+                             iframe='<iframe src="{{route('frontend.iframe.'.$route)}}" frameborder="0" width="100%" height="920px"></iframe>'></copy-iframe>
+            </div>
         </section>
         @if(isset($iframe))
             <alert-notification></alert-notification>

@@ -6,13 +6,32 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 
 class IframeController extends Controller
 {
-    public function news(PostRepositoryInterface $postRepository)
+    private PostRepositoryInterface $postRepository;
+
+    public function __construct()
     {
-        $hot = $postRepository->getCovid();
+        $this->postRepository = app(PostRepositoryInterface::class);
+    }
+
+    public function hot()
+    {
+        $hot = $this->postRepository->getHot();
+
+        return view('frontend::pages.home.includes.hot-news', compact('hot'), [
+            'iframe' => true,
+            'route' => 'hot',
+            'title' => 'Elecciones Venezuela Latest news'
+        ]);
+    }
+
+    public function covid()
+    {
+        $hot = $this->postRepository->getCovid();
 
         return view('frontend::pages.home.includes.hot-news', compact('hot'), [
             'iframe' => true,
             'covid' => true,
+            'route' => 'covid.news',
             'title' => 'Latest Coronavirus News'
         ]);
     }
