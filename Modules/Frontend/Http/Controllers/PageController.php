@@ -3,6 +3,7 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Rss\Category;
 use App\Models\Rss\Country;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
@@ -11,7 +12,6 @@ use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Mail;
 use Modules\Frontend\Http\Requests\ContactFormRequest;
 use Modules\Frontend\Mail\ContactForm;
 
@@ -43,6 +43,8 @@ class PageController extends Controller
         }
 
         $articles = $this->articleRepository->getHome();
+
+        $hotCategory = Category::find(config('frontend.hot_category'));
         $hot = $this->postRepository->getHot();
 
         $country = $this->countryRepository->getByCode($request->get('country'));
@@ -56,7 +58,7 @@ class PageController extends Controller
             'playlists' => $playlists
         ]);
 
-        return view('frontend::pages.home.page', compact('articles', 'hot', 'country'));
+        return view('frontend::pages.home.page', compact('articles', 'hotCategory', 'hot', 'country'));
     }
 
     public function allRss(Page $page)
@@ -118,7 +120,7 @@ class PageController extends Controller
 
     public function contactForm(ContactFormRequest $request): JsonResponse
     {
-        Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
+        \Mail::to(get_admins_mails())->send(new ContactForm($request->validated()));
 
         return response()->json(['status' => 'Your message has been sent']);
     }

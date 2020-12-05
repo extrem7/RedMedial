@@ -34,11 +34,16 @@
                 @endforeach
             </div>
             <img src="{{asset('dist/img/icons/swipe.svg')}}" alt="swipe" class="swipe-tooltip">
-            @if(isset($covid))
-                <div class="text-center">
+            <div class="text-center">
+                @if(isset($covid))
                     <a href="http://covid19alert.net" target="_blank" class="btn btn-red mt-2">more about covid-19</a>
-                </div>
-            @endif
+                @else
+                    <a href="{{route('frontend.rss.categories.show',$hotCategory->slug)}}"
+                       class="btn btn-red mt-2">
+                        All News
+                    </a>
+                @endif
+            </div>
             <div class="text-center mt-3 mb-3">
                 <copy-iframe text="copy news code(iframe) to your site"
                              iframe='<iframe src="{{route('frontend.iframe.'.$route)}}" frameborder="0" width="100%" height="920px"></iframe>'></copy-iframe>

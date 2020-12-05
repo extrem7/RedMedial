@@ -2,6 +2,7 @@
 
 namespace Modules\Frontend\Http\Controllers;
 
+use App\Models\Rss\Category;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 
 class IframeController extends Controller
@@ -15,9 +16,10 @@ class IframeController extends Controller
 
     public function hot()
     {
+        $hotCategory = Category::find(config('frontend.hot_category'));
         $hot = $this->postRepository->getHot();
 
-        return view('frontend::pages.home.includes.hot-news', compact('hot'), [
+        return view('frontend::pages.home.includes.hot-news', compact('hotCategory', 'hot'), [
             'iframe' => true,
             'route' => 'hot',
             'title' => 'Elecciones Venezuela Latest news'
