@@ -82,6 +82,18 @@
                         <p>Users</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('pragmarx.health.panel')}}" class="nav-link" target="_blank">
+                        <i class="nav-icon fas fa-heart"></i>
+                        <p>Health</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('log-viewer::dashboard')}}" class="nav-link" target="_blank">
+                        <i class="nav-icon fas fa-history"></i>
+                        <p>Logs</p>
+                    </a>
+                </li>
                 @if(config('telescope.enabled'))
                     <li class="nav-item">
                         <a href="{{config('app.url').route('telescope',null,false)}}" class="nav-link"

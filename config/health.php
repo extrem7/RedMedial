@@ -1,5 +1,6 @@
 <?php
 
+use App\Notifications\HealthStatus;
 use Modules\Admin\Http\Middleware\Admin;
 
 $middleware = ['auth', Admin::class];
@@ -152,7 +153,7 @@ return [
     ],
 
     'database' => [
-        'enabled' => false,
+        'enabled' => true,
 
         'graphs' => [
             'enabled' => true,
@@ -191,7 +192,7 @@ return [
         'enabled' => false,
 
         'notify_on' => [
-            'panel' => false,
+            'panel' => true,
             'check' => true,
             'string' => true,
             'resource' => false,
@@ -220,12 +221,12 @@ return [
         'users' => [
             'model' => App\Models\User::class,
 
-            'emails' => ['admin@mydomain.com'],
+            'emails' => [],
         ],
 
-        'channels' => ['mail', 'slack'], // mail, slack
+        'channels' => [],
 
-        'notifier' => 'PragmaRX\Health\Notifications\HealthStatus',
+        'notifier' => HealthStatus::class,
     ],
 
     'alert' => [
