@@ -33,6 +33,5 @@ class RouteServiceProvider extends ServiceProvider
         /*if (config('app.env') === 'production')
             Route::group(['domain' => 'www.' . config('redmedial.frontend_domain')], $routes);*/
         Route::group(['domain' => config('redmedial.frontend_domain')], $routes);
-        Route::group(['domain' => 'www.' . config('redmedial.frontend_domain')], $routes);
     }
 }

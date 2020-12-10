@@ -178,7 +178,7 @@ class ParserService
             if ($post->save()) return $post;
         } catch (Exception $e) {
             $this->error(
-                "Error while saving item to DB in file :\n"
+                "Error while saving item to \DB in file :\n"
                 . $e->getFile() . ' line: ' . $e->getLine() . "\n"
                 . $e->getMessage()
             );
@@ -243,7 +243,7 @@ class ParserService
 
   # using lookahead to capture type to $1
     (?=[^>]*?
-    \b(?:name|property|http-equiv)\s*=\s*
+    \b(?:name|property|\Http-equiv)\s*=\s*
     (?|"\s*([^"]*?)\s*"|\'\s*([^\']*?)\s*\'|
     ([^"\'>]*?)(?=\s*/?\s*>|\s\w+\s*=))
   )
@@ -344,13 +344,13 @@ class ParserService
     {
         if (is_array($message)) $message = print_r($message, true);
         $this->command->info($message);
-        Log::channel('rss')->info($message);
+        Log::/*channel('rss')->*/ debug($message);
     }
 
     protected function error(string $message): void
     {
-        if (is_array($message)) $message = print_r($message, true);
+        $message = print_r($message, true);
         $this->command->error($message);
-        Log::channel('rss')->error($message);
+        Log::/*channel('rss')->*/ warning($message);
     }
 }

@@ -101,7 +101,7 @@ return [
         ],
 
         'rss' => [
-            'driver' => 'single',
+            'driver' => 'daily',
             'path' => storage_path('logs/rss.log'),
             'level' => 'info',
         ]
