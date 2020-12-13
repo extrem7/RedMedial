@@ -1,7 +1,7 @@
 name: QueueWorkers
 abbreviation: qwrkrs
 checker: PragmaRX\Health\Checkers\Process
-notify: true
+notify: false
 column_size: 3
 targets:
   - default:
