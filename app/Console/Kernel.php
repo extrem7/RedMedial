@@ -20,7 +20,10 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('red:health')->hourly()->between('8:00', '22:00');
+        $schedule->command('red:health')
+            ->hourly()
+            ->timezone('Europe/Kiev')
+            ->between('8:00', '22:00');
 
         $schedule->call(function () {
             $socialService = new SocialService();
