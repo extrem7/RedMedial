@@ -18,14 +18,10 @@ class Kernel extends ConsoleKernel
         RedHealth::class,
     ];
 
-    /**
-     * Define the application's command schedule.
-     *
-     * @param Schedule $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('red:health')->hourly()->between('8:00', '22:00');
+
         $schedule->call(function () {
             $socialService = new SocialService();
             $socialService->update();
