@@ -342,9 +342,13 @@ class ParserService
 
     protected function info($message): void
     {
-        if (is_array($message)) $message = print_r($message, true);
-        $this->command->info($message);
-        Log::/*channel('rss')->*/ debug($message);
+        if (config('app.debug')) {
+            if (is_array($message)) {
+                $message = print_r($message, true);
+            }
+            $this->command->info($message);
+            Log::/*channel('rss')->*/ debug($message);
+        }
     }
 
     protected function error(string $message): void

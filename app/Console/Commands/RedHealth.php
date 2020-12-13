@@ -17,6 +17,10 @@ class RedHealth extends Command
 
     public function handle(): void
     {
+        if (config('app.debug')) {
+            return;
+        }
+
         try {
             $generalHealthState = app('pragmarx.health')->getResources();
 
