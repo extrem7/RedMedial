@@ -25,7 +25,7 @@
             <a href="http://covid19alert.net" target="_blank" class="btn btn-red">covid-19 page</a>
         </div>-->
 
-        @include('frontend::pages.home.includes.hot-news',['title'=>'Elecciones Venezuela Latest news','route'=>'hot'])
+        @include('frontend::pages.home.includes.hot-news',['title'=>'Latest Coronavirus News','route'=>'covid.news'])
 
         <div class="banner-bottom mt-2 mb-2">
             <div id='div-gpt-ad-RM2020-02'></div>

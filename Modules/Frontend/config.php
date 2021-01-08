@@ -24,6 +24,6 @@ return [
         ]
     ],
     'covid_category' => 1,
-    'hot_category' => 8,
+    'hot_category' => 1,
     'local_geoip' => env('LOCAL_GEOIP')
 ];

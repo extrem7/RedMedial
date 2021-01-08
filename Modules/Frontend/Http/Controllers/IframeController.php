@@ -21,8 +21,8 @@ class IframeController extends Controller
 
         return view('frontend::pages.home.includes.hot-news', compact('hotCategory', 'hot'), [
             'iframe' => true,
-            'route' => 'hot',
-            'title' => 'Elecciones Venezuela Latest news'
+            'route' => 'covid.news',
+            'title' => 'Latest Coronavirus News'
         ]);
     }
 
