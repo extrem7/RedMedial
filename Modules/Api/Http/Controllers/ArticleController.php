@@ -4,7 +4,9 @@ namespace Modules\Api\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Api\Http\Resources\PostResource;
 
 /**
@@ -27,7 +29,7 @@ class ArticleController extends Controller
      * @apiSuccess {String} link Article link.
      * @apiSuccess {String} thumbnail Article thumbnail.
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'limit' => ['nullable', 'numeric', 'min:1'],
@@ -61,12 +63,12 @@ class ArticleController extends Controller
      * @apiSuccess {String} previous Previous article id.
      * @apiSuccess {String} next Next article id.
      */
-    public function show(Article $article)
+    public function show(Article $article): JsonResponse
     {
         $previous = Article::where('id', '<', $article->id)->max('id');
         $next = Article::where('id', '>', $article->id)->min('id');
 
-        return [
+        return response()->json([
             'title' => $article->title,
             'body' => $article->body,
             'date' => $article->created_at,
@@ -74,6 +76,6 @@ class ArticleController extends Controller
             'image' => $article->image,
             'previous' => $previous,
             'next' => $next,
-        ];
+        ]);
     }
 }

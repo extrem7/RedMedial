@@ -10,6 +10,8 @@ use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\CountryRepositoryInterface;
 use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Frontend\Http\Requests\ContactFormRequest;
@@ -32,7 +34,7 @@ class PageController extends Controller
         $this->playlistRepository = app(PlaylistRepositoryInterface::class);
     }
 
-    public function home(Request $request)
+    public function home(Request $request): View
     {
         $page = Page::find(1);
 
@@ -61,6 +63,7 @@ class PageController extends Controller
         return view('frontend::pages.home.page', compact('articles', 'hotCategory', 'hot', 'country'));
     }
 
+    /* @return View|LengthAwarePaginator */
     public function allRss(Page $page)
     {
         $channels = $this->channelRepository->paginate();
@@ -74,7 +77,7 @@ class PageController extends Controller
         return view('frontend::rss.index', compact('page'), ['orderName' => 'all-rss']);
     }
 
-    public function allYoutube(Page $page)
+    public function allYoutube(Page $page): View
     {
         $playlists = $this->playlistRepository->all();
         share(compact('playlists'));
@@ -82,7 +85,7 @@ class PageController extends Controller
         return view('frontend::pages.all-youtube', compact('page'));
     }
 
-    public function redDeMedios(Page $page)
+    public function redDeMedios(Page $page): View
     {
         $international = $this->channelRepository->getInternational();
         $chile = $this->channelRepository->getByCountry(
@@ -92,7 +95,7 @@ class PageController extends Controller
         return view("frontend::pages.red-de-medios", compact('page', 'international', 'chile'));
     }
 
-    public function show(Page $pageModel)
+    public function show(Page $pageModel): View
     {
         $page = $pageModel;
 

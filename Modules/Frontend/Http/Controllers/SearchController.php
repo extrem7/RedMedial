@@ -3,7 +3,9 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Contracts\View\View;
 use Modules\Frontend\Http\Requests\SearchRequest;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 
 class SearchController extends Controller
 {
@@ -14,6 +16,7 @@ class SearchController extends Controller
         $this->postRepository = app(PostRepositoryInterface::class);
     }
 
+    /* @return View|ArticleCollection */
     public function __invoke(SearchRequest $request, int $page = 1)
     {
         $query = $request->input('query');
@@ -22,11 +25,11 @@ class SearchController extends Controller
 
         $posts = $this->postRepository->search($query ?? '');
 
-        if (request()->expectsJson()) {
+        if ($request->expectsJson()) {
             return $posts;
-        } else {
-            share(['articles' => $posts]);
         }
+
+        share(['articles' => $posts]);
 
         share(compact('query'));
 

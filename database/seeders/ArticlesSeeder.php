@@ -1,19 +1,15 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Article;
 use Illuminate\Database\Seeder;
 
 class ArticlesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     * php artisan db:seed --class=PostsTableSeeder
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        DB::transaction(function () {
+        \DB::transaction(function () {
             $articles = collect(json_decode(file_get_contents(database_path('old/articles.json'))));
 
             $this->command->getOutput()->progressStart(count($articles));

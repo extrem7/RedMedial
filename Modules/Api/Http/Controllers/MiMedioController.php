@@ -7,18 +7,19 @@ use App\Models\Rss\Channel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Collection;
 use Modules\Api\Http\Resources\ChannelResource;
 use Modules\Api\Http\Resources\PostResource;
 
 class MiMedioController extends Controller
 {
-    public function categories()
+    public function categories(): Collection
     {
-        $categories = Category::all(['id', 'name']);
-        return $categories;
+        return Category::all(['id', 'name']);
     }
 
-    public function category(Request $request, Category $category)
+    public function category(Request $request, Category $category): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'limit' => ['nullable', 'numeric', 'min:1'],
@@ -36,7 +37,7 @@ class MiMedioController extends Controller
         return PostResource::collection($posts)->additional(['count' => $count]);
     }
 
-    public function channels(Request $request)
+    public function channels(Request $request): AnonymousResourceCollection
     {
         $international = setting('international_medias');
 

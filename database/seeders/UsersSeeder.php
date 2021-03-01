@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Rss\Country;
 use App\Models\User;
 use Illuminate\Database\Seeder;

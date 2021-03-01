@@ -2,12 +2,14 @@
 
 namespace Modules\Api\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+
 class HelperController extends Controller
 {
-    public function root()
+    public function root(): JsonResponse
     {
-        return [
+        return response()->json([
             'message' => 'Hello, api user!'
-        ];
+        ]);
     }
 }

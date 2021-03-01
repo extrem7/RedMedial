@@ -4,7 +4,9 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Article;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 use Modules\Frontend\Services\SchemaService;
 
 class ArticleController extends Controller
@@ -16,6 +18,7 @@ class ArticleController extends Controller
         $this->articleRepository = app(ArticleRepositoryInterface::class);
     }
 
+    /* @return View|ArticleCollection */
     public function index(Request $request, int $page = 1)
     {
         $this->seo()->setTitle('Blog');
@@ -24,23 +27,25 @@ class ArticleController extends Controller
 
         abort_if($articles->collection->isEmpty(), 404);
 
-        if (request()->expectsJson() && $request->has('api_life_hack')) {
+        if ($request->has('api_life_hack') && $request->expectsJson()) {
             return $articles;
-        } else {
-            share(compact('articles'));
         }
+
+        share(compact('articles'));
 
         return view('frontend::articles.index');
     }
 
-    public function show(Article $article, SchemaService $schemaService)
+    public function show(Article $article, SchemaService $schemaService): View
     {
         $article->load('imageMedia');
         $article->append(['image', 'link']);
 
         $this->seo()->setTitle($article->meta_title ?? $article->title);
         $this->seo()->setDescription($article->meta_description ?? strip_tags($article->excerpt));
-        if ($article->imageMedia) $this->seo()->addImages(url($article->getImage()));
+        if ($article->imageMedia) {
+            $this->seo()->addImages(url($article->getImage()));
+        }
 
         share(compact('article'));
 

@@ -15,7 +15,9 @@ namespace Modules\Api\Http\Controllers;
 use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Api\Http\Resources\CountryResource;
 use Modules\Api\Http\Resources\PostResource;
 
@@ -35,7 +37,7 @@ class PostController extends Controller
      *
      * @apiUse Post
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'limit' => ['nullable', 'numeric', 'min:1'],
@@ -74,7 +76,7 @@ class PostController extends Controller
      *
      * @apiUse Post
      */
-    public function search(Request $request)
+    public function search(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'query' => ['required', 'string'],
@@ -108,12 +110,12 @@ class PostController extends Controller
      * @apiSuccess {String} previous Previous post id.
      * @apiSuccess {String} next Next post id.
      */
-    public function show(Post $post)
+    public function show(Post $post): JsonResponse
     {
         $previous = Post::whereChannelId($post->channel_id)->where('id', '<', $post->id)->max('id');
         $next = Post::whereChannelId($post->channel_id)->where('id', '>', $post->id)->min('id');
 
-        return [
+        return response()->json([
             'title' => $post->title,
             'body' => $post->body,
             'date' => $post->created_at,
@@ -122,6 +124,6 @@ class PostController extends Controller
             'country' => new CountryResource($post->country),
             'previous' => $previous,
             'next' => $next,
-        ];
+        ]);
     }
 }

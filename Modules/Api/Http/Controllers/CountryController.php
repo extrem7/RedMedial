@@ -19,7 +19,7 @@ class CountryController extends Controller
      * @apiSuccess {String} name Country name.
      *
      */
-    public function index()
+    public function index(): array
     {
         $countries = Country::ordered()->get(['id', 'name'])->map(function (Country $country) {
             return [
@@ -32,7 +32,6 @@ class CountryController extends Controller
     }
 
     /**
-     * @return Country|void
      * @api {get} /geoip GEOIP - get user country
      * @apiName GetUserCountry
      * @apiGroup Countries
@@ -40,7 +39,7 @@ class CountryController extends Controller
      * @apiSuccess {Number} id Country id.
      * @apiSuccess {String} name Country name.
      */
-    public function geoip()
+    public function geoip(): Country
     {
         $location = config('app.env') === 'local' ? geoip(config('frontend.local_geoip')) : geoip()->getLocation();
         if ($location instanceof Location) {

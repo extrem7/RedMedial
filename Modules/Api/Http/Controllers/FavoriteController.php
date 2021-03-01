@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Api\Http\Resources\ChannelResource;
 use Modules\Api\Http\Resources\PostResource;
 
@@ -30,7 +31,7 @@ class FavoriteController extends Controller
      * @apiSuccess {String} link Article link.
      * @apiSuccess {String} thumbnail Article thumbnail.
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'posts_limit' => ['nullable', 'numeric', 'min:1'],
@@ -65,12 +66,10 @@ class FavoriteController extends Controller
         if ($user->favorite()->where('channel_id', $channel->id)->exists()) {
             $user->favorite()->where('channel_id', $channel->id)->delete();
             return ['message' => "Channel '$channel->name' has been removed from favorite"];
-        } else {
-            $user->favorite()->create([
-                'channel_id' => $channel->id
-            ]);
-            return ['message' => "Channel '$channel->name' has been saved to favorite"];
         }
+
+        $user->favorite()->create(['channel_id' => $channel->id]);
+        return response()->json(['message' => "Channel '$channel->name' has been saved to favorite"]);
     }
 
 }

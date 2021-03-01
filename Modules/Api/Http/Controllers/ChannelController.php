@@ -6,11 +6,10 @@ use App\Models\Rss\Channel;
 use App\Models\Rss\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Mail\Message;
-use Illuminate\Support\Collection;
-use Mail;
 use Modules\Api\Http\Resources\ChannelResource;
 
 /**
@@ -30,7 +29,7 @@ class ChannelController extends Controller
      * @apiSuccess {String} name Channel name.
      * @apiSuccess {String} logo Channel image.
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'limit' => ['nullable', 'numeric', 'min:1'],
@@ -63,7 +62,7 @@ class ChannelController extends Controller
      * @apiSuccess {String} posts.date Post date.
      * @apiSuccess {String} posts.thumbnail Post image.
      */
-    public function international(Request $request)
+    public function international(Request $request): AnonymousResourceCollection
     {
         $params = $this->validate($request, [
             'posts_limit' => ['nullable', 'numeric', 'min:1'],
@@ -127,7 +126,7 @@ class ChannelController extends Controller
      * @apiGroup Channels
      * @apiParam {String} url Link to rss feed.
      */
-    public function suggest(Request $request)
+    public function suggest(Request $request): JsonResponse
     {
         $this->validate($request, [
             'url' => ['required', 'url']
@@ -135,7 +134,7 @@ class ChannelController extends Controller
 
         $user = $request->user();
 
-        Mail::raw("New rss channel suggestion from $user->email : {$request->get('url')}", function (Message $message) {
+        \Mail::raw("New rss channel suggestion from $user->email : {$request->get('url')}", function (Message $message) {
             $message->subject('[RedMedial] new rss feed suggestion');
 
             $message->to(get_admins_mails());

@@ -10,10 +10,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use Symfony\Component\HttpFoundation\Response;
 
 class HelperController extends Controller
 {
-    public function sitemap(Request $request)
+    public function sitemap(Request $request): Response
     {
         $sitemap = Sitemap::create()
             ->add(Url::create('/')

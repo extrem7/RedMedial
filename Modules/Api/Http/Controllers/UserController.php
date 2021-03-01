@@ -25,14 +25,12 @@
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\User;
-use Auth;
-use Hash;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Api\Http\Requests\Users\RegistrationRequest;
 use Modules\Api\Http\Requests\Users\UpdateRequest;
 use Modules\Api\Http\Resources\UserResource;
 use Modules\Api\Notifications\ResetPassword;
-use Str;
 
 /**
  * @group User
@@ -55,10 +53,10 @@ class UserController extends Controller
      * @apiUse User
      * @apiSuccess {String} token Bearer Token.
      */
-    public function register(RegistrationRequest $request)
+    public function register(RegistrationRequest $request): JsonResponse
     {
         $validated = $request->only(['name', 'email']);
-        $password = Hash::make($request->input('password'));
+        $password = \Hash::make($request->input('password'));
 
         $user = User::create(array_merge($validated, [
             'password' => $password
@@ -89,7 +87,7 @@ class UserController extends Controller
      * @apiUse User
      * @apiSuccess {String} token Bearer Token.
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $this->validate($request, [
             'email' => ['required', 'email'],
@@ -97,14 +95,14 @@ class UserController extends Controller
             'device' => ['required', 'string']
         ]);
 
-        if (Auth::once($request->only(['email', 'password']))) {
-            $user = Auth::getUser();
+        if (\Auth::once($request->only(['email', 'password'])) && $user = \Auth::user()) {
+
             $user->load(['avatarMedia', 'information.country']);
 
             return $this->userWithToken($user, $request->input('device'));
-        } else {
-            $this->response->errorUnauthorized(trans('auth.failed'));
         }
+
+        $this->response->errorUnauthorized(trans('auth.failed'));
     }
 
     /**
@@ -116,7 +114,7 @@ class UserController extends Controller
      *
      * @apiUse User
      */
-    public function self(Request $request)
+    public function self(Request $request): JsonResponse
     {
         /* @var $user User */
         $user = $request->user();
@@ -144,7 +142,7 @@ class UserController extends Controller
      * @apiUse User
      * @apiSuccess {String} token Bearer Token.
      */
-    public function update(UpdateRequest $request)
+    public function update(UpdateRequest $request): JsonResponse
     {
         $validated = $request->only(['name', 'email']);
 
@@ -153,14 +151,15 @@ class UserController extends Controller
         $user->fill($validated);
 
         if ($request->has('password')) {
-            $password = Hash::make($request->input('password'));
+            $password = \Hash::make($request->input('password'));
             $user->password = $password;
         }
 
         $isSaved = $user->save();
 
-        if ($isSaved && $request->has('password'))
+        if ($isSaved && $request->has('password')) {
             $user->tokens()->delete();
+        }
 
         $user->information->fill($request->only(['country_id', 'bio', 'settings']))->save();
 
@@ -173,12 +172,12 @@ class UserController extends Controller
 
         if ($isSaved && $request->has('password')) {
             return $this->userWithToken($user);
-        } else {
-            return [
-                'user' => new UserResource($user),
-                'token' => $user->currentAccessToken()->plainTextToken
-            ];
         }
+
+        return response()->json([
+            'user' => new UserResource($user),
+            'token' => $user->currentAccessToken()->plainTextToken
+        ]);
     }
 
     /**
@@ -188,7 +187,7 @@ class UserController extends Controller
      *
      * @apiParam {String} email User email.
      */
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): JsonResponse
     {
         $this->validate($request, [
             'email' => ['required', 'email']
@@ -196,19 +195,20 @@ class UserController extends Controller
 
         $user = User::whereEmail($request->input('email'))->first();
         if ($user !== null) {
-            $password = Str::random(8);
-            if ($user->update(['password' => Hash::make($password)]))
+            $password = \Str::random(8);
+            if ($user->update(['password' => \Hash::make($password)])) {
                 $user->notify(new ResetPassword($password));
+            }
         }
-        return ['message' => 'New password has been sent to your email'];
+        return response()->json(['message' => 'New password has been sent to your email.']);
     }
 
-    protected function userWithToken(User $user, string $device = null)
+    protected function userWithToken(User $user, string $device = null): JsonResponse
     {
         $token = $user->createToken($device ?? $user->currentAccessToken()->name);
-        return [
+        return response()->json([
             'user' => new UserResource($user),
             'token' => $token->plainTextToken
-        ];
+        ]);
     }
 }

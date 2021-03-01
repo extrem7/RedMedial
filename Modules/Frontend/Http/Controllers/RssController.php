@@ -9,7 +9,9 @@ use App\Models\Rss\Post;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use App\Repositories\Interfaces\PlaylistRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Modules\Frontend\Http\Resources\ArticleCollection;
 use Modules\Frontend\Services\SchemaService;
 
 class RssController extends Controller
@@ -25,7 +27,7 @@ class RssController extends Controller
         $this->playlistRepository = app(PlaylistRepositoryInterface::class);
     }
 
-    public function country(Country $country)
+    public function country(Country $country): View
     {
         $this->seo()->setTitle($country->meta_title ?? $country->name);
         if ($description = $country->meta_description) {
@@ -40,6 +42,7 @@ class RssController extends Controller
         return view('frontend::rss.country', compact('country'));
     }
 
+    /* @return View|ArticleCollection */
     public function channel(Request $request, Channel $channel)
     {
         $this->seo()->setTitle($channel->meta_title ?? $channel->name);
@@ -50,7 +53,7 @@ class RssController extends Controller
         $posts = $this->postRepository->getByChannel($channel);
         abort_if($posts->collection->isEmpty(), 404);
 
-        if ($request->has('api_life_hack') && request()->expectsJson()) {
+        if ($request->has('api_life_hack') && $request->expectsJson()) {
             return $posts;
         }
 
@@ -62,7 +65,7 @@ class RssController extends Controller
         return view('frontend::rss.channel', compact('channel'));
     }
 
-    public function category(Request $request, Category $category)
+    public function category(Request $request, Category $category): View
     {
         $this->seo()->setTitle($category->meta_title ?? $category->name);
         if ($description = $category->meta_description) {
@@ -72,7 +75,7 @@ class RssController extends Controller
         $posts = $this->postRepository->getByCategory($category);
         abort_if($posts->collection->isEmpty(), 404);
 
-        if ($request->has('api_life_hack') && request()->expectsJson()) {
+        if ($request->has('api_life_hack') && $request->expectsJson()) {
             return $posts;
         }
 
@@ -84,7 +87,7 @@ class RssController extends Controller
         return view('frontend::rss.channel', compact('category'));
     }
 
-    public function show(Post $post, SchemaService $schemaService)
+    public function show(Post $post, SchemaService $schemaService): View
     {
         $post->load('imageMedia');
         $post->append(['image', 'link']);

@@ -7,6 +7,7 @@ use App\Models\Rss\Channel;
 use App\Models\Rss\Country;
 use App\Repositories\Interfaces\ChannelRepositoryInterface;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\JsonResponse;
 use Modules\Api\Http\Resources\ChannelResource;
 
 /**
@@ -29,7 +30,7 @@ class PageController extends Controller
      * @apiSuccess {String} tabs.channels.logo Channel image.
      *
      */
-    public function redDeMedios(ChannelRepositoryInterface $channelRepository)
+    public function redDeMedios(ChannelRepositoryInterface $channelRepository): JsonResponse
     {
         $page = Page::whereSlug('red-de-medios')->orWhere('id', 4)->firstOrFail();
 
@@ -41,7 +42,7 @@ class PageController extends Controller
             $channels->with('logoMedia')->select(['id', 'country_id', 'slug', 'name', 'source']);
         }])->first();
 
-        return [
+        return response()->json([
             'title' => $page->title,
             'body' => $page->body,
             'tabs' => [
@@ -54,6 +55,6 @@ class PageController extends Controller
                     'channels' => ChannelResource::collection($chile->channels)
                 ]
             ]
-        ];
+        ]);
     }
 }

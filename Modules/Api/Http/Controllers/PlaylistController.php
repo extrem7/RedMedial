@@ -3,6 +3,7 @@
 namespace Modules\Api\Http\Controllers;
 
 use App\Models\Playlist;
+use Dingo\Api\Http\Response;
 
 /**
  * @group  Playlists
@@ -21,7 +22,7 @@ class PlaylistController extends Controller
      * @apiSuccess {String} videos.duration Video duration.
      *
      */
-    public function __invoke()
+    public function __invoke(): Response
     {
         $playlists = Playlist::ordered()->get(['title', 'videos']);
         return $this->response->array($playlists->toArray());

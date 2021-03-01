@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Rss\Category;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Contracts\View\View;
 
 class IframeController extends Controller
 {
@@ -14,7 +15,7 @@ class IframeController extends Controller
         $this->postRepository = app(PostRepositoryInterface::class);
     }
 
-    public function hot()
+    public function hot(): View
     {
         $hotCategory = Category::find(config('frontend.hot_category'));
         $hot = $this->postRepository->getHot();
@@ -26,7 +27,7 @@ class IframeController extends Controller
         ]);
     }
 
-    public function covid()
+    public function covid(): View
     {
         $hot = $this->postRepository->getCovid();
 
@@ -38,7 +39,7 @@ class IframeController extends Controller
         ]);
     }
 
-    public function map()
+    public function map(): View
     {
         return view('frontend::pages.home.includes.covid-map', ['iframe' => true]);
     }
