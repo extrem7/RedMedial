@@ -31,6 +31,10 @@ class FrontendServiceProvider extends ServiceProvider
         $this->schema();
 
         $this->directives();
+
+        \Validator::extend('string255', function ($attribute, $value, $parameters, $validator) {
+            return is_string($value) && mb_strlen($value) <= 255;
+        });
     }
 
     public function register()
@@ -71,6 +75,17 @@ class FrontendServiceProvider extends ServiceProvider
                 'social' => $this->getSocial(),
                 'countries' => $this->getCountries()
             ]);
+
+            if (($user = \Auth::user()) && $user->hasRole('media-user')) {
+                $data = $user->only(['id', 'name', 'email']);
+
+                if ($user->avatarMedia) {
+                    $data['avatar'] = $user->icon;
+                }
+                share([
+                    'auth' => $data
+                ]);
+            }
         });
     }
 

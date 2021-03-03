@@ -2,9 +2,10 @@
 
 namespace App\Models\Rss;
 
-use Cacher;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\EloquentSortable\SortableTrait;
 
 class Country extends Model
@@ -21,15 +22,16 @@ class Country extends Model
     // protected $appends = ['link'];
 
     // FUNCTIONS
-    public static function boot()
+    public static function boot(): void
     {
-        static::saved(fn() => Cacher::countriesForHeader());
-        static::deleted(fn() => Cacher::countriesForHeader());
+        foreach (['saved', 'deleted'] as $event) {
+            static::$event(fn() => \Cacher::countriesForHeader());
+        }
 
         parent::boot();
     }
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -40,12 +42,12 @@ class Country extends Model
     }
 
     // RELATIONS
-    public function channels()
+    public function channels(): HasMany
     {
         return $this->hasMany(Channel::class);
     }
 
-    public function posts()
+    public function posts(): HasManyThrough
     {
         return $this->hasManyThrough(Post::class, Channel::class);
     }
@@ -57,7 +59,7 @@ class Country extends Model
     }
 
     // MUTATORS
-    public function setCodeAttribute($code)
+    public function setCodeAttribute($code): void
     {
         $this->attributes['code'] = strtoupper($code);
     }

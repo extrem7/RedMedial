@@ -1,57 +1,80 @@
 <template>
-    <form @submit.prevent="submit" class="form-feedback">
-        <div class="form-group">
-            <input class="form-control" id="name" placeholder=" " type="text" v-model="form.name" v-valid.name>
-            <label class="label" for="name">name</label>
-            <invalid name="name"></invalid>
-        </div>
-        <div class="form-group">
-            <input class="form-control" id="email" placeholder=" " required type="email" v-model="form.email"
-                   v-valid.email>
-            <label class="label" for="email">Email</label>
-            <invalid name="email"></invalid>
-        </div>
-        <div class="form-group">
-            <input class="form-control" id="phone" placeholder=" " type="text" v-model="form.phone" v-valid.phone>
-            <label class="label" for="phone">Phone</label>
-            <invalid name="phone"></invalid>
-        </div>
-        <div class="form-group">
-            <input class="form-control" id="link" placeholder=" " type="text" v-model="form.link" v-valid.link>
-            <label class="label" for="link">Link</label>
-            <invalid name="link"></invalid>
-        </div>
-        <div class="form-group">
-            <textarea class="form-control" placeholder="Text message" rows="6" v-model="form.message"
-                      v-valid.message></textarea>
-            <invalid name="message"></invalid>
-        </div>
+  <form class="form-feedback" @submit.prevent="submit">
+    <div class="form-group">
+      <input id="name"
+             v-model="form.name"
+             v-valid.name
+             class="form-control"
+             placeholder=" "
+             type="text">
+      <label class="label" for="name">name</label>
+      <Invalid name="name"/>
+    </div>
+    <div class="form-group">
+      <input id="email"
+             v-model="form.email"
+             v-valid.email
+             class="form-control"
+             placeholder=" "
+             required
+             type="email">
+      <label class="label" for="email">Email</label>
+      <Invalid name="email"/>
+    </div>
+    <div class="form-group">
+      <input id="phone"
+             v-model="form.phone"
+             v-valid.phone
+             class="form-control"
+             placeholder=" "
+             type="text">
+      <label class="label" for="phone">Phone</label>
+      <Invalid name="phone"/>
+    </div>
+    <div class="form-group">
+      <input id="link"
+             v-model="form.link"
+             v-valid.link
+             class="form-control"
+             placeholder=" "
+             type="text">
+      <label class="label" for="link">Link</label>
+      <Invalid name="link"/>
+    </div>
+    <div class="form-group">
+            <textarea v-model="form.message"
+                      v-valid.message
+                      class="form-control"
+                      placeholder="Text message"
+                      rows="6"/>
+      <Invalid name="message"/>
+    </div>
 
-        <div class="form-group">
-            <button class="btn btn-cyan">
-                Send
-                <span class="spinner-border spinner-border-sm ml-2" v-if="isLoading"></span>
-            </button>
-        </div>
-    </form>
+    <div class="form-group">
+      <button class="btn btn-cyan">
+        Send
+        <span v-if="isLoading" class="spinner-border spinner-border-sm ml-2"/>
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
-    import form from "../../mixins/form"
+import form from '../../mixins/form'
 
-    export default {
-        data() {
-            return {
-                form: {
-                    name: '',
-                    email: '',
-                    phone: '',
-                    link: '',
-                    message: '',
-                }
-            }
-        },
-        mixins: [form]
+export default {
+  mixins: [form],
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        phone: '',
+        link: '',
+        message: '',
+      }
     }
+  }
+}
 </script>
 

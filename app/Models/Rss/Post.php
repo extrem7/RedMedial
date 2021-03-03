@@ -6,6 +6,9 @@ use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -20,7 +23,7 @@ class Post extends Model implements HasMedia
     use HasEagerLimit;
     use BelongsToThrough;
 
-    const UPDATED_AT = null;
+    public const UPDATED_AT = null;
 
     protected $table = 'rss_posts';
 
@@ -31,17 +34,18 @@ class Post extends Model implements HasMedia
     protected $search = ['title'];
 
     // FUNCTIONS
-    protected static function boot()
+    protected static function boot(): void
     {
+        static::addGlobalScope('order', fn(Builder $b) => $b->orderBy('created_at', 'desc'));
+
         parent::boot();
-        static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('created_at', 'desc');
-        });
     }
 
     public function uploadImage(string $url): ?Media
     {
-        if ($this->imageMedia) $this->deleteMedia($this->imageMedia);
+        if ($this->imageMedia) {
+            $this->deleteMedia($this->imageMedia);
+        }
 
         return $this->addMediaFromUrl($url)->toMediaCollection('image', 's3');
     }
@@ -50,9 +54,9 @@ class Post extends Model implements HasMedia
     {
         if ($this->imageMedia !== null) {
             return $this->imageMedia->getUrl($this->imageMedia->hasGeneratedConversion($size) ? $size : '');
-        } else {
-            return config('app.url') . '/dist/img/no-image.jpg';
         }
+
+        return config('app.url') . '/dist/img/no-image.jpg';
     }
 
     public function registerMediaCollections(): void
@@ -72,7 +76,7 @@ class Post extends Model implements HasMedia
             });
     }
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -82,12 +86,12 @@ class Post extends Model implements HasMedia
     }
 
     // RELATIONS
-    public function channel()
+    public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
     }
 
-    public function country()
+    public function country(): \Znck\Eloquent\Relations\BelongsToThrough
     {
         return $this->belongsToThrough(Country::class, Channel::class, null, '', [
             Country::class => 'country_id',
@@ -95,39 +99,39 @@ class Post extends Model implements HasMedia
         ]);
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'rss_category_post');
     }
 
-    public function imageMedia()
+    public function imageMedia(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'image');
     }
 
     // ACCESSORS
-    public function getImageAttribute()
+    public function getImageAttribute(): string
     {
         return $this->getImage();
     }
 
-    public function getThumbAttribute()
+    public function getThumbAttribute(): string
     {
         return $this->getImage('thumb');
     }
 
-    public function getThumbnailAttribute()
+    public function getThumbnailAttribute(): string
     {
         return $this->getImage('thumbnail');
     }
 
-    public function getLinkAttribute()
+    public function getLinkAttribute(): string
     {
         return $this->slug ? route('frontend.rss.posts.show', $this->slug) : $this->source;
     }
 
-    public function getDateAttribute()
+    public function getDateAttribute(): string
     {
         return $this->created_at->format('d M, Y');
     }

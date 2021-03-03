@@ -13,7 +13,7 @@
     @include('frontend::includes.google')
 </head>
 <body class="{{ $bodyClass }}">
-<div id="app">
+<div id="redmedial" class="pseudo-app">
     <red-header></red-header>
     @yield('content')
     <red-footer></red-footer>

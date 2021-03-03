@@ -58,7 +58,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-
         if ($this->isHttpException($exception) || $exception instanceof ModelNotFoundException) {
             if ($exception instanceof ModelNotFoundException || $exception->getStatusCode() == 404) {
                 SEO::setTitle('404');
@@ -72,12 +71,11 @@ class Handler extends ExceptionHandler
             }
         }
 
-        if ($request->ajax()) {
-            if ($exception instanceof ValidationException)
-                return response()->json([
-                    'message' => 'You have validation errors',
-                    'errors' => $exception->validator->messages()->toArray()
-                ], 422);
+        if ($exception instanceof ValidationException && $request->ajax() && !$request->hasHeader('x-inertia')) {
+            return response()->json([
+                'message' => 'You have validation errors',
+                'errors' => $exception->validator->messages()->toArray()
+            ], 422);
         }
 
         return parent::render($request, $exception);

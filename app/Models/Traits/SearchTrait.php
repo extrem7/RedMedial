@@ -9,31 +9,22 @@ trait SearchTrait
 {
     /**
      * @param Builder|static $query
-     * @param string $keyword
-     * @param boolean $matchAllFields
-     * @return
+     * @return Builder|static
      */
-    public static function scopeSearch($query, $keyword, $matchAllFields = false)
+    public static function scopeSearch($query, string $keyword, bool $matchAllFields = false)
     {
-        // return static::where(function ($query) use ($keyword, $matchAllFields) {
-
-        foreach (static::getSearchFields() as $field) {
-            if ($matchAllFields) {
-                $query->where($field, 'LIKE', "%$keyword%");
-            } else {
-                $query->orWhere($field, 'LIKE', "%$keyword%");
+        return static::where(function ($query) use ($keyword, $matchAllFields) {
+            foreach (static::getSearchFields() as $field) {
+                if ($matchAllFields) {
+                    $query->where($field, 'LIKE', "%$keyword%");
+                } else {
+                    $query->orWhere($field, 'LIKE', "%$keyword%");
+                }
             }
-        }
-
-        //  });
+        });
     }
 
-    /**
-     * Get all searchable fields
-     *
-     * @return array
-     */
-    public static function getSearchFields()
+    public static function getSearchFields(): array
     {
         $model = new static;
 

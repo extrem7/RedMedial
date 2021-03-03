@@ -6,6 +6,9 @@ use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\UploadedFile;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -49,17 +52,18 @@ class Channel extends Model implements HasMedia
     ];
 
     // FUNCTIONS
-    protected static function boot()
+    protected static function boot(): void
     {
+        static::addGlobalScope('order', fn(Builder $b) => $b->orderBy('order_column',));
+
         parent::boot();
-        static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('order_column');
-        });
     }
 
     public function uploadLogo(UploadedFile $image = null): Media
     {
-        if ($this->logoMedia) $this->deleteMedia($this->logoMedia);
+        if ($this->logoMedia) {
+            $this->deleteMedia($this->logoMedia);
+        }
         return $this->addMedia($image)->toMediaCollection('logo');
     }
 
@@ -67,9 +71,9 @@ class Channel extends Model implements HasMedia
     {
         if ($this->logoMedia !== null) {
             return $this->logoMedia->getUrl($size);
-        } else {
-            return asset('dist/img/no-image.jpg');
         }
+
+        return asset('dist/img/no-image.jpg');
     }
 
     public function registerMediaCollections(): void
@@ -85,7 +89,7 @@ class Channel extends Model implements HasMedia
             });
     }
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -96,17 +100,17 @@ class Channel extends Model implements HasMedia
     }
 
     // RELATIONS
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
 
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class)->orderByDesc('id');
     }
 
-    public function logoMedia()
+    public function logoMedia(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'logo');

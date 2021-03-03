@@ -1,17 +1,38 @@
 <?php
 
 use Modules\Frontend\Http\Controllers\{
-    HelperController,
+    Account\AuthController,
     PageController,
     ArticleController,
     RssController,
     SearchController,
     IframeController
 };
+use Modules\Frontend\Http\Middleware\HandleInertiaRequests;
+
+Route::middleware(HandleInertiaRequests::class)->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::prefix('login')->as('login')->group(function () {
+            Route::get('', [AuthController::class, 'login']);
+            Route::post('', [AuthController::class, 'tryLogin'])->name('.try');
+        });
+        Route::prefix('register')->as('register')->group(function () {
+            Route::get('', [AuthController::class, 'register']);
+            Route::post('', [AuthController::class, 'tryRegister'])->name('.try');
+        });
+        Route::prefix('password-reset')->as('password_reset')->group(function () {
+            Route::get('', [AuthController::class, 'resetPassword']);
+            Route::post('', [AuthController::class, 'tryResetPassword'])->name('.try');
+        });
+    });
+    Route::middleware('auth')->group(function () {
+        Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
+    });
+});
 
 Route::get('', [PageController::class, 'home'])->name('home');
 
-Route::get('sitemap.xml', [HelperController::class, 'sitemap']);
+Route::get('sitemap.xml', [AuthController::class, 'sitemap']);
 
 Route::prefix('blog')->as('articles.')->group(function () {
     Route::get('', [ArticleController::class, 'index'])->name('index');

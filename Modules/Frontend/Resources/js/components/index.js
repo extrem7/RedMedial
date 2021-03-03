@@ -5,9 +5,7 @@ import RedFooter from './layout/Footer'
 
 import Social from "./layout/Social"
 import CopyIframe from "./includes/CopyIframe"
-//import RssItem from "~/components/layout/RssItem"
 
-//import ArticlesList from "~/components/Articles/List"
 import Article from "./articles/Item"
 import Share from "./includes/Share"
 
