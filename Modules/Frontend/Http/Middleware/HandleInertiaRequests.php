@@ -2,6 +2,8 @@
 
 namespace Modules\Frontend\Http\Middleware;
 
+use DaveJamesMiller\Breadcrumbs\Exceptions\InvalidBreadcrumbException;
+use DaveJamesMiller\Breadcrumbs\Exceptions\UnnamedRouteException;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -11,8 +13,16 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
+        $breadcrumbs = null;
+        if (\Breadcrumbs::exists()) {
+            $breadcrumbs = \Breadcrumbs::generate();
+        }
+
         $shared = [
-            'breadcrumbs' => \Breadcrumbs::generate(),
+            'meta' => fn() => [
+                'title' => explode(\SEOMeta::getTitleSeparator(), \SEOMeta::getTitle())[0]
+            ],
+            'breadcrumbs' => $breadcrumbs,
             'flash' => []
         ];
 

@@ -18,11 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasRoles;
-    use Notifiable;
-    use HasApiTokens;
-    use HasMediaTrait;
-    use SearchTrait;
+    use HasRoles, Notifiable, HasApiTokens, HasMediaTrait, SearchTrait;
 
     protected $fillable = [
         'name', 'email', 'password',
@@ -70,6 +66,7 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(UserInformation::class);
     }
 
+    /* @return MediaInformation|HasOne */
     public function mediaInformation(): HasOne
     {
         return $this->hasOne(MediaInformation::class);

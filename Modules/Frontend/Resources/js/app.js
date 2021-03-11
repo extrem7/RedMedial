@@ -1,5 +1,9 @@
 import Vue from 'vue'
 
+import VueCompositionAPI from '@vue/composition-api'
+
+Vue.use(VueCompositionAPI)
+
 import './plugins'
 import './filters'
 import store from './store'
@@ -51,6 +55,22 @@ if (el) {
         })
     },
   })
+  vueOptions.mounted = function () {
+    this.$inertia.on('success', (event) => {
+      const props = event.detail.page.props
+
+      window.title = `${props.meta.title} - Red Medial`
+
+      if (props.flash.message !== undefined) {
+        this.$bus.emit('alert', {text: props.flash.message})
+      }
+      if (props.flash.error !== undefined) {
+        this.$bus.emit('alert', {text: props.flash.error, variant: 'warning'})
+      }
+    })
+  }
 }
+
+Vue.config.productionTip = false
 
 new Vue(vueOptions)

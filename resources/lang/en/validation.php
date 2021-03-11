@@ -125,6 +125,8 @@ return [
     "symbols" => "The :attribute must include at least one symbol.",
     'string255' => 'The :attribute may not be greater than 255 characters.',
 
+    'active_rss' => 'The :attribute is not a valid rss feed.',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

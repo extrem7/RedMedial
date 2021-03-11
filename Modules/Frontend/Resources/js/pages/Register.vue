@@ -63,7 +63,7 @@
       <div class="mt-3 small-size">
         Already have an account?
         <InertiaLink
-          :href="route('frontend.login')"
+          :href="route('login')"
           class="link link--cyan">
           Log in
         </InertiaLink>
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     async submit() {
-      this.form.post(this.route('frontend.register.try'), {
+      this.form.post(this.route('register.try'), {
         preserveScroll: true
       })
     }

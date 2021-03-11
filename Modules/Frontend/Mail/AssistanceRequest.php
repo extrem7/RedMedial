@@ -2,31 +2,26 @@
 
 namespace Modules\Frontend\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Queue\SerializesModels;
 
-class ContactForm extends Mailable implements ShouldQueue
+class AssistanceRequest extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $subject = 'New message from Contact Form';
+    public $subject = 'New assistance request';
 
     private MailMessage $message;
 
-    public function __construct($data)
+    public function __construct(User $user)
     {
         $this->message = (new MailMessage)
-            ->greeting('Hello, you have new message from contact form.')
+            ->greeting("Hello, you have new assistance request from '{$user->name}' with id {$user->id}.")
             ->salutation(null);
-        foreach ($data as $field => $text) {
-            $field = ucfirst($field);
-            if ($text) {
-                $this->message->line("$field : $text");
-            }
-        }
     }
 
     public function build(): self

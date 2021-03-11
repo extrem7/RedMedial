@@ -6,7 +6,7 @@
         <li><a href="/quienes-somos">Quiénes Somos</a></li>
         <li><a href="/contacto">Contacto</a></li>
         <li><a href="/red-de-medios">Enlaces</a></li>
-        <li><a :href="route('frontend.search')">Search</a></li>
+        <li><a :href="route('search')">Search</a></li>
         <li><a href="/all-rss">All Rss</a></li>
         <li><a href="/all-youtube">All Youtube</a></li>
         <li><a href="http://covid19alert.net" target="_blank">Covid-19 </a></li>

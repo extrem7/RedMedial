@@ -78,9 +78,9 @@ class FrontendServiceProvider extends ServiceProvider
 
             if (($user = \Auth::user()) && $user->hasRole('media-user')) {
                 $data = $user->only(['id', 'name', 'email']);
-
-                if ($user->avatarMedia) {
-                    $data['avatar'] = $user->icon;
+                $information = $user->mediaInformation;
+                if ($information->logoMedia) {
+                    $data['logo'] = $information->logo;
                 }
                 share([
                     'auth' => $data

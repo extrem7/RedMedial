@@ -12,7 +12,7 @@ export default {
         async submit() {
             this.isLoading = true
             try {
-                const {status, data} = await this.axios.post(this.route('frontend.contact-form'), this.form)
+                const {status, data} = await this.axios.post(this.route('contact-form'), this.form)
                 try {
                     if (status === 200) {
                         for (let field in this.form) this.form[field] = ''

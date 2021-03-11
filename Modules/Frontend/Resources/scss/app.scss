@@ -1,5 +1,7 @@
 @import "../layout/src/scss/main";
 
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
 .invalid-feedback {
     display: block !important;
     font-weight: bold;
@@ -17,4 +19,8 @@ body {
 red-header {
     height: 147px;
     display: inline-table;
+}
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: 'ADD';
 }

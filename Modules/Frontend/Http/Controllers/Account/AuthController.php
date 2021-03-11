@@ -21,7 +21,7 @@ class AuthController extends Controller
         return inertia('Login');
     }
 
-    public function tryLogin(LoginRequest $request): Response
+    public function tryLogin(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return inertia()->location('/');
+        return redirect()->route('frontend.account.dashboard');
     }
 
     public function register()
@@ -46,7 +46,7 @@ class AuthController extends Controller
         return inertia('Register');
     }
 
-    public function tryRegister(RegistrationRequest $request): RedirectResponse
+    public function tryRegister(RegistrationRequest $request): Response
     {
         $validated = $request->only(['name', 'email']);
         $password = \Hash::make($request->input('password'));
@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         \Auth::guard()->login($user);
 
-        return redirect()->route('frontend.home');
+        return inertia()->location(route('frontend.home'));
     }
 
     public function logout(Request $request): Response

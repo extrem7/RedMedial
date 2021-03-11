@@ -24,7 +24,7 @@
           <div class="title-rss line-cap">{{ post.title }}</div>
           <span class="article-date">{{ formatTime(post.created_at) }}</span>
         </a>
-        <a :href="route('frontend.rss.channels.show',{channel:slug})"
+        <a :href="route('rss.channels.show',{channel:slug})"
            class="rss-link title">
           <span class="read-all">View all news {{ name }}
             <img alt="arrow-right" src="/dist/img/icons/arrow-right.svg">

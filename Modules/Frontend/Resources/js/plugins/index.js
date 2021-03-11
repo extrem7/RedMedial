@@ -11,7 +11,6 @@ import SvgVue from 'svg-vue'
 //import './bootstrap'
 import './ls'
 
-import route, {Ziggy} from 'ziggy'
 import VueLazyload from 'vue-lazyload'
 import VueScrollTo from 'vue-scrollto'
 import VueObserveVisibility from 'vue-observe-visibility'
@@ -31,11 +30,15 @@ Vue.use(ReactiveProvide)
 
 import {InertiaProgress} from '@inertiajs/progress'
 
-InertiaProgress.init()
+InertiaProgress.init({
+  color: '#ffffff'
+})
+
+import {route} from '~/helpers/helpers'
 
 Vue.mixin({
   methods: {
-    route: (name, params, absolute) => route(name, params, absolute, Ziggy),
+    route: (name, params, absolute) => route(name, params, absolute),
     shared: (key) => shared()[key]
   }
 })

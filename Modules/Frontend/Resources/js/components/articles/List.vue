@@ -6,10 +6,10 @@
                 :show="isLoading"
                 variant="white">
                 <Item
-                    v-for="article in articles"
-                    :key="article.id"
-                    v-bind="article"
-                    :is-channel="!currentRoute.includes('frontend.articles')"/>
+                  v-for="article in articles"
+                  :key="article.id"
+                  v-bind="article"
+                  :is-channel="!currentRoute.includes('articles')"/>
             </BOverlay>
         </div>
         <nav class="navigation pagination" role="navigation">

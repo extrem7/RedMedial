@@ -13,24 +13,26 @@
            class="label label--material">
       {{ placeholder }}
     </label>
-    <input
-      :id="id"
-      :class="[inputClass, {'form-control--has-icon' : type==='password'}]"
-      :required="required"
-      :type="inputType"
-      :value="value"
-      class="form-control"
-      @blur="inFocus = false"
-      @focus="inFocus = true"
-      @input="$emit('input',$event.target.value)"
-    >
+    <slot :state="errors.length!==0?false:null">
+      <input
+        :id="id"
+        :class="[inputClass, {'form-control--has-icon' : type==='password'}]"
+        :required="required"
+        :type="inputType"
+        :value="value"
+        class="form-control"
+        @blur="inFocus = false"
+        @focus="inFocus = true"
+        @input="$emit('input',$event.target.value)"
+      >
+    </slot>
     <div v-if="errors.length">
-    <span
-      v-for="(error,key) in errors"
-      :key="key"
-      class="invalid-feedback">
-      {{ error }}
-    </span>
+      <div
+        v-for="(error,key) in errors"
+        :key="key"
+        class="invalid-feedback">
+        {{ error }}
+      </div>
     </div>
   </div>
 </template>

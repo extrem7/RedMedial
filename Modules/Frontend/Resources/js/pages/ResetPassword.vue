@@ -25,7 +25,7 @@
       </div>
     </form>
     <div v-else class="mt-3">
-      <a :href="route('frontend.home')"
+      <a :href="route('home')"
          class="btn btn-cyan btn--size--134 semi-bold">
         Back to main
       </a>
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     async submit() {
-      this.form.post(this.route('frontend.password_reset.try'), {
+      this.form.post(this.route('password_reset.try'), {
         preserveScroll: true,
         onSuccess: () => {
           this.successful = true
