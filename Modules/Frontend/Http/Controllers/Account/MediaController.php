@@ -8,33 +8,28 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Modules\Frontend\Http\Controllers\Controller;
-use Modules\Frontend\Http\Requests\Account\ProfileUpdateRequest;
+use Modules\Frontend\Http\Requests\Account\MediaUpdateRequest;
 use Modules\Frontend\Mail\AssistanceRequest;
 
-class DashboardController extends Controller
+class MediaController extends Controller
 {
-    public function dashboard(): Response
+    public function edit(): Response
     {
         $this->seo()->setTitle('Complete profile');
 
         $information = $this->getInformation();
         $information = $information->only([...$information->fillable, 'logo', 'statistic']);
 
-        return inertia('Dashboard', compact('information'));
+        return inertia('Media', compact('information'));
     }
 
-    protected function getInformation(): User\MediaInformation
-    {
-        return \Auth::user()->mediaInformation;
-    }
-
-    public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
+    public function update(MediaUpdateRequest $request): RedirectResponse
     {
         $information = $this->getInformation();
         $this->getInformation()->update($request->only($information->fillable));
 
         if ($request->hasFile('statisticImage')) {
-            $information->clearMediaCollection('statistics');
+            $information->clearMediaCollection('statistic');
             $information->addMedia($request->file('statisticImage'))->toMediaCollection('statistic');
         }
 
@@ -73,5 +68,10 @@ class DashboardController extends Controller
         \Mail::to(get_admins_mails())->send(new AssistanceRequest(\Auth::user()));
 
         return back()->with('message', 'Your request has been sent to administrator.');
+    }
+
+    protected function getInformation(): User\MediaInformation
+    {
+        return \Auth::user()->mediaInformation;
     }
 }

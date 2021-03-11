@@ -8,16 +8,19 @@
     </button>
     <div class="sidebar__inner">
       <ul class="sidebar__menu sidebar-menu">
-        <li class="sidebar-menu__item">
-          <a
-            :href="route('account.dashboard')"
-            class="sidebar-menu__link sidebar-menu__link--active"
+        <li
+          v-for="{name,route:routeName} in links"
+          class="sidebar-menu__item"
+        >
+          <InertiaLink
+            :class="{
+              'sidebar-menu__link--active': currentRoute===routeName
+            }"
+            :href="route(routeName)"
+            class="sidebar-menu__link"
           >
-            Profile
-          </a>
-        </li>
-        <li class="sidebar-menu__item">
-          <a class="sidebar-menu__link" href="">media</a>
+            {{ name }}
+          </InertiaLink>
         </li>
         <li class="sidebar-menu__item">
           <a class="sidebar-menu__link" href="">rss categories room</a>
@@ -50,6 +53,25 @@ export default {
   setup() {
     const {logout} = useLogout()
     return {logout}
+  },
+  data() {
+    return {
+      links: [
+        {
+          name: 'Profile',
+          route: 'account.settings.edit'
+        },
+        {
+          name: 'Media',
+          route: 'account.media.edit'
+        },
+      ]
+    }
+  },
+  computed: {
+    currentRoute() {
+      return this.$page.props.route
+    }
   }
 }
 </script>

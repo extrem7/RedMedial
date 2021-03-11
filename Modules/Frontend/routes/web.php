@@ -1,7 +1,8 @@
 <?php
 
 use Modules\Frontend\Http\Controllers\{Account\AuthController,
-    Account\DashboardController,
+    Account\MediaController,
+    Account\ProfileController,
     PageController,
     ArticleController,
     RssController,
@@ -29,14 +30,21 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
         Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::prefix('account')->as('account.')->group(function () {
-            Route::get('', [DashboardController::class, 'dashboard'])->name('dashboard');
-            Route::post('', [DashboardController::class, 'updateProfile'])->name('update');
+            Route::prefix('settings')->as('settings.')->group(function () {
+                Route::get('', [ProfileController::class, 'edit'])->name('edit');
+                Route::post('', [ProfileController::class, 'update'])->name('update');
+            });
 
-            Route::post('logo', [DashboardController::class, 'updateLogo'])->name('logo.update');
-            Route::delete('logo', [DashboardController::class, 'destroyLogo'])->name('logo.destroy');
-            Route::delete('statistic', [DashboardController::class, 'destroyStatistic'])->name('statistic');
+            Route::prefix('media')->as('media.')->group(function () {
+                Route::get('', [MediaController::class, 'edit'])->name('edit');
+                Route::post('', [MediaController::class, 'update'])->name('update');
 
-            Route::post('assistance', [DashboardController::class, 'assistance'])->name('assistance');
+                Route::post('logo', [MediaController::class, 'updateLogo'])->name('logo.update');
+                Route::delete('logo', [MediaController::class, 'destroyLogo'])->name('logo.destroy');
+                Route::delete('statistic', [MediaController::class, 'destroyStatistic'])->name('statistic');
+
+                Route::post('assistance', [MediaController::class, 'assistance'])->name('assistance');
+            });
         });
     });
 });

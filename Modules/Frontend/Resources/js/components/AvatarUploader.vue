@@ -54,9 +54,15 @@
         </button>
         <button
           class="btn btn-cyan btn--size--134 semi-bold modal-actions__btn"
+          :disabled="processing"
           @click="upload"
         >
           Upload
+          <BSpinner
+            v-if="processing"
+            class="ml-2"
+            small
+          />
         </button>
       </div>
     </BModal>
@@ -65,17 +71,19 @@
 
 <script>
 import VueCropper from 'vue-cropperjs'
-import {BModal} from 'bootstrap-vue'
+import {BModal, BSpinner} from 'bootstrap-vue'
 
 export default {
   components: {
     VueCropper,
-    BModal
+    BModal,
+    BSpinner
   },
   data() {
     return {
       imageName: null,
-      image: null
+      image: null,
+      processing: false
     }
   },
   computed: {
@@ -89,11 +97,15 @@ export default {
       const logo = await this.getBlob()
       form.append('logo', logo, this.imageName)
 
-      this.$inertia.post(this.route('account.logo.update'), form, {
+      this.processing = true
+      this.$inertia.post(this.route('account.media.logo.update'), form, {
         onSuccess: page => {
           if (!page.props.errors.logo) {
             this.cancel()
           }
+        },
+        onFinish: () => {
+          this.processing = false
         }
       })
     },

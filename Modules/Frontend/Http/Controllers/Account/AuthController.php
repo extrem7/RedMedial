@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('frontend.account.dashboard');
+        return redirect()->route('frontend.account.media.edit');
     }
 
     public function register()
@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         \Auth::guard()->login($user);
 
-        return inertia()->location(route('frontend.home'));
+        return inertia()->location(route('frontend.account.media.edit'));
     }
 
     public function logout(Request $request): Response

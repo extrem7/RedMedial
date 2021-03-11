@@ -26,6 +26,10 @@ class HandleInertiaRequests extends Middleware
             'flash' => []
         ];
 
+        if ($route = $request->route()) {
+            $shared['route'] = \Str::replaceFirst('frontend.', '', $route->getName());
+        }
+
         if ($request->session()->has('message')) {
             $shared['flash']['message'] = fn() => $request->session()->get('message');
             $shared['flash']['type'] = fn() => $request->session()->get('type') ?? 'success';

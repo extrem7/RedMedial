@@ -59,11 +59,10 @@
         <div class="form-group form-group--material upload-box">
           <div class="upload-box__inner">
             <span class="label upload-box__label">Icon image of media</span>
-            <a
+            <div
               v-if="information.logo"
-              :href="information.logo"
+              v-b-modal.logo-modal
               class="upload-preview"
-              target="_blank"
             >
               <img
                 :src="information.logo"
@@ -71,12 +70,12 @@
                 class="upload-preview__img"
               >
               <InertiaLink
-                :href="route('account.logo.destroy')"
+                :href="route('account.media.logo.destroy')"
                 as="button"
                 class="btn upload-preview__btn-delete"
                 method="delete"
               />
-            </a>
+            </div>
             <button
               v-else
               v-b-modal.logo-modal
@@ -119,7 +118,7 @@
                 class="upload-preview__img"
               >
               <InertiaLink
-                :href="route('account.statistic')"
+                :href="route('account.media.statistic')"
                 as="button"
                 class="btn upload-preview__btn-delete"
                 method="delete"
@@ -148,8 +147,8 @@
       <div class="col-12">
         <div class="form-group">
           <button
-            :disabled="processing"
             class="btn btn-cyan btn--size--134 semi-bold"
+            :disabled="processing"
           >
             Save
             <BSpinner
@@ -202,16 +201,11 @@ export default {
     }
   },
   created() {
-    for (let key in this.information) {
-      const value = this.information[key]
-      if (this.form.hasOwnProperty(key) && value) {
-        this.form[key] = value
-      }
-    }
+    this.fillForm(this.information)
   },
   methods: {
     async submit() {
-      this.form.post(this.route('account.update'), {
+      this.form.post(this.route('account.media.update'), {
         preserveScroll: true,
         onSuccess: () => {
           this.form.statisticImage = null
@@ -219,7 +213,7 @@ export default {
       })
     },
     async assistance() {
-      this.$inertia.post(this.route('account.assistance'))
+      this.$inertia.post(this.route('account.media.assistance'))
     }
   }
 }

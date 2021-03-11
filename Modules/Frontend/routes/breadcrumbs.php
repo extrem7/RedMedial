@@ -27,7 +27,12 @@ Breadcrumbs::for('frontend.password_reset', function (Trail $trail) {
     $trail->push('Password reset');
 });
 
-Breadcrumbs::for('frontend.account.dashboard', function (Trail $trail) {
+Breadcrumbs::for('frontend.account.settings.edit', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Profile settings');
+});
+
+Breadcrumbs::for('frontend.account.media.edit', function (Trail $trail) {
     $trail->parent('home');
     $trail->push('Complete profile');
 });

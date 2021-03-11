@@ -1,6 +1,7 @@
 import InputMaterial from '~/components/includes/InputMaterial'
 import {BSpinner} from 'bootstrap-vue'
 
+/** @property form */
 export default {
   components: {
     InputMaterial,
@@ -16,6 +17,16 @@ export default {
     },
     errors() {
       return this.form.errors
+    }
+  },
+  methods: {
+    fillForm(data) {
+      for (let key in data) {
+        const value = data[key]
+        if (this.form.hasOwnProperty(key) && value) {
+          this.form[key] = value
+        }
+      }
     }
   }
 }

@@ -71,14 +71,14 @@
             <span class="dropdown-account__name line-nowrap">{{ user.name }}</span>
           </div>
         </template>
-        <BDropdownItem :href="route('account.dashboard')">
+        <BDropdownItem :href="route('account.settings.edit')">
           Profile
         </BDropdownItem>
-        <BDropdownItem>
-          media
+        <BDropdownItem :href="route('account.media.edit')">
+          Media
         </BDropdownItem>
         <BDropdownItem>
-          rss categories room
+          Rss categories room
         </BDropdownItem>
         <BDropdownItem>
           Customized Iframe RSS
