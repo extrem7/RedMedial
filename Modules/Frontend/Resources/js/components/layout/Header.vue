@@ -77,7 +77,7 @@
         <BDropdownItem :href="route('account.media.edit')">
           Media
         </BDropdownItem>
-        <BDropdownItem>
+        <BDropdownItem :href="route('account.rss')">
           Rss categories room
         </BDropdownItem>
         <BDropdownItem>
@@ -92,8 +92,8 @@
         </BDropdownItem>
       </BDropdown>
       <button
-        :class="{'open' : openMenu}"
         class="mobile-btn"
+        :class="{open: openMenu}"
         @click="openMenu = !openMenu"
       >
         <span></span>

@@ -25,3 +25,4 @@ mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
 }).sourceMaps().version()
 
 mix.mergeManifest()
+  .disableSuccessNotifications()

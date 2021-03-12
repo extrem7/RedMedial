@@ -20,9 +20,12 @@ class DebugBarMiddleware
     {
         Debugbar::disable();
 
-        if (config('redmedial.debugbar') && Auth::check() && Auth::getUser()->hasRole('admin')) {
+        if (app()->environment('local')
+            ||
+            (config('redmedial.debugbar') && Auth::check() && Auth::getUser()->hasRole('admin'))) {
             Debugbar::enable();
         }
+
         return $next($request);
     }
 }

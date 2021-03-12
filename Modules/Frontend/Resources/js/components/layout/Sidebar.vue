@@ -23,9 +23,6 @@
           </InertiaLink>
         </li>
         <li class="sidebar-menu__item">
-          <a class="sidebar-menu__link" href="">rss categories room</a>
-        </li>
-        <li class="sidebar-menu__item">
           <a class="sidebar-menu__link" href="">Customized Iframe RSS</a>
         </li>
         <li class="sidebar-menu__item">
@@ -64,6 +61,10 @@ export default {
         {
           name: 'Media',
           route: 'account.media.edit'
+        },
+        {
+          name: 'Rss categories room',
+          route: 'account.rss'
         },
       ]
     }

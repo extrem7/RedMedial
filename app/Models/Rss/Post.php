@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
-class Post extends Model implements HasMedia
+class Post extends Model implements HasMedia, Feedable
 {
     use HasMediaTrait;
     use Sluggable;
@@ -83,6 +85,19 @@ class Post extends Model implements HasMedia
                 'source' => !empty($this->slug) ? 'slug' : 'title',
             ]
         ];
+    }
+
+    public function toFeedItem(): FeedItem
+    {
+        return FeedItem::create([
+            'id' => route('frontend.rss.posts.show', $this->id),
+            'title' => $this->title,
+            'summary' => $this->excerpt,
+            'updated' => $this->created_at,
+            'link' => $this->link,
+            'author' => $this->channel->name,
+            'category' => $this->categories->pluck('name')->toArray()
+        ]);
     }
 
     // RELATIONS

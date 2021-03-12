@@ -37,6 +37,11 @@ Breadcrumbs::for('frontend.account.media.edit', function (Trail $trail) {
     $trail->push('Complete profile');
 });
 
+Breadcrumbs::for('frontend.account.rss', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Rss categories room');
+});
+
 Breadcrumbs::for('404', function (Trail $trail) {
     $trail->parent('home');
     $trail->push('404');

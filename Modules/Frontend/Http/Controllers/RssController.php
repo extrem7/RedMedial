@@ -87,8 +87,11 @@ class RssController extends Controller
         return view('frontend::rss.channel', compact('category'));
     }
 
-    public function show(Post $post, SchemaService $schemaService): View
+    public function show($post, SchemaService $schemaService): View
     {
+        $post = Post::where('slug', '=', $post)->orWhere('id', '=', $post)->first();
+        abort_unless($post !== null, 404);
+
         $post->load('imageMedia');
         $post->append(['image', 'link']);
 

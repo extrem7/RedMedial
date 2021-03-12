@@ -1,11 +1,13 @@
 <?php
 
-use Modules\Frontend\Http\Controllers\{Account\AuthController,
+use Modules\Frontend\Http\Controllers\{
+    Account\AuthController,
     Account\MediaController,
     Account\ProfileController,
+    Account\RssController,
+    FeedController,
     PageController,
     ArticleController,
-    RssController,
     SearchController,
     IframeController
 };
@@ -34,7 +36,6 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
                 Route::get('', [ProfileController::class, 'edit'])->name('edit');
                 Route::post('', [ProfileController::class, 'update'])->name('update');
             });
-
             Route::prefix('media')->as('media.')->group(function () {
                 Route::get('', [MediaController::class, 'edit'])->name('edit');
                 Route::post('', [MediaController::class, 'update'])->name('update');
@@ -45,13 +46,21 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
 
                 Route::post('assistance', [MediaController::class, 'assistance'])->name('assistance');
             });
+
+            Route::get('rss-room', RssController::class)->name('rss');
         });
     });
 });
 
 Route::get('', [PageController::class, 'home'])->name('home');
 
-Route::get('sitemap.xml', [AuthController::class, 'sitemap']);
+Route::get('sitemap.xml', [AuthController::class, 'sitemap'])->name('sitemap');
+
+Route::prefix('feeds')->as('feeds.')->group(function () {
+    Route::get('language/{language:slug}', [FeedController::class, 'language'])->name('language');
+    Route::get('country/{country:slug}', [FeedController::class, 'country'])->name('country');
+    Route::get('topic/{category:slug}', [FeedController::class, 'topic'])->name('topic');
+});
 
 Route::prefix('blog')->as('articles.')->group(function () {
     Route::get('', [ArticleController::class, 'index'])->name('index');
@@ -73,7 +82,7 @@ Route::as('rss.')->group(function () {
         Route::get('page/{page?}', [RssController::class, 'category'])->name('.page');
     });
 
-    Route::get('posts/{post:slug}', [RssController::class, 'show'])->name('posts.show');
+    Route::get('posts/{post}', [RssController::class, 'show'])->name('posts.show');
 });
 
 Route::prefix('search')->as('search')->group(function () {
