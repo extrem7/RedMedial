@@ -10,4 +10,4 @@ targets:
   - default:
       urls:
         - '{{ config("app.url") }}'
-        - https://google.com
+        - https://redmedial.com
