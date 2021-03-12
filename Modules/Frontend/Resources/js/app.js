@@ -1,16 +1,15 @@
 import Vue from 'vue'
-
 import VueCompositionAPI from '@vue/composition-api'
 
 Vue.use(VueCompositionAPI)
 
 import './plugins'
 import './filters'
-import store from './store'
 
+import store from './store'
 import components from './components'
 
-import MasterLayout from '~/layouts/Master'
+Vue.config.productionTip = false
 
 const vueOptions = {
   el: '#redmedial',
@@ -34,7 +33,9 @@ const vueOptions = {
       if (visible) {
         setTimeout(() => {
           const src = `https://www.arcgis.com/apps/opsdashboard/index.html#/`
-          this.$refs.map.src = `${src}${window.innerWidth > 768 ? 'bda7594740fd40299423467b48e9ecf6' : '85320e2ea5424dfaaa75ae62e5c06e61'}`
+          this.$refs.map.src = `${src}${window.innerWidth > 768
+            ? 'bda7594740fd40299423467b48e9ecf6'
+            : '85320e2ea5424dfaaa75ae62e5c06e61'}`
         }, 3000)
       }
     }
@@ -48,9 +49,13 @@ if (el) {
   vueOptions.render = h => h(InertiaApp, {
     props: {
       initialPage: JSON.parse(el.dataset.page),
-      resolveComponent: name => import(`./pages/${name}`)
-        .then(({default: page}) => {
-          page.layout = page.layout === undefined ? MasterLayout : page.layout
+      resolveComponent: async name => import(`./pages/${name}`)
+        .then(async ({default: page}) => {
+          if (page.layout === undefined) {
+            const master = await import('~/layouts/Master')
+            page.layout = master.default
+          }
+
           return page
         })
     },
@@ -60,19 +65,21 @@ if (el) {
       const {meta: {title}} = event.detail.page.props
       document.title = `${title} - Red Medial`
     })
-    this.$inertia.on('finish', (event) => {
-      const {flash} = event.detail.page.props
 
-      if (flash.message !== undefined) {
-        this.$bus.emit('alert', {text: flash.message})
-      }
-      if (flash.error !== undefined) {
-        this.$bus.emit('alert', {text: flash.error, variant: 'warning'})
-      }
+    const events = ['success', 'error']
+    events.forEach((eventType) => {
+      this.$inertia.on(eventType, (event) => {
+        const {flash} = event.detail.page.props
+
+        if (flash.message !== undefined) {
+          this.$bus.emit('alert', {text: flash.message})
+        }
+        if (flash.error !== undefined) {
+          this.$bus.emit('alert', {text: flash.error, variant: 'warning'})
+        }
+      })
     })
   }
 }
-
-Vue.config.productionTip = false
 
 new Vue(vueOptions)
