@@ -56,10 +56,10 @@ if (el) {
     },
   })
   vueOptions.mounted = function () {
-    this.$inertia.on('success', (event) => {
+    this.$inertia.on('navigate', (event) => {
       const props = event.detail.page.props
 
-      window.title = `${props.meta.title} - Red Medial`
+      document.title = `${props.meta.title} - Red Medial`
 
       if (props.flash.message !== undefined) {
         this.$bus.emit('alert', {text: props.flash.message})
