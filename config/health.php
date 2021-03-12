@@ -86,7 +86,7 @@ return [
             //'PostgreSqlConnectable',
             //'PostgreSqlServer',
             'Queue',
-            'QueueWorkers',
+            //'QueueWorkers',
             'RebootRequired',
             'Redis',
             'RedisConnectable',
@@ -99,7 +99,7 @@ return [
             //'ServerLoad',
             'ServerUptime',
             //'Sshd',
-            'Supervisor',
+            //'Supervisor',
         ],
     ],
 
