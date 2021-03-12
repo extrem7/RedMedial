@@ -16,13 +16,15 @@ mix.options({
   }
 })
 
-mix.sass('Modules/Frontend/Resources/scss/app.scss', 'public/dist/css').version().sourceMaps()
+mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/')
+  .vue()
+  .svgVue({svgPath: 'Modules/Frontend/Resources/layout/src/svg'})
+
+mix.sass('Modules/Frontend/Resources/scss/app.scss', 'public/dist/css')
 
 mix.copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')
 
-mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/').svgVue({
-  svgPath: 'Modules/Frontend/Resources/layout/src/svg',
-}).sourceMaps().version()
-
-mix.mergeManifest()
+mix.sourceMaps(false)
+  .version(['public/dist/js/app.js', 'public/dist/css/app.css'])
   .disableSuccessNotifications()
+  .mergeManifest()

@@ -12,6 +12,6 @@ class Admin
         if (Auth::check() && Auth::getUser()->hasRole(['admin', 'editor'])) {
             return $next($request);
         }
-        abort(404);
+        abort(503);
     }
 }

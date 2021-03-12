@@ -1,7 +1,7 @@
 <template>
   <header
-    :class="{'sticky-header' : isScroll}"
     class="header"
+    :class="{'sticky-header': isScroll}"
   >
     <div class="header-top after-fade">
       <ul class="full-width-menu overflow-horizontal">
@@ -102,8 +102,8 @@
       </button>
     </div>
     <div
-      :class="{'open-menu' : openMenu}"
       class="header-bottom menu-container"
+      :class="{'open-menu' : openMenu}"
     >
       <div class="container d-flex align-items-center justify-content-between">
         <ul class="menu overflow-horizontal">

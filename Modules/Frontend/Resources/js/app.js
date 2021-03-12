@@ -57,15 +57,17 @@ if (el) {
   })
   vueOptions.mounted = function () {
     this.$inertia.on('navigate', (event) => {
-      const props = event.detail.page.props
+      const {meta: {title}} = event.detail.page.props
+      document.title = `${title} - Red Medial`
+    })
+    this.$inertia.on('finish', (event) => {
+      const {flash} = event.detail.page.props
 
-      document.title = `${props.meta.title} - Red Medial`
-
-      if (props.flash.message !== undefined) {
-        this.$bus.emit('alert', {text: props.flash.message})
+      if (flash.message !== undefined) {
+        this.$bus.emit('alert', {text: flash.message})
       }
-      if (props.flash.error !== undefined) {
-        this.$bus.emit('alert', {text: props.flash.error, variant: 'warning'})
+      if (flash.error !== undefined) {
+        this.$bus.emit('alert', {text: flash.error, variant: 'warning'})
       }
     })
   }
