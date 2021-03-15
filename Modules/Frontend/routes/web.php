@@ -4,11 +4,12 @@ use Modules\Frontend\Http\Controllers\{
     Account\AuthController,
     Account\MediaController,
     Account\ProfileController,
-    Account\RssController,
+    Account\RssController as AccountRssController,
     Account\IframeController as IframeGeneratorController,
     FeedController,
     PageController,
     ArticleController,
+    RssController,
     SearchController,
     IframeController
 };
@@ -49,7 +50,7 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
                 Route::post('assistance', [MediaController::class, 'assistance'])->name('assistance');
             });
 
-            Route::get('rss-room', RssController::class)->name('rss');
+            Route::get('rss-room', AccountRssController::class)->name('rss');
             Route::get('iframe', IframeGeneratorController::class)->name('iframe');
         });
     });

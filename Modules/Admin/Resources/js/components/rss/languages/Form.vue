@@ -93,7 +93,7 @@ export default {
     }
   },
   created() {
-    this.setupEdit('languge')
+    this.setupEdit('language')
   },
   mixins: [form]
 }

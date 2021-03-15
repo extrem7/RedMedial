@@ -8,28 +8,32 @@
             <BFormSelect
               v-model="language"
               :options="languages"
-              class="form-control form-control--transparent"/>
+              class="form-control form-control--transparent"
+            />
           </div>
           <div class="iframe-info__item form-group form-group--material">
             <div class="label iframe-info__title">Country</div>
             <BFormSelect
               v-model="country"
               :options="countries"
-              class="form-control form-control--transparent"/>
+              class="form-control form-control--transparent"
+            />
           </div>
           <div class="iframe-info__item form-group form-group--material">
             <div class="label iframe-info__title">Topic</div>
             <BFormSelect
               v-model="topic"
               :options="topics"
-              class="form-control form-control--transparent"/>
+              class="form-control form-control--transparent"
+            />
           </div>
           <div class="iframe-info__item form-group form-group--material">
             <div class="label iframe-info__title">Number of posts</div>
             <BFormSelect
               v-model="limit"
               :options="limits"
-              class="form-control form-control--transparent"/>
+              class="form-control form-control--transparent"
+            />
           </div>
         </div>
       </div>
@@ -45,7 +49,8 @@
                   :value="url"
                   placeholder="Iframe url"
                   readonly
-                  @click.native="selectUrl"/>
+                  @click.native="selectUrl"
+                />
               </div>
             </div>
             <div class="list-fields__row">
@@ -56,7 +61,8 @@
                     id="borderEnabled"
                     v-model="options.borderEnabled"
                     class="custom-control-input"
-                    type="checkbox">
+                    type="checkbox"
+                  >
                   <label class="custom-control-label" for="borderEnabled">
                     {{ options.borderEnabled ? 'On' : 'Off' }}
                   </label>
@@ -68,7 +74,8 @@
                 <InputMaterial
                   v-model="options.title"
                   input-class="form-control--transparent"
-                  placeholder="Iframe title"/>
+                  placeholder="Iframe title"
+                />
               </div>
               <div class="col-md-2 col-9 list-fields__col">
                 <InputMaterial
@@ -77,7 +84,8 @@
                   :min="1"
                   input-class="form-control--transparent"
                   placeholder="Width"
-                  type="number"/>
+                  type="number"
+                />
               </div>
               <div class="col-md-1 col-3 list-fields__col list-fields__col--no-padding">
                 <div class="form-group form-group--material">
@@ -95,7 +103,8 @@
                   :min="1"
                   input-class="form-control--transparent"
                   placeholder="Height"
-                  type="number"/>
+                  type="number"
+                />
               </div>
               <div class="col-md-1 col-3 list-fields__col list-fields__col--no-padding">
                 <div class="form-group form-group--material">
@@ -125,12 +134,16 @@
                   :min="1"
                   input-class="form-control--transparent"
                   placeholder="Border size"
-                  type="number"/>
+                  type="number"
+                />
               </div>
               <div class="col-md-4 list-fields__col">
                 <div class="form-group form-group--material">
                   <div class="label label--like-material">Border color</div>
-                  <BFormInput v-model="options.border.color" type="color"/>
+                  <BFormInput
+                    v-model="options.border.color"
+                    type="color"
+                  />
                 </div>
               </div>
             </div>

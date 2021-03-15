@@ -11,7 +11,7 @@
     </div>
     <div class="iframe-grid inline-block-xs">
       <div
-        v-for="{title,link,thumb,createdAt} in posts"
+        v-for="{title,link,thumb,createdAt,country} in posts"
         class="article-card">
         <a
           :href="link"
@@ -25,7 +25,12 @@
           >
         </a>
         <div class="article-card__body">
-          <a class="article-card__category" href="https://redmedial.com/countries/ucrania">Ucrania</a>
+          <a
+            :href="country.link"
+            class="article-card__category"
+          >
+            {{ country.name }}
+          </a>
           <a
             :href="link"
             class="article-card__title"
