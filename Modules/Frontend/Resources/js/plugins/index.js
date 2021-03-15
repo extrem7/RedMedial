@@ -39,7 +39,10 @@ import {route} from '~/helpers/helpers'
 Vue.mixin({
   methods: {
     route: (name, params, absolute) => route(name, params, absolute),
-    shared: (key) => shared()[key]
+    shared: (key) => shared()[key],
+    notify(text, variant = 'success', delay = 3, position = 'top') {
+      this.$bus.emit('alert', {variant, text, delay, position})
+    }
   }
 })
 

@@ -5,12 +5,14 @@ use Modules\Frontend\Http\Controllers\{
     Account\MediaController,
     Account\ProfileController,
     Account\RssController,
+    Account\IframeController as IframeGeneratorController,
     FeedController,
     PageController,
     ArticleController,
     SearchController,
     IframeController
 };
+
 use Modules\Frontend\Http\Middleware\HandleInertiaRequests;
 
 Route::middleware(HandleInertiaRequests::class)->group(function () {
@@ -48,6 +50,7 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
             });
 
             Route::get('rss-room', RssController::class)->name('rss');
+            Route::get('iframe', IframeGeneratorController::class)->name('iframe');
         });
     });
 });
@@ -91,12 +94,12 @@ Route::prefix('search')->as('search')->group(function () {
 });
 
 Route::prefix('iframe')->as('iframe.')->group(function () {
+    Route::get('custom', [IframeController::class, 'custom'])->name('custom');
     Route::get('hot', [IframeController::class, 'hot'])->name('hot');
     Route::as('covid.')->group(function () {
         Route::get('covid-news', [IframeController::class, 'covid'])->name('news');
         Route::get('covid-map', [IframeController::class, 'map'])->name('map');
     });
-
 });
 
 Route::post('contact-form', [PageController::class, 'contactForm'])->name('contact-form');

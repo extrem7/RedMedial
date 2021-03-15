@@ -35,7 +35,7 @@ class Channel extends Model implements HasMedia
     protected $table = 'rss_channels';
 
     protected $fillable = [
-        'country_id', 'slug', 'name', 'feed', 'source', 'description',
+        'country_id', 'language_id', 'slug', 'name', 'feed', 'source', 'description',
         'use_fulltext', 'use_og', 'is_active', 'status',
         'meta_title', 'meta_description'
     ];
@@ -103,6 +103,11 @@ class Channel extends Model implements HasMedia
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
     }
 
     public function posts(): HasMany

@@ -42,6 +42,11 @@ Breadcrumbs::for('frontend.account.rss', function (Trail $trail) {
     $trail->push('Rss categories room');
 });
 
+Breadcrumbs::for('frontend.account.iframe', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Customized news iframe');
+});
+
 Breadcrumbs::for('404', function (Trail $trail) {
     $trail->parent('home');
     $trail->push('404');

@@ -82,6 +82,7 @@ class FrontendServiceProvider extends ServiceProvider
                 if ($information->logoMedia) {
                     $data['logo'] = $information->logo;
                 }
+
                 share([
                     'auth' => $data
                 ]);

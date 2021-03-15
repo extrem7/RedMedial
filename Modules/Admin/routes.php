@@ -19,6 +19,9 @@ Route::middleware(Admin::class)->group(function () {
         Route::resource('/countries', 'CountryController', ['names' => 'countries'])->except(['show']);
         Route::post('/countries/sort', 'CountryController@sort')->name('countries.sort');
 
+        Route::resource('/languages', 'LanguageController', ['names' => 'languages'])->except(['show']);
+        Route::post('/languages/sort', 'LanguageController@sort')->name('languages.sort');
+
         Route::resource('/categories', 'CategoryController', ['names' => 'categories'])->except(['show']);
     });
 

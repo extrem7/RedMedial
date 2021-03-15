@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers\Account;
 
 use App\Models\Rss\Category;
 use App\Models\Rss\Country;
+use App\Models\Rss\Language;
 use Inertia\Response;
 use Modules\Frontend\Http\Controllers\Controller;
 
@@ -13,10 +14,18 @@ class RssController extends Controller
     {
         $this->seo()->setTitle('Rss categories room');
 
-        $countries = Country::select(['id', 'name', 'slug'])->ordered()->get();
-        $topics = Category::select(['id', 'name', 'slug'])->get();
+        $languages = Language::ordered()->get(['name', 'slug']);
+        $countries = Country::ordered()->get(['name', 'slug']);
+        $topics = Category::all(['name', 'slug']);
 
         $categories = [
+            [
+                'title' => 'Languages',
+                'feeds' => $languages->map(fn(Language $l) => [
+                    'name' => $l->name,
+                    'link' => route('frontend.feeds.language', $l->slug)
+                ])->toArray()
+            ],
             [
                 'title' => 'Countries',
                 'feeds' => $countries->map(fn(Country $c) => [
@@ -26,9 +35,9 @@ class RssController extends Controller
             ],
             [
                 'title' => 'Topics',
-                'feeds' => $topics->map(fn(Category $c) => [
-                    'name' => $c->name,
-                    'link' => route('frontend.feeds.topic', $c->slug)
+                'feeds' => $topics->map(fn(Category $t) => [
+                    'name' => $t->name,
+                    'link' => route('frontend.feeds.topic', $t->slug)
                 ])->toArray()
             ]
         ];

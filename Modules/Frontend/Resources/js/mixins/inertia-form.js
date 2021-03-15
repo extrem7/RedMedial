@@ -16,7 +16,11 @@ export default {
       return this.form.processing
     },
     errors() {
-      return this.form.errors
+      let errors = null
+      if (this.form) {
+        errors = this.form.errors
+      }
+      return errors
     }
   },
   methods: {

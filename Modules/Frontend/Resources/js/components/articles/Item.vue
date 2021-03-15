@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import {formatDate} from '~/use'
+
 export default {
   props: {
     title: String,
@@ -37,15 +39,12 @@ export default {
       default: false
     }
   },
+  setup() {
+    return {formatDate}
+  },
   computed: {
     target() {
       return this.isChannel ? '_blank' : ''
-    }
-  },
-  methods: {
-    formatDate(date) {
-      const d = new Date(date)
-      return `${d.getDate()} ${d.toLocaleDateString('en', {month: 'long'})}, ${d.getFullYear()}`
     }
   }
 }

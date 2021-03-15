@@ -23,9 +23,6 @@
           </InertiaLink>
         </li>
         <li class="sidebar-menu__item">
-          <a class="sidebar-menu__link" href="">Customized Iframe RSS</a>
-        </li>
-        <li class="sidebar-menu__item">
           <a
             class="sidebar-menu__link sidebar-menu__link--logout"
             href=""
@@ -65,6 +62,10 @@ export default {
         {
           name: 'Rss categories room',
           route: 'account.rss'
+        },
+        {
+          name: 'Customized news iframe',
+          route: 'account.iframe'
         },
       ]
     }

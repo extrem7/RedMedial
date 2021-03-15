@@ -1,29 +1,40 @@
 <template>
-  <div :class="{'form-group--last' : isLastChild, 'has-error':errors.length}"
-       class="form-group form-group--material">
-     <span v-if="type==='password'"
-           class="btn-show-password"
-           @click="togglePassword">
+  <div
+    :class="{'form-group--last' : isLastChild, 'has-error':errors.length}"
+    class="form-group form-group--material"
+  >
+     <span
+       v-if="type==='password'"
+       class="btn-show-password"
+       @click="togglePassword">
          <SvgVue
            class="btn-show-password__icon"
            icon="eye"/>
     </span>
-    <label :class="{'label--active' : inFocus||value}"
-           :for="id"
-           class="label label--material">
+    <label
+      :class="{'label--active': inFocus || value|| readonly}"
+      :for="id"
+      class="label label--material"
+    >
       {{ placeholder }}
     </label>
     <slot :state="errors.length!==0?false:null">
       <input
         :id="id"
-        :class="[inputClass, {'form-control--has-icon' : type==='password'}]"
-        :required="required"
-        :type="inputType"
         :value="value"
         class="form-control"
+        :class="[inputClass, {
+          'form-control--has-icon': type==='password',
+          'bg-transparent': readonly
+        }]"
+        :max="max"
+        :min="min"
+        :readonly="readonly"
+        :required="required"
+        :type="inputType"
+        @input="$emit('input',$event.target.value)"
         @blur="inFocus = false"
         @focus="inFocus = true"
-        @input="$emit('input',$event.target.value)"
       >
     </slot>
     <div v-if="errors.length">
@@ -54,6 +65,8 @@ export default {
       type: String,
       required: false
     },
+    min: Number,
+    max: Number,
     inputClass: {
       type: String,
       required: false
@@ -61,6 +74,14 @@ export default {
     isLastChild: {
       type: Boolean,
       default: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     required: {
       type: Boolean,

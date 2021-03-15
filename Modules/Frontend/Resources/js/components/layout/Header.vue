@@ -80,8 +80,8 @@
         <BDropdownItem :href="route('account.rss')">
           Rss categories room
         </BDropdownItem>
-        <BDropdownItem>
-          Customized Iframe RSS
+        <BDropdownItem :href="route('account.iframe')">
+          Customized news iframe
         </BDropdownItem>
         <BDropdownItem
           class="dropdown-account__item-logout"

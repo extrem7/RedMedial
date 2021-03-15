@@ -20,6 +20,8 @@ mix.js('Modules/Frontend/Resources/js/app.js', 'public/dist/js/')
   .vue()
   .svgVue({svgPath: 'Modules/Frontend/Resources/layout/src/svg'})
 
+mix.js('Modules/Frontend/Resources/js/iframe.js', 'public/dist/js/')
+
 mix.sass('Modules/Frontend/Resources/scss/app.scss', 'public/dist/css')
 
 mix.copy('Modules/Frontend/Resources/layout/src/img', 'public/dist/img')

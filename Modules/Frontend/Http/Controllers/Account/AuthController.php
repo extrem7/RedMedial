@@ -21,7 +21,7 @@ class AuthController extends Controller
         return inertia('Login');
     }
 
-    public function tryLogin(LoginRequest $request): RedirectResponse
+    public function tryLogin(LoginRequest $request): Response
     {
         $request->authenticate();
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('frontend.account.media.edit');
+        return inertia()->location(route('frontend.account.media.edit'));
     }
 
     public function register()

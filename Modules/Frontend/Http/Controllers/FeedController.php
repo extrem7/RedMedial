@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use App\Models\Rss\Category;
 use App\Models\Rss\Country;
+use App\Models\Rss\Language;
 use Spatie\Feed\Feed;
 
 class FeedController extends Controller
@@ -12,7 +13,7 @@ class FeedController extends Controller
 
     protected array $relations = ['channel'];
 
-    public function language(string $language): Feed
+    public function language(Language $language): Feed
     {
         $posts = $language->posts()->with($this->relations)->limit($this->limit)->get();
         return new Feed("Red Medial news by language: $language->name", $posts, request()->url());

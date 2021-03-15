@@ -18,6 +18,7 @@
         </main>
       </div>
     </div>
+    <slot name="end"></slot>
     <RedFooter class="footer--has-btn-mobile"/>
     <AlertNotification/>
     <button
