@@ -20,6 +20,7 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->when(isset($this->slug), $this->slug),
             'excerpt' => $this->when(isset($this->excerpt), $this->excerpt),
             'date' => $this->created_at,
             'link' => $this->source,

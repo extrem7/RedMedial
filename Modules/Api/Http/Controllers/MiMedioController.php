@@ -4,8 +4,10 @@ namespace Modules\Api\Http\Controllers;
 
 use App\Models\Rss\Category;
 use App\Models\Rss\Channel;
+use App\Models\Rss\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
@@ -44,10 +46,15 @@ class MiMedioController extends Controller
         $channels = Channel::ordered()
             ->whereIn('id', $international)
             ->with(['logoMedia', 'country', 'posts' => function (Relation $posts) {
-                $posts->select(['channel_id', 'id', 'title', 'excerpt', 'source', 'created_at'])->limit(6);
+                $posts->select(['channel_id', 'id', 'title', 'slug', 'excerpt', 'source', 'created_at'])->limit(6);
             }])
-            ->get(['id', 'country_id', 'slug', 'name']);
+            ->get(['id', 'slug', 'country_id', 'slug', 'name']);
 
         return ChannelResource::collection($channels);
+    }
+
+    public function post(Post $post): JsonResponse
+    {
+        return app(PostController::class)->show($post);
     }
 }

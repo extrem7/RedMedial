@@ -68,5 +68,6 @@ $api->version('v1', ['middleware' => ['api']], function (Router $api) {
         $api->get('categories', [MiMedioController::class, 'categories']);
         $api->get('categories/{category}', [MiMedioController::class, 'category']);
         $api->get('channels', [MiMedioController::class, 'channels']);
+        $api->get('post/{post:slug}', [MiMedioController::class, 'post']);
     });
 });
