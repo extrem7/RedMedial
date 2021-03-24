@@ -121,7 +121,7 @@ class PostController extends Controller
             'date' => $post->created_at,
             'link' => $post->link,
             'image' => $post->image,
-            'country' => new CountryResource($post->country),
+            'country' => $post->country ? new CountryResource($post->country) : null,
             'previous' => $previous,
             'next' => $next,
         ]);
