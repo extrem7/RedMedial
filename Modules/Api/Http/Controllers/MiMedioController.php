@@ -32,7 +32,7 @@ class MiMedioController extends Controller
             ->with('imageMedia')
             ->when(isset($params['limit']), fn(Builder $q) => $q->limit($params['limit']))
             ->when(isset($params['offset']), fn(Builder $q) => $q->offset($params['offset']))
-            ->get(['rss_posts.id', 'rss_posts.source', 'rss_posts.title', 'rss_posts.excerpt', 'rss_posts.created_at']);
+            ->get(array_map(fn($f) => "rss_posts.$f", ['id', 'source', 'title', 'slug', 'excerpt', 'created_at']));
 
         $count = $category->posts()->count();
 
