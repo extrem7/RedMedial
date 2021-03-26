@@ -48,17 +48,21 @@ class AuthController extends Controller
 
     public function tryRegister(RegistrationRequest $request): Response
     {
-        $validated = $request->only(['name', 'email']);
+        $data = $request->only(['name', 'email']);
         $password = \Hash::make($request->input('password'));
 
-        $user = User::create(array_merge($validated, [
+        $user = User::create(array_merge($data, [
             'name' => $request->input('name'),
             'password' => $password
         ]));
 
         $user->assignRole('media-user');
 
-        $user->mediaInformation()->create($request->only(['media_name' => 'name', 'url', 'facebook', 'phone']));
+        $mediaData = $request->only(['media_name', 'url', 'facebook', 'phone']);
+        $mediaData['name'] = $mediaData['media_name'];
+        unset($mediaData['media_name']);
+
+        $user->mediaInformation()->create($mediaData);
 
         \Auth::guard()->login($user);
 
