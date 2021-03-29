@@ -143,6 +143,7 @@
                   <BFormInput
                     v-model="options.border.color"
                     type="color"
+                    lazy
                   />
                 </div>
               </div>
