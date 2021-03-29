@@ -19,8 +19,10 @@ class Article extends JsonResource
             'createdAt' => $this->created_at,
             $this->mergeWhen($model instanceof Post, fn() => [
                 'country' => $this->whenLoaded('channel', fn() => [
-                    'name' => $model->channel->country->name,
-                    'link' => $model->channel->country->link
+                    $this->mergeWhen($model->channel->relationLoaded('country'), [
+                        'name' => $model->channel->country->name,
+                        'link' => $model->channel->country->link
+                    ])
                 ])
             ])
         ];
