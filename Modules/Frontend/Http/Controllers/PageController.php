@@ -95,7 +95,7 @@ class PageController extends Controller
         return view("frontend::pages.red-de-medios", compact('page', 'international', 'chile'));
     }
 
-    public function show(Page $pageModel): View
+    public function show(Page $pageModel)
     {
         $page = $pageModel;
 

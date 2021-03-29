@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Models\Traits\SearchTrait;
+use App\Models\User\MediaInformation;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
@@ -14,11 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasRoles;
-    use Notifiable;
-    use HasApiTokens;
-    use HasMediaTrait;
-    use SearchTrait;
+    use HasRoles, Notifiable, HasApiTokens, HasMediaTrait, SearchTrait;
 
     protected $fillable = [
         'name', 'email', 'password',
@@ -33,7 +33,7 @@ class User extends Authenticatable implements HasMedia
     ];
 
     // FUNCTIONS
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')->singleFile()
             ->registerMediaConversions(function (Media $media) {
@@ -44,7 +44,7 @@ class User extends Authenticatable implements HasMedia
             });
     }
 
-    public function uploadAvatar(UploadedFile $image = null)
+    public function uploadAvatar(UploadedFile $image = null): void
     {
         if ($this->avatarMedia) $this->deleteMedia($this->avatarMedia);
 
@@ -55,41 +55,47 @@ class User extends Authenticatable implements HasMedia
     {
         if ($this->avatarMedia !== null) {
             return $this->avatarMedia->getUrl($size);
-        } else {
-            return asset_admin('img/no-avatar.png');
         }
+
+        return asset_admin('img/no-avatar.png');
     }
 
     // RELATIONS
-    public function information()
+    public function information(): HasOne
     {
         return $this->hasOne(UserInformation::class);
     }
 
-    public function favorite()
+    /* @return MediaInformation|HasOne */
+    public function mediaInformation(): HasOne
+    {
+        return $this->hasOne(MediaInformation::class);
+    }
+
+    public function favorite(): HasMany
     {
         return $this->hasMany(FavoriteChannel::class);
     }
 
-    public function avatarMedia()
+    public function avatarMedia(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'avatar');
     }
 
     // ACCESSORS
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): string
     {
         return $this->getAvatar();
     }
 
-    public function getIconAttribute()
+    public function getIconAttribute(): string
     {
         return $this->getAvatar('icon');
     }
 
     public function getIsSuperAdminAttribute(): bool
     {
-        return $this->id === 1 || $this->email === env('INITIAL_USER_EMAIL');
+        return $this->id === 1;
     }
 }

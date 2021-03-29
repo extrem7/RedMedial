@@ -12,6 +12,41 @@ Breadcrumbs::for('home', function (Trail $trail) {
     $trail->push('Red Medial', route('frontend.home'));
 });
 
+Breadcrumbs::for('frontend.login', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Sign in');
+});
+
+Breadcrumbs::for('frontend.register', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Sign up');
+});
+
+Breadcrumbs::for('frontend.password_reset', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Password reset');
+});
+
+Breadcrumbs::for('frontend.account.settings.edit', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Profile settings');
+});
+
+Breadcrumbs::for('frontend.account.media.edit', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Complete profile');
+});
+
+Breadcrumbs::for('frontend.account.rss', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Rss categories room');
+});
+
+Breadcrumbs::for('frontend.account.iframe', function (Trail $trail) {
+    $trail->parent('home');
+    $trail->push('Customized news iframe');
+});
+
 Breadcrumbs::for('404', function (Trail $trail) {
     $trail->parent('home');
     $trail->push('404');

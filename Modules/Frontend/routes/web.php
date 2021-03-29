@@ -1,7 +1,12 @@
 <?php
 
 use Modules\Frontend\Http\Controllers\{
-    HelperController,
+    Account\AuthController,
+    Account\MediaController,
+    Account\ProfileController,
+    Account\RssController as AccountRssController,
+    Account\IframeController as IframeGeneratorController,
+    FeedController,
     PageController,
     ArticleController,
     RssController,
@@ -9,9 +14,57 @@ use Modules\Frontend\Http\Controllers\{
     IframeController
 };
 
+use Modules\Frontend\Http\Middleware\HandleInertiaRequests;
+
+Route::middleware(HandleInertiaRequests::class)->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::prefix('login')->as('login')->group(function () {
+            Route::get('', [AuthController::class, 'login']);
+            Route::post('', [AuthController::class, 'tryLogin'])->name('.try');
+        });
+        Route::prefix('register')->as('register')->group(function () {
+            Route::get('', [AuthController::class, 'register']);
+            Route::post('', [AuthController::class, 'tryRegister'])->name('.try');
+        });
+        Route::prefix('password-reset')->as('password_reset')->group(function () {
+            Route::get('', [AuthController::class, 'resetPassword']);
+            Route::post('', [AuthController::class, 'tryResetPassword'])->name('.try');
+        });
+    });
+    Route::middleware('auth')->group(function () {
+        Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::prefix('account')->as('account.')->group(function () {
+            Route::prefix('settings')->as('settings.')->group(function () {
+                Route::get('', [ProfileController::class, 'edit'])->name('edit');
+                Route::post('', [ProfileController::class, 'update'])->name('update');
+            });
+            Route::prefix('media')->as('media.')->group(function () {
+                Route::get('', [MediaController::class, 'edit'])->name('edit');
+                Route::post('', [MediaController::class, 'update'])->name('update');
+
+                Route::post('logo', [MediaController::class, 'updateLogo'])->name('logo.update');
+                Route::delete('logo', [MediaController::class, 'destroyLogo'])->name('logo.destroy');
+                Route::delete('statistic', [MediaController::class, 'destroyStatistic'])->name('statistic');
+
+                Route::post('assistance', [MediaController::class, 'assistance'])->name('assistance');
+            });
+
+            Route::get('rss-room', AccountRssController::class)->name('rss');
+            Route::get('iframe', IframeGeneratorController::class)->name('iframe');
+        });
+    });
+});
+
 Route::get('', [PageController::class, 'home'])->name('home');
 
-Route::get('sitemap.xml', [HelperController::class, 'sitemap']);
+Route::get('sitemap.xml', [AuthController::class, 'sitemap'])->name('sitemap');
+
+Route::prefix('feeds')->as('feeds.')->group(function () {
+    Route::get('language/{language:slug}', [FeedController::class, 'language'])->name('language');
+    Route::get('country/{country:slug}', [FeedController::class, 'country'])->name('country');
+    Route::get('topic/{category:slug}', [FeedController::class, 'topic'])->name('topic');
+});
 
 Route::prefix('blog')->as('articles.')->group(function () {
     Route::get('', [ArticleController::class, 'index'])->name('index');
@@ -33,7 +86,7 @@ Route::as('rss.')->group(function () {
         Route::get('page/{page?}', [RssController::class, 'category'])->name('.page');
     });
 
-    Route::get('posts/{post:slug}', [RssController::class, 'show'])->name('posts.show');
+    Route::get('posts/{post}', [RssController::class, 'show'])->name('posts.show');
 });
 
 Route::prefix('search')->as('search')->group(function () {
@@ -42,12 +95,12 @@ Route::prefix('search')->as('search')->group(function () {
 });
 
 Route::prefix('iframe')->as('iframe.')->group(function () {
+    Route::get('custom', [IframeController::class, 'custom'])->name('custom');
     Route::get('hot', [IframeController::class, 'hot'])->name('hot');
     Route::as('covid.')->group(function () {
         Route::get('covid-news', [IframeController::class, 'covid'])->name('news');
         Route::get('covid-map', [IframeController::class, 'map'])->name('map');
     });
-
 });
 
 Route::post('contact-form', [PageController::class, 'contactForm'])->name('contact-form');

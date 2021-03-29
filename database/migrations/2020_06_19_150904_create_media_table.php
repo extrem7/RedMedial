@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMediaTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    /* php artisan migrate:refresh --path=/database/migrations/2020_06_19_150904_create_media_table.php */
     public function up()
     {
         Schema::create('media', function (Blueprint $table) {

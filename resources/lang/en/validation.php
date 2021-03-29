@@ -118,16 +118,14 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify custom validation messages for attributes using the
-    | convention "attribute.rule" to name the lines. This makes it quick to
-    | specify a specific custom language line for a given attribute rule.
-    |
-    */
+    // password rules
+    "letters" => "The :attribute must include at least one letter.",
+    "case_diff" => "The :attribute must include both upper and lower case letters.",
+    "numbers" => "The :attribute must include at least one number.",
+    "symbols" => "The :attribute must include at least one symbol.",
+    'string255' => 'The :attribute may not be greater than 255 characters.',
+
+    'active_rss' => 'The :attribute is not a valid rss feed.',
 
     'custom' => [
         'attribute-name' => [

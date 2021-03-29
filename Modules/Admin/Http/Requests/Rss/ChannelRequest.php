@@ -12,6 +12,7 @@ class ChannelRequest extends FormRequest
     {
         return [
             'country_id' => ['nullable', 'exists:rss_countries,id'],
+            'language_id' => ['nullable', 'exists:rss_languages,id'],
             'slug' => ['nullable', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'feed' => ['required', 'string', 'max:255', 'url', function ($attribute, $value, $fail) {

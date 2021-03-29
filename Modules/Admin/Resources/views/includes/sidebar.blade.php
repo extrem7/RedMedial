@@ -48,6 +48,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('admin.rss.languages.index')}}"
+                               class="nav-link {{ Nav::isResource('languages') }}">
+                                <i class="nav-icon fa fa-language"></i>
+                                <p>Languages</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('admin.rss.categories.index')}}"
                                class="nav-link {{ Nav::isResource('categories') }}">
                                 <i class="nav-icon fa fa-tag"></i>

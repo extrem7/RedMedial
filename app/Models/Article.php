@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Models\Traits\SearchTrait;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -34,17 +36,18 @@ class Article extends Model implements HasMedia
     ];
 
     // FUNCTIONS
-    public static function boot()
+    public static function boot(): void
     {
-        parent::boot();
         static::saving(function (self $article) {
             if (!$article->excerpt) {
                 $article->excerpt = mb_substr($article->body, 0, 510);
             }
         });
+
+        parent::boot();
     }
 
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')
             ->singleFile()
@@ -64,14 +67,16 @@ class Article extends Model implements HasMedia
             });
     }
 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): void
     {
         $this->slug = SlugService::createSlug(self::class, 'slug', $slug);
     }
 
-    public function uploadImage(UploadedFile $image = null)
+    public function uploadImage(UploadedFile $image = null): void
     {
-        if ($this->imageMedia) $this->deleteMedia($this->imageMedia);
+        if ($this->imageMedia) {
+            $this->deleteMedia($this->imageMedia);
+        }
         $this->addMedia($image)->toMediaCollection('image');
     }
 
@@ -79,12 +84,12 @@ class Article extends Model implements HasMedia
     {
         if ($this->imageMedia !== null) {
             return url($this->imageMedia->getUrl($size));
-        } else {
-            return asset('dist/img/no-image.jpg');
         }
+
+        return asset('dist/img/no-image.jpg');
     }
 
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -95,51 +100,51 @@ class Article extends Model implements HasMedia
     }
 
     // RELATIONS
-    public function imageMedia()
+    public function imageMedia(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'image');
     }
 
     // SCOPES
-    public function scopePublished($query)
+    public function scopePublished($query): Builder
     {
         return $query->whereStatus(self::PUBLISHED);
     }
 
     //SETTERS
-    public function setExcerptAttribute(string $excerpt)
+    public function setExcerptAttribute(string $excerpt): void
     {
         $this->attributes['excerpt'] = strip_tags($excerpt);
     }
 
     // ACCESSORS
-    public function getImageAttribute()
+    public function getImageAttribute(): string
     {
         return $this->getImage();
     }
 
-    public function getThumbAttribute()
+    public function getThumbAttribute(): string
     {
         return $this->getImage('thumb');
     }
 
-    public function getThumbnailAttribute()
+    public function getThumbnailAttribute(): string
     {
         return $this->getImage('thumbnail');
     }
 
-    public function getBannerAttribute()
+    public function getBannerAttribute(): string
     {
         return $this->getImage('banner');
     }
 
-    public function getLinkAttribute()
+    public function getLinkAttribute(): string
     {
         return route('frontend.articles.show', $this->slug ?? $this->id);
     }
 
-    public function getDateAttribute()
+    public function getDateAttribute(): string
     {
         return $this->created_at->format('d M, Y');
     }

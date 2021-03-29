@@ -21,8 +21,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        \Validator::extend('active_rss', function ($attribute, $value, $parameters, $validator) {
+            /* @var $feed \SimplePie */
+            $feed = \Feeds::make($value, null, true);
+            return !$feed->error();
+        });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cacher;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -16,10 +15,11 @@ class Playlist extends Model
         'videos' => 'array'
     ];
 
-    public static function boot()
+    public static function boot(): void
     {
-        static::saved(fn() => Cacher::playlistsHome());
-        static::deleted(fn() => Cacher::playlistsHome());
+        foreach (['saved', 'deleted'] as $event) {
+            static::$event(fn() => \Cacher::playlistsHome());
+        }
 
         parent::boot();
     }

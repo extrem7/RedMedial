@@ -19,17 +19,17 @@ class ContactForm extends Mailable implements ShouldQueue
     public function __construct($data)
     {
         $this->message = (new MailMessage)
-            ->subject('New message from contact form')
-            ->greeting('Hello, you have new message from contact form!')
+            ->greeting('Hello, you have new message from contact form.')
             ->salutation(null);
         foreach ($data as $field => $text) {
             $field = ucfirst($field);
-            if ($text)
+            if ($text) {
                 $this->message->line("$field : $text");
+            }
         }
     }
 
-    public function build()
+    public function build(): self
     {
         return $this->markdown('vendor.notifications.email', $this->message->data());
     }

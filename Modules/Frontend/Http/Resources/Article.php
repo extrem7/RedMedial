@@ -9,6 +9,7 @@ class Article extends JsonResource
 {
     public function toArray($request): array
     {
+        /* @var $model \App\Models\Article|Post */
         $model = $this->resource;
         return [
             'title' => $this->title,
@@ -16,6 +17,12 @@ class Article extends JsonResource
             'thumb' => $this->thumb,
             'link' => $model instanceof Post ? $this->source : $this->link,
             'createdAt' => $this->created_at,
+            $this->mergeWhen($model instanceof Post, fn() => [
+                'country' => $this->whenLoaded('channel', fn() => [
+                    'name' => $model->channel->country->name,
+                    'link' => $model->channel->country->link
+                ])
+            ])
         ];
     }
 }
